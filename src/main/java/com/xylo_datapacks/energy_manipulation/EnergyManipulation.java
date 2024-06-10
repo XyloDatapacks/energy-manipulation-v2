@@ -13,7 +13,7 @@ public class EnergyManipulation implements ModInitializer {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final String MOD_ID = "energy_manipulation";
-    public static final Logger LOGGER = LoggerFactory.getLogger("energy-manipulation");
+    public static final Logger LOGGER = LoggerFactory.getLogger("energy_manipulation");
 
 	@Override
 	public void onInitialize() {

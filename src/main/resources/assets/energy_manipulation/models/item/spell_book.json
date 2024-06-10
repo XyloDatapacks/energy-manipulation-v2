@@ -27,9 +27,16 @@
         {
             "predicate": {
                 "charging": 1,
-                "charge": 1.0
+                "charge": 0.9
             },
             "model": "energy_manipulation:item/spell_book_charging_3"
+        },
+        {
+            "predicate": {
+                "charging": 1,
+                "charge": 1.0
+            },
+            "model": "energy_manipulation:item/spell_book_charged"
         },
         {
             "predicate": {
