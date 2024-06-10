@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "energy_manipulation",
+	"version": "${version}",
+	"name": "Energy Manipulation",
+	"description": "Energy Manipulation Mod. By Xylo",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/energy_manipulation/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.xylo_datapacks.energy_manipulation.EnergyManipulation"
+		],
+		"client": [
+			"com.xylo_datapacks.energy_manipulation.EnergyManipulationClient"
+		],
+		"fabric-datagen": [
+			"com.xylo_datapacks.energy_manipulation.EnergyManipulationDataGenerator"
+		]
+	},
+	"mixins": [
+		"energy_manipulation.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
