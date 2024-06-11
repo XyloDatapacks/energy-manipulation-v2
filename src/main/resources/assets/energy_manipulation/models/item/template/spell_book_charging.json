@@ -18,8 +18,8 @@
 		},
 		"firstperson_lefthand": {
 			"rotation": [32.74, -24.1, 32.8],
-			"translation": [ 10.37, -7.05, -11.38],
-			"scale": [ 0.6, 0.6, 0.6 ]
+			"translation": [ 8.62, -5.38, -10.18],
+			"scale": [ 0.5, 0.5, 0.5 ]
 		}
 	}
 }

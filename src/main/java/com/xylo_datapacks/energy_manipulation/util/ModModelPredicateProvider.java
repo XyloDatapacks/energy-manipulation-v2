@@ -19,7 +19,7 @@ public class ModModelPredicateProvider {
                 return 0.0f;
             }
             if (SpellBookItem.isCharged(stack)) {
-                return 0.0f;
+                return SpellBookItem.getCharge(stack);
             }
             return (float)(stack.getMaxUseTime() - entity.getItemUseTimeLeft()) / (float)SpellBookItem.getPullTime(stack);
         });

@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom;
 
+import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
@@ -15,8 +16,9 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-public class SpellBookItem extends Item {
+public class SpellBookItem extends Item implements FabricItem {
     private static final String CHARGED_KEY = "Charged";
+    private static final String CHARGE_KEY = "Charge";
     private boolean charged = false;
     private boolean loaded = false;
     private boolean completed = false;
@@ -30,7 +32,8 @@ public class SpellBookItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         if (SpellBookItem.isCharged(itemStack)) {
             SpellBookItem.setCharged(itemStack, false);
-            return TypedActionResult.consume(itemStack);
+            SpellBookItem.setCharge(itemStack, 0.f);
+            return TypedActionResult.success(itemStack);
         }
         if (!SpellBookItem.isCharged(itemStack)) {
             this.charged = false;
@@ -45,8 +48,9 @@ public class SpellBookItem extends Item {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         int i = this.getMaxUseTime(stack) - remainingUseTicks;
         float f = SpellBookItem.getPullProgress(i, stack);
-        if (f >= 0.2f && !SpellBookItem.isCharged(stack)) {
+        if (!SpellBookItem.isCharged(stack)) {
             SpellBookItem.setCharged(stack, true);
+            SpellBookItem.setCharge(stack, f);
             SoundCategory soundCategory = user instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, soundCategory, 1.0f, 1.0f / (world.getRandom().nextFloat() * 0.5f + 1.0f) + 0.2f);
         }
@@ -60,6 +64,19 @@ public class SpellBookItem extends Item {
     public static void setCharged(ItemStack stack, boolean charged) {
         NbtCompound nbtCompound = stack.getOrCreateNbt();
         nbtCompound.putBoolean(CHARGED_KEY, charged);
+    }
+
+    public static float getCharge(ItemStack stack) {
+        NbtCompound nbtCompound = stack.getNbt();
+        if (nbtCompound == null) {
+            return 0.0f;
+        }
+        return nbtCompound.getFloat(CHARGE_KEY);
+    }
+    
+    public static void setCharge(ItemStack stack, float charge) {
+        NbtCompound nbtCompound = stack.getOrCreateNbt();
+        nbtCompound.putFloat(CHARGE_KEY, charge);
     }
 
     @Override
@@ -82,11 +99,19 @@ public class SpellBookItem extends Item {
                 this.loaded = true;
                 world.playSound(null, user.getX(), user.getY(), user.getZ(), soundEvent2, SoundCategory.PLAYERS, 0.5f, 1.0f);
             }
+            if (f >= 0.75f && !this.completed) {
+                this.completed = true;
+                //world.playSound(null, user.getX(), user.getY(), user.getZ(), soundEvent2, SoundCategory.PLAYERS, 0.5f, 1.0f);
+            }
         }
     }
     
     @Override
     public int getMaxUseTime(ItemStack stack) {
+        return 72000;
+    }
+
+    public int internalGetMaxUseTime(ItemStack stack) {
         return SpellBookItem.getPullTime(stack) + 3;
     }
 
@@ -97,7 +122,7 @@ public class SpellBookItem extends Item {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BLOCK;
+        return UseAction.CROSSBOW;
     }
 
     private SoundEvent getQuickChargeSound(int stage) {
@@ -127,5 +152,9 @@ public class SpellBookItem extends Item {
     public boolean isUsedOnRelease(ItemStack stack) {
         return stack.isOf(this);
     }
-    
+
+    @Override
+    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+        return SpellBookItem.getCharge(oldStack) == SpellBookItem.getCharge(new ItemStack(this));
+    }
 }
