@@ -15,7 +15,8 @@ import net.minecraft.util.Identifier;
 public class ModItems {
 
     public static final Item SPELLBOOK = registerItem("spell_book", new SpellBookItem(new FabricItemSettings().maxDamage(100)));
-
+    
+    
     // Function called to add items
     public static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(EnergyManipulation.MOD_ID, name), item);
