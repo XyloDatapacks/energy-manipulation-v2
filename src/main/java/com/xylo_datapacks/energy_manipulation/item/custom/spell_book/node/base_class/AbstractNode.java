@@ -4,7 +4,6 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_
 import net.minecraft.util.Pair;
 
 import java.util.List;
-import java.util.Map;
 
 public abstract class AbstractNode {
     protected final String NODE_NAME;
@@ -19,7 +18,7 @@ public abstract class AbstractNode {
     public String getNodeDescription() { return NODE_DESCRIPTION; }
     
     public abstract AbstractNode getNodeParent();
-    public abstract List<Pair<String, AbstractNode>> getSubNodes(); 
+    public abstract List<Pair<String, AbstractNode>> getAllSubNodes();
     
-    public abstract Map<String, String> getSubNodesDisplayData();
+    public abstract List<Pair<String, AbstractNode>> getAllSubNodesDisplayData();
 }

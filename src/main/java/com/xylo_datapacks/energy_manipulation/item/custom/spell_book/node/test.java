@@ -9,8 +9,10 @@ public class test {
     
     public static void main(String[] args) {
         
+        
+        
         PageNode pageNode = new PageNode();
-        List<Pair<String, AbstractNode>> nodes = pageNode.getSubNodes();
+        List<Pair<String, AbstractNode>> nodes = pageNode.getAllSubNodesDisplayData();
         for (Pair<String, AbstractNode> node : nodes) {
                 System.out.println(node.getLeft() + " : " + node.getRight().getNodeName());
         }

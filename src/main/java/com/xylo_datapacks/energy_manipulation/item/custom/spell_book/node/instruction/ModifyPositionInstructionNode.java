@@ -2,8 +2,6 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instr
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNode;
 
-import java.util.List;
-import java.util.Map;
 
 public class ModifyPositionInstructionNode extends AbstractInstructionNode {
     
@@ -21,10 +19,5 @@ public class ModifyPositionInstructionNode extends AbstractInstructionNode {
     @Override
     public AbstractNode getNodeParent() {
         return null;
-    }
-
-    @Override
-    public Map<String, String> getSubNodesDisplayData() {
-        return Map.of();
     }
 }

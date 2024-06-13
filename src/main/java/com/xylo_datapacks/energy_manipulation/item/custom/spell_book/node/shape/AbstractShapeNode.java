@@ -1,9 +1,8 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
 
-public abstract class AbstractShapeNode extends AbstractNodeWithMap<AbstractNode> {
+public abstract class AbstractShapeNode extends AbstractNodeWithMap {
     
     public AbstractShapeNode(String nodeName, String nodeDescription) {
         super(nodeName, nodeDescription);

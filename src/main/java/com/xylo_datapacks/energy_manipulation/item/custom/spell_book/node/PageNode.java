@@ -5,19 +5,16 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.AbstractInstructionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.GenerateShapeInstructionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.ModifyPositionInstructionNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ProjectileShapeNode;
 
-import java.util.List;
-import java.util.Map;
 
 public class PageNode extends AbstractNodeWithList<AbstractInstructionNode> {
 
 
     public PageNode() {
         super("page_node", "page_node_description", "instruction_node");
-        subNodes.add(new ModifyPositionInstructionNode());
-        subNodes.add(new ModifyPositionInstructionNode());
-        subNodes.add(new GenerateShapeInstructionNode());
+        this.appendSubNode(new ModifyPositionInstructionNode());
+        this.appendSubNode(new ModifyPositionInstructionNode());
+        this.appendSubNode(new GenerateShapeInstructionNode());
     }
 
     @Override
@@ -26,9 +23,4 @@ public class PageNode extends AbstractNodeWithList<AbstractInstructionNode> {
     }
 
     
-
-    @Override
-    public Map<String, String> getSubNodesDisplayData() {
-        return Map.of();
-    }
 }
