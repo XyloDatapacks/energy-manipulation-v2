@@ -5,12 +5,12 @@ import net.minecraft.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractNodeWithList<T extends AbstractNode> extends AbstractNode {
+public abstract class AbstractNodeWithList<T extends GenericNode> extends AbstractNode {
     private String subNodesId;
     private List<T> subNodes = new ArrayList<>();;
     
-    public AbstractNodeWithList(String nodeName, String nodeDescription, String subNodesId) {
-        super(nodeName, nodeDescription);
+    public AbstractNodeWithList(String nodeName, String nodeDescription, GenericNode parentNode, String subNodesId) {
+        super(nodeName, nodeDescription, parentNode);
         this.subNodesId = subNodesId;
     }
     
@@ -22,14 +22,18 @@ public abstract class AbstractNodeWithList<T extends AbstractNode> extends Abstr
         subNodes.add(0, subNode);
     }
 
+    public void modifySubNode(int index, T subNode) {
+        subNodes.set(index, subNode);
+    }
+    
     public void insertSubNode(int index, T subNode) {
         subNodes.add(index, subNode);
     }
 
-    public void removeAllSubNodes(T subNode) {
-        subNodes.clear();
+    public T removeSubNode(int index, T subNode) {
+        return subNodes.remove(index);
     }
-
+    
     public T removeFirstSubNode() {
         return subNodes.remove(0);
     }
@@ -38,31 +42,41 @@ public abstract class AbstractNodeWithList<T extends AbstractNode> extends Abstr
         return subNodes.remove(subNodes.size() - 1);
     }
 
+    public void removeAllSubNodes(T subNode) {
+        subNodes.clear();
+    }
+
     public T getSubNode(int subNodeIndex) {
         return subNodes.get(subNodeIndex);
     }
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+    /* GenericNode Interface */
     
     @Override
-    public List<Pair<String, AbstractNode>> getAllSubNodes() {
+    public List<Pair<String, GenericNode>> getAllSubNodes() {
         
-        List<Pair<String, AbstractNode>> returnSubNodes = new ArrayList<>();
+        List<Pair<String, GenericNode>> returnSubNodes = new ArrayList<>();
         for (T subNode : subNodes) {
             // this sub node
-            returnSubNodes.add(new Pair<String, AbstractNode>(subNodesId, subNode));
+            returnSubNodes.add(new Pair<String, GenericNode>(subNodesId, subNode));
         }
         return returnSubNodes;
     }
 
     @Override
-    public List<Pair<String, AbstractNode>> getAllSubNodesDisplayData() {
+    public List<Pair<String, GenericNode>> getAllSubNodesIterative() {
        
-        List<Pair<String, AbstractNode>> returnSubNodes = new ArrayList<>();
+        List<Pair<String, GenericNode>> returnSubNodes = new ArrayList<>();
         for (T subNode : subNodes) {
             // this sub node
-            returnSubNodes.add(new Pair<String, AbstractNode>(subNodesId, subNode));
+            returnSubNodes.add(new Pair<String, GenericNode>(subNodesId, subNode));
             // recursive
-            returnSubNodes.addAll(subNode.getAllSubNodesDisplayData());
+            returnSubNodes.addAll(subNode.getAllSubNodesIterative());
         }
         return returnSubNodes;
     }
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+    
 }
