@@ -13,38 +13,38 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     }
 
     /** register a subNode and its class */
-    protected <T extends GenericNode> boolean registerSubNode(String subNodeName, Class<T> subNodeClass, T defaultNode) {
-        // if the subNodeName is not in the classes map
-        if (!subNodesClass.containsKey(subNodeName)) {
+    protected <T extends GenericNode> boolean registerSubNode(String subNodeId, Class<T> subNodeClass, T defaultNode) {
+        // if the subNodeId is not in the classes map
+        if (!subNodesClass.containsKey(subNodeId)) {
             // we add the name and class to the class map
-            subNodesClass.put(subNodeName, subNodeClass);
+            subNodesClass.put(subNodeId, subNodeClass);
             // we add the name and node to the nodes map
-            subNodes.put(subNodeName, defaultNode);
+            subNodes.put(subNodeId, defaultNode);
             return true;
         }
         return false;
     }
     
     /** modify a subNode that must be registered */
-    public <T extends GenericNode> boolean modifySubNode(String subNodeName, T node) {
-        // if the subNodeName is already registered
-        if (subNodesClass.containsKey(subNodeName)) {
+    public <T extends GenericNode> boolean modifySubNode(String subNodeId, T node) {
+        // if the subNodeId is already registered
+        if (subNodesClass.containsKey(subNodeId)) {
             // we check if the new node class is the same as the old one
-            if (subNodesClass.get(subNodeName).isInstance(node)) {
+            if (subNodesClass.get(subNodeId).isInstance(node)) {
                 // since the new node class is the same as the old one, we can update the subNode value
-                subNodes.put(subNodeName, node);
+                subNodes.put(subNodeId, node);
                 return true;
             }
         }
         return false;
     }
     
-    public GenericNode getSubNode(String subNodeName) {
-        return subNodes.get(subNodeName);
+    public GenericNode getSubNode(String subNodeId) {
+        return subNodes.get(subNodeId);
     }
     
-    public <T extends GenericNode> T getSubNode(String subNodeName, Class<T> subNodeClass) {
-        GenericNode node = getSubNode(subNodeName);
+    public <T extends GenericNode> T getSubNode(String subNodeId, Class<T> subNodeClass) {
+        GenericNode node = getSubNode(subNodeId);
         return subNodeClass.isInstance(node) ? subNodeClass.cast(node) : null;
     }
 

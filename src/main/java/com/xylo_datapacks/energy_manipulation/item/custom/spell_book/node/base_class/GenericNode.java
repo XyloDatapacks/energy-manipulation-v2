@@ -10,9 +10,10 @@ public interface GenericNode {
     public abstract String getNodeDescription();
 
     public abstract GenericNode getParentNode();
+    public abstract Integer getNesting();
     
     public abstract List<Pair<String, GenericNode>> getAllSubNodes();
     public abstract List<Pair<String, GenericNode>> getAllSubNodesIterative();
 
-    public abstract List<Pair<String, GenericNode>> getNodeDisplayData();
+    public abstract NodeDisplayData getNodeDisplayData();
 }
