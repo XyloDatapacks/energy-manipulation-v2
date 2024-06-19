@@ -32,11 +32,6 @@ public abstract class AbstractNode implements GenericNode {
     public Integer getNesting() { return nesting; }
 
     @Override
-    public abstract List<Pair<String, GenericNode>> getAllSubNodes();
-    @Override
-    public abstract List<Pair<String, GenericNode>> getAllSubNodesIterative();
-
-    @Override
     public NodeDisplayData getNodeDisplayData() {
         return new NodeDisplayData(getNodeName(), getNodeDescription(), getNesting());
     }

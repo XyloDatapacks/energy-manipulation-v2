@@ -65,18 +65,37 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
     }
 
     @Override
-    public List<Pair<String, GenericNode>> getAllSubNodesIterative() {
+    public List<Pair<String, GenericNode>> getAllSubNodesRecursive(String pathStart) {
        
         List<Pair<String, GenericNode>> returnSubNodes = new ArrayList<>();
-        for (T subNode : subNodes) {
+        for (int index = 0; index < subNodes.size(); index++) {
+            // generate path
+            String subNodePath = (!pathStart.isEmpty() ? pathStart + "." : pathStart) + subNodesId + "[" + index + "]";
             // this sub node
-            returnSubNodes.add(new Pair<String, GenericNode>(subNodesId, subNode));
+            returnSubNodes.add(new Pair<String, GenericNode>(subNodePath, subNodes.get(index)));
             // recursive
-            returnSubNodes.addAll(subNode.getAllSubNodesIterative());
+            returnSubNodes.addAll(subNodes.get(index).getAllSubNodesRecursive(subNodePath));
         }
         return returnSubNodes;
     }
 
-/*--------------------------------------------------------------------------------------------------------------------*/
+    @Override
+    public GenericNode getNodeFromPath(List<String> path) {
+        if (path.isEmpty()) return this;
+
+        int indexStart = path.get(0).indexOf("[") + 1;
+        int indexEnd = path.get(0).length() - 1;
+        int index = Integer.parseInt(path.get(0).substring(indexStart, indexEnd));
+        GenericNode node = this.getSubNode(index);
+        
+        if (node != null) {
+            path.remove(0);
+            return node.getNodeFromPath(path);
+        }
+        System.out.println("path failed at: " + path);
+        return null;
+    }
+
+    /*--------------------------------------------------------------------------------------------------------------------*/
     
 }
