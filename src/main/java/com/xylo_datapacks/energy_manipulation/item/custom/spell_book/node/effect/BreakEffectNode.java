@@ -3,9 +3,9 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effec
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 
-public class FireEffectNode extends AbstractNodeWithMap implements EffectNode {
+public class BreakEffectNode extends AbstractNodeWithMap implements EffectNode {
     
-    public FireEffectNode(GenericNode parentNode) {
-        super("fire", "effect", parentNode);
+    public BreakEffectNode(GenericNode parentNode) {
+        super("break", "effect", parentNode);
     }
 }

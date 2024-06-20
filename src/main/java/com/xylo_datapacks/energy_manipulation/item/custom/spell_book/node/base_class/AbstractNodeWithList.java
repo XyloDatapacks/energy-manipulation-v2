@@ -3,14 +3,15 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractNodeWithList<T extends GenericNode> extends AbstractNode {
     private String subNodesId;
     private List<T> subNodes = new ArrayList<>();;
     
-    public AbstractNodeWithList(String nodeName, String nodeDescription, GenericNode parentNode, String subNodesId) {
-        super(nodeName, nodeDescription, parentNode);
+    public AbstractNodeWithList(String nodeId, String nodeGroupId, GenericNode parentNode, String subNodesId) {
+        super(nodeId, nodeGroupId, parentNode);
         this.subNodesId = subNodesId;
     }
     
@@ -54,25 +55,28 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
     /* GenericNode Interface */
     
     @Override
-    public List<Pair<String, GenericNode>> getAllSubNodes() {
+    public List<NodeResult> getAllSubNodes() {
         
-        List<Pair<String, GenericNode>> returnSubNodes = new ArrayList<>();
-        for (T subNode : subNodes) {
+        List<NodeResult> returnSubNodes = new ArrayList<>();
+        for (int index = 0; index < subNodes.size(); index++) {
+            // generate path
+            List<String> subNodePath = new ArrayList<>(Collections.singletonList(subNodesId + "[" + index + "]"));
             // this sub node
-            returnSubNodes.add(new Pair<String, GenericNode>(subNodesId, subNode));
+            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index)));
         }
         return returnSubNodes;
     }
 
     @Override
-    public List<Pair<String, GenericNode>> getAllSubNodesRecursive(String pathStart) {
+    public List<NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
        
-        List<Pair<String, GenericNode>> returnSubNodes = new ArrayList<>();
+        List<NodeResult> returnSubNodes = new ArrayList<>();
         for (int index = 0; index < subNodes.size(); index++) {
             // generate path
-            String subNodePath = (!pathStart.isEmpty() ? pathStart + "." : pathStart) + subNodesId + "[" + index + "]";
+            List<String> subNodePath = new ArrayList<>(pathStart);
+            subNodePath.add(subNodesId + "[" + index + "]");
             // this sub node
-            returnSubNodes.add(new Pair<String, GenericNode>(subNodePath, subNodes.get(index)));
+            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index)));
             // recursive
             returnSubNodes.addAll(subNodes.get(index).getAllSubNodesRecursive(subNodePath));
         }

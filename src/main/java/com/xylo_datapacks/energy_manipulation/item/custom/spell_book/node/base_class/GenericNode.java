@@ -8,20 +8,29 @@ import java.util.List;
 
 public interface GenericNode {
 
-    public abstract String getNodeName();
-    public abstract String getNodeDescription();
+    public abstract String getNodeId();
+    public abstract String getNodeGroupId();
+    public default String getNodeFullId() {
+        return getNodeGroupId() + "." + getNodeId();
+    };
 
     public abstract GenericNode getParentNode();
     public abstract Integer getNesting();
     
-    public abstract List<Pair<String, GenericNode>> getAllSubNodes();
-    public abstract List<Pair<String, GenericNode>> getAllSubNodesRecursive(String pathStart);
-    public default List<Pair<String, GenericNode>> getAllSubNodesRecursive() {
-        return getAllSubNodesRecursive("");
+    public abstract List<NodeResult> getAllSubNodes();
+    public abstract List<NodeResult> getAllSubNodesRecursive(List<String> pathStart);
+    public default List<NodeResult> getAllSubNodesRecursive(String pathStart) {
+        return getAllSubNodesRecursive(stringPathToListPath(pathStart));
+    };
+    public default List<NodeResult> getAllSubNodesRecursive() {
+        return getAllSubNodesRecursive(new ArrayList<>());
     };
    
     public static List<String> stringPathToListPath(String path) {
         return new ArrayList<String>(Arrays.asList(path.split("\\.")));
+    };
+    public static String listPathToStringPath(List<String> path) {
+        return String.join(".", path);
     };
     public abstract GenericNode getNodeFromPath(List<String> path);
     public default GenericNode getNodeFromPath(String path) {

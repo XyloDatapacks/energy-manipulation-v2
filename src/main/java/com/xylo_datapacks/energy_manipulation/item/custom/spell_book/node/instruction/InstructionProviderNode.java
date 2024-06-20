@@ -9,7 +9,7 @@ public class InstructionProviderNode extends AbstractNodeWithList<InstructionNod
 
 
     public InstructionProviderNode(GenericNode parentNode) {
-        super("page_node", "page_node_description", parentNode, "instruction_node");
+        super("instruction_provider", "instruction", parentNode, "instruction");
         this.appendSubNode(new ModifyPositionInstructionNode(this));
         this.appendSubNode(new ModifyPositionInstructionNode(this));
         this.appendSubNode(new GenerateShapeInstructionNode(this));

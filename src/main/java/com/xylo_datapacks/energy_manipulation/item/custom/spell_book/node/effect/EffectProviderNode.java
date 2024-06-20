@@ -7,7 +7,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 public class EffectProviderNode extends AbstractNodeWithList<EffectNode> {
     
     public EffectProviderNode(GenericNode parentNode) {
-        super("effect_provider_node_name", "effect_provider_node_description", parentNode, "effect");
+        super("effect_provider", "effect", parentNode, "effect");
         this.appendSubNode(new FireEffectNode(this));
         this.appendSubNode(new FireEffectNode(this));
         this.appendSubNode(new FireEffectNode(this));

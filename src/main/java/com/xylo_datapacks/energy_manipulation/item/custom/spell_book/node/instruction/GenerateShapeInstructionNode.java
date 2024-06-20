@@ -9,7 +9,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.
 public class GenerateShapeInstructionNode extends AbstractNodeWithMap implements InstructionNode {
    
     public GenerateShapeInstructionNode(GenericNode parentNode) {
-        super("generate_instruction_node_name", "generate_instruction_node_description", parentNode);
+        super("generate_shape", "instruction", parentNode);
         this.registerSubNode("shape", ShapeNode.class, new ProjectileShapeNode(this));
     }
     

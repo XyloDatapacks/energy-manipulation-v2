@@ -8,7 +8,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 public class ModifyPositionInstructionNode extends AbstractNodeWithMap implements InstructionNode {
     
     public ModifyPositionInstructionNode(GenericNode parentNode) {
-        super("position_instruction_node_name", "position_instruction_node_description", parentNode);
+        super("modify_position", "instruction", parentNode);
         // position
     }
 
