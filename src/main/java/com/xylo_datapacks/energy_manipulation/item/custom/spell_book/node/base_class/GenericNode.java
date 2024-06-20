@@ -32,6 +32,11 @@ public interface GenericNode {
     public static String listPathToStringPath(List<String> path) {
         return String.join(".", path);
     };
+    public static int stripIndexFromPathElement(String pathElement) {
+        int indexStart = pathElement.indexOf("[") + 1;
+        int indexEnd = pathElement.length() - 1;
+        return Integer.parseInt(pathElement.substring(indexStart, indexEnd));
+    }
     public abstract GenericNode getNodeFromPath(List<String> path);
     public default GenericNode getNodeFromPath(String path) {
         return getNodeFromPath(stringPathToListPath(path));

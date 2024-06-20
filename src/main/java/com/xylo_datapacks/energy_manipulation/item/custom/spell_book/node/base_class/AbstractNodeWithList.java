@@ -26,6 +26,10 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
     public void modifySubNode(int index, T subNode) {
         subNodes.set(index, subNode);
     }
+
+    public void modifySubNode(String subNodeId, T subNode) {
+        modifySubNode(GenericNode.stripIndexFromPathElement(subNodeId), subNode);
+    }
     
     public void insertSubNode(int index, T subNode) {
         subNodes.add(index, subNode);
@@ -86,11 +90,8 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
     @Override
     public GenericNode getNodeFromPath(List<String> path) {
         if (path.isEmpty()) return this;
-
-        int indexStart = path.get(0).indexOf("[") + 1;
-        int indexEnd = path.get(0).length() - 1;
-        int index = Integer.parseInt(path.get(0).substring(indexStart, indexEnd));
-        GenericNode node = this.getSubNode(index);
+        
+        GenericNode node = this.getSubNode(GenericNode.stripIndexFromPathElement(path.get(0)));
         
         if (node != null) {
             path.remove(0);
@@ -100,6 +101,6 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
         return null;
     }
 
-    /*--------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
     
 }
