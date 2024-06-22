@@ -7,10 +7,10 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect
 
 public class RayShapeNode extends AbstractNodeWithMap implements ShapeNode {
     
-    public RayShapeNode(GenericNode parentNode) {
-        super("ray", "shape", parentNode);
+    public RayShapeNode() {
+        super("ray", "shape");
         // movement
-        this.registerSubNode("effects", EffectProviderNode.class, new EffectProviderNode(this));
+        this.registerSubNode("effects", EffectProviderNode.class, new EffectProviderNode());
     }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

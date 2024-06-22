@@ -1,63 +1,112 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import net.minecraft.util.Pair;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.database.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.database.SubNodeData;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractNodeWithList<T extends GenericNode> extends AbstractNode {
+public abstract class AbstractNodeWithList extends AbstractNode {
     private String subNodesId;
-    private List<T> subNodes = new ArrayList<>();;
+    private Class<? extends GenericNode> subNodesClass;
+    private List<GenericNode> subNodes = new ArrayList<>();;
     
-    public AbstractNodeWithList(String nodeId, String nodeGroupId, GenericNode parentNode, String subNodesId) {
-        super(nodeId, nodeGroupId, parentNode);
-        this.subNodesId = subNodesId;
+    public AbstractNodeWithList(String nodeId, String nodeGroupId) {
+        super(nodeId, nodeGroupId);
+    }
+
+    public boolean appendSubNode(GenericNode subNode) {
+        if (subNodesClass.isInstance(subNode)) {
+            ((AbstractNode) subNode).setParentNode(this);
+            subNodes.add(subNodes.size(), subNode);
+            return true;
+        }
+        return false;
+    }
+
+    public GenericNode getSubNode(int index) {
+        if (index >= 0 && index < subNodes.size()) {
+            return subNodes.get(index);
+        }
+        return null;
+    }
+
+    public boolean modifySubNode(int index, GenericNode subNode) {
+        if (index >= 0 && index < subNodes.size() && subNodesClass.isInstance(subNode)) {
+            ((AbstractNode) subNode).setParentNode(this);
+            subNodes.set(index, subNode);
+            return true;
+        }
+        return false;
     }
     
-    public void appendSubNode(T subNode) {
-        subNodes.add(subNodes.size(), subNode);
-    }
-
-    public void prependSubNode(T subNode) {
-        subNodes.add(0, subNode);
-    }
-
-    public void modifySubNode(int index, T subNode) {
-        subNodes.set(index, subNode);
-    }
-
-    public void modifySubNode(String subNodeId, T subNode) {
-        modifySubNode(GenericNode.stripIndexFromPathElement(subNodeId), subNode);
+    public boolean prependSubNode(GenericNode subNode) {
+        if (subNodesClass.isInstance(subNode)) {
+            ((AbstractNode) subNode).setParentNode(this);
+            subNodes.add(0, subNode);
+            return true;
+        }
+        return false;
     }
     
-    public void insertSubNode(int index, T subNode) {
-        subNodes.add(index, subNode);
+    public boolean insertSubNode(int index, GenericNode subNode) {
+        if (index >= 0 && index < subNodes.size() && subNodesClass.isInstance(subNode)) {
+            ((AbstractNode) subNode).setParentNode(this);
+            subNodes.add(index, subNode);
+            return true;
+        }
+        return false;
     }
 
-    public T removeSubNode(int index, T subNode) {
+    public GenericNode removeSubNode(int index, GenericNode subNode) {
         return subNodes.remove(index);
     }
     
-    public T removeFirstSubNode() {
+    public GenericNode removeFirstSubNode() {
         return subNodes.remove(0);
     }
     
-    public T removeLastSubNode() {
+    public GenericNode removeLastSubNode() {
         return subNodes.remove(subNodes.size() - 1);
     }
 
-    public void removeAllSubNodes(T subNode) {
+    public void removeAllSubNodes(GenericNode subNode) {
         subNodes.clear();
     }
 
-    public T getSubNode(int subNodeIndex) {
-        return subNodes.get(subNodeIndex);
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* AbstractNode Interface */
+
+    @Override
+    protected <T extends GenericNode> boolean registerSubNode(String subNodeId, Class<T> subNodeClass, T defaultNode) {
+        if (subNodesId == null || subNodesId.isEmpty()) {
+            subNodesId = subNodeId;
+            subNodesClass = subNodeClass;
+
+            if (defaultNode != null) {
+                appendSubNode(defaultNode);
+            }
+            return true;
+        };
+        return false;
     }
 
-/*--------------------------------------------------------------------------------------------------------------------*/
-    /* GenericNode Interface */
+    /*----------------------------------------------------------------------------------------------------------------*/
     
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* GenericNode Interface */
+
+    @Override
+    public NodeData getNodeData() {
+        return null;
+    }
+
+    @Override
+    public SubNodeData<GenericNode> getSubNodeData(List<String> path) {
+        return null;
+    }
+
     @Override
     public List<NodeResult> getAllSubNodes() {
         
@@ -86,21 +135,17 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
         }
         return returnSubNodes;
     }
-
+    
     @Override
-    public GenericNode getNodeFromPath(List<String> path) {
-        if (path.isEmpty()) return this;
-        
-        GenericNode node = this.getSubNode(GenericNode.stripIndexFromPathElement(path.get(0)));
-        
-        if (node != null) {
-            path.remove(0);
-            return node.getNodeFromPath(path);
-        }
-        System.out.println("path failed at: " + path);
-        return null;
+    public GenericNode getSubNode(String path) {
+        return getSubNode(GenericNode.stripIndexFromPathElement(path));
     }
 
-/*--------------------------------------------------------------------------------------------------------------------*/
+    @Override
+    public boolean modifySubNode(String path, GenericNode newNode) {
+        return modifySubNode(GenericNode.stripIndexFromPathElement(path), newNode);
+    }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
     
 }

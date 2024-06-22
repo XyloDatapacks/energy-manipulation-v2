@@ -5,7 +5,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 
 public class FireEffectNode extends AbstractNodeWithMap implements EffectNode {
     
-    public FireEffectNode(GenericNode parentNode) {
-        super("fire", "effect", parentNode);
+    public FireEffectNode() {
+        super("fire", "effect");
     }
 }

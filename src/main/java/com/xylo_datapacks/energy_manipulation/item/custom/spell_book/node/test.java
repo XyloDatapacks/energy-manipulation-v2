@@ -1,20 +1,13 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.database.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.BreakEffectNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.EffectProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.GenerateShapeInstructionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
-import net.minecraft.util.Pair;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class test {
@@ -54,18 +47,14 @@ public class test {
         subNodesMap.put("effect.effect_provider.effect", new NodeData("Effect", "A single effect"));
         
         
-        InstructionProviderNode pageNode = new InstructionProviderNode(null);
+        InstructionProviderNode pageNode = new InstructionProviderNode();
         printNodes(pageNode.getAllSubNodesRecursive(), subNodesMap, nodesMap);
 
         System.out.println();
-        
-        // modify shape node ("instruction_node[2].shape")
-        GenericNode targetNode2 = pageNode.getNodeFromPath("instruction_node[2]");
-        System.out.println("target node:" +  targetNode2.getNodeId());
-        ((GenerateShapeInstructionNode) targetNode2).modifySubNode("shape", new RayShapeNode(targetNode2));
-
-        // modify effect ("instruction_node[2].shape.effects.effect[1]")
-        modifyNodeAtPath(pageNode, "instruction_node[2].shape.effects.effect[1]", BreakEffectNode.class);
+        // modify shape node
+        modifyNodeAtPath(pageNode, "instruction_node[2].shape", new RayShapeNode());
+        // modify effect
+        modifyNodeAtPath(pageNode, "instruction_node[2].shape.effects.effect[1]", new BreakEffectNode());
 
         System.out.println();
         printNodes(pageNode.getAllSubNodesRecursive(), subNodesMap, nodesMap);
@@ -76,21 +65,8 @@ public class test {
          
     }
 
-    private static void modifyNodeAtPath(GenericNode startingNode,  String path, Class<? extends GenericNode> newValue) {
-        List<String> listPath = GenericNode.stringPathToListPath(path);
-        String lastPathElement = listPath.remove(listPath.size() - 1);
-        
-        GenericNode targetNode = startingNode.getNodeFromPath(listPath);
-        if (targetNode != null) {
-            System.out.println("target node:" + targetNode.getNodeId());
-            // TODO: fix targetNode.modifySubNode(lastPathElement, newValue); 
-            // - Add genericNode method modifySubNode so it can be shared between list and map nodes.
-            // - to be able to build a dynamic node from class, i need to rework the constructor
-            // - make all node classes methods, which modify or register subNodes, take class instead of an actual instance
-        }
-        else {
-            System.out.println("target node:" + "null");
-        }
+    private static void modifyNodeAtPath(GenericNode startingNode,  String path, GenericNode newValue) {
+       startingNode.modifyNodeFromPath(path, newValue);
     }
 
     /** prints id of the node at that path */

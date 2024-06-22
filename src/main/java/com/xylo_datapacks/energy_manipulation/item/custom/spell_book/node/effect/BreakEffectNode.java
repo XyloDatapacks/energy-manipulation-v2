@@ -5,7 +5,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 
 public class BreakEffectNode extends AbstractNodeWithMap implements EffectNode {
     
-    public BreakEffectNode(GenericNode parentNode) {
-        super("break", "effect", parentNode);
+    public BreakEffectNode() {
+        super("break", "effect");
     }
 }
