@@ -6,6 +6,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.databa
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public interface GenericNode {
 

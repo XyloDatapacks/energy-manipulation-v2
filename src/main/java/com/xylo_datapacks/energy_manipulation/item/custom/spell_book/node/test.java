@@ -1,18 +1,22 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.database.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.BreakEffectNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.EffectProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.GenerateShapeInstructionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.function.Supplier;
 
 public class test {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
 
         /*TypeToken<Map<String, NodeData>> listType = new TypeToken<Map<String, NodeData>>() {};
         Map<String, NodeData> target = new HashMap<>();
@@ -61,8 +65,15 @@ public class test {
 
         System.out.println();
         printNodeFromPath(pageNode, "instruction_node[2].shape.effects");
-        
-         
+
+        List<Class<? extends AbstractNode>> list = new ArrayList<>();
+        list.add(BreakEffectNode.class);
+        list.add(EffectProviderNode.class);
+        System.out.println(BreakEffectNode.nodeSupplier.get().getNodeId());
+        System.out.println(EffectProviderNode.nodeSupplier.get().getNodeId());
+        System.out.println(list.get(0).getConstructor().newInstance().getNodeId());
+        Supplier<? extends AbstractNode> a = ((Supplier<? extends AbstractNode>) list.get(0).getMethod("getNodeSupplier").invoke(null));
+        System.out.println(a.get().getNodeId());
     }
 
     private static void modifyNodeAtPath(GenericNode startingNode,  String path, GenericNode newValue) {
