@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
@@ -10,10 +11,9 @@ import java.util.function.Supplier;
 
 
 public class ProjectileShapeNode extends AbstractNodeWithMap implements ShapeNode {
-    public static Supplier<? extends AbstractNode> nodeSupplier = ProjectileShapeNode::new;
     
     public ProjectileShapeNode() {
-        super("projectile", "shape");
+        super(Nodes.SHAPE_PROJECTILE);
         // movement
         this.registerSubNode("effects", EffectProviderNode.class, new EffectProviderNode());
     }

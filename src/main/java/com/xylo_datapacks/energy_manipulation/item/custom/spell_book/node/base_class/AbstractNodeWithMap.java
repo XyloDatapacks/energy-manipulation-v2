@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodePath;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
@@ -11,8 +12,8 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     private Map<String, GenericNode> subNodes = new LinkedHashMap<>();
     private Map<String, Class<? extends GenericNode>> subNodesClass = new LinkedHashMap<>();
     
-    public AbstractNodeWithMap(String nodeId, String nodeGroupId) {
-        super(nodeId, nodeGroupId);
+    public AbstractNodeWithMap(NodeData nodeData) {
+        super(nodeData);
     }
 
     public <T extends GenericNode> T getSubNode(String subNodeId, Class<T> subNodeClass) {
@@ -41,16 +42,6 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
 
     /*----------------------------------------------------------------------------------------------------------------*/
     /* GenericNode Interface */
-
-    @Override
-    public NodeData getNodeData() {
-        return null;
-    }
-
-    @Override
-    public SubNodeData getSubNodeData(List<String> path) {
-        return null;
-    }
 
     @Override
     public List<NodeResult> getAllSubNodes() {

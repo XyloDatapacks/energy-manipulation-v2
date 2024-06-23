@@ -13,25 +13,12 @@ import java.util.List;
 public interface GenericNode {
 
     // node Id
-    public abstract String getNodeId();
-    public abstract String getNodeGroupId();
-    public default String getNodeFullId() {
-        return getNodeGroupId() + "." + getNodeId();
-    };
-    public default Identifier getNodeIdentifier() {
-        return Identifier.of(EnergyManipulation.MOD_ID, getNodeGroupId() + "." + getNodeId());
-    };
-    public default Identifier getSubNodeIdentifier(String subNodeId) {
-        return Identifier.of(EnergyManipulation.MOD_ID, getNodeGroupId() + "." + getNodeId() + "." + subNodeId);
-    };
+    public abstract Identifier getNodeIdentifier();
 
     /** get data of this node */
     public abstract NodeData getNodeData();
     /** get data of this sub node */
-    public abstract SubNodeData getSubNodeData(List<String> path);
-    public default SubNodeData getSubNodeData(String path) {
-        return getSubNodeData(stringPathToListPath(path));
-    }
+    public abstract SubNodeData getSubNodeData(String subNodeId);
     
     /** get parent node */
     public abstract GenericNode getParentNode();

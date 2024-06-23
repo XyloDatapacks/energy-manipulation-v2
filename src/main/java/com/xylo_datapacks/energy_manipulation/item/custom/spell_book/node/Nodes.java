@@ -2,15 +2,18 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.BreakEffectNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.EffectNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.EffectProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.FireEffectNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.GenerateShapeInstructionNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.ModifyPositionInstructionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ProjectileShapeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ShapeNode;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -21,25 +24,38 @@ public class Nodes {
     public static Map<Identifier, NodeData> NODES = new HashMap<>();
    
     public static final NodeData EFFECT_PROVIDER = registerNode("effect", "effect_provider", new NodeData.NodeDataMaker("Effect Provider", "List of effects", EffectProviderNode::new), Map.of(
-            "effect", new SubNodeData("Effect","A single effect", List.of())
+            "effect", new SubNodeData("Effect","A single effect", EffectNode.class, List.of(
+                    new Identifier(EnergyManipulation.MOD_ID, "effect.break"),
+                    new Identifier(EnergyManipulation.MOD_ID, "effect.fire")
+            ))
     ));
     public static final NodeData EFFECT_BREAK = registerNode("effect", "break", new NodeData.NodeDataMaker("Break", "Breaks a block", BreakEffectNode::new), Map.of(
     ));
     public static final NodeData EFFECT_FIRE = registerNode("effect", "fire", new NodeData.NodeDataMaker("Fire", "Set on fire", FireEffectNode::new), Map.of(
     ));
     public static final NodeData INSTRUCTION_PROVIDER = registerNode("instruction", "instruction_provider", new NodeData.NodeDataMaker("Instruction Provider", "List of instructions", InstructionProviderNode::new), Map.of(
-            "instruction", new SubNodeData("Instruction","A single instruction", List.of())
+            "instruction", new SubNodeData("Instruction","A single instruction", InstructionNode.class, List.of(
+                    new Identifier(EnergyManipulation.MOD_ID, "instruction.generate_shape"),
+                    new Identifier(EnergyManipulation.MOD_ID, "instruction.modify_position")
+            ))
     ));
     public static final NodeData INSTRUCTION_GENERATE_SHAPE = registerNode("instruction", "generate_shape", new NodeData.NodeDataMaker("Generate Shape", "Generates a shape", GenerateShapeInstructionNode::new), Map.of(
-            "shape", new SubNodeData("Shape","The shape to generate", List.of())
+            "shape", new SubNodeData("Shape","The shape to generate", ShapeNode.class, List.of(
+                    new Identifier(EnergyManipulation.MOD_ID, "shape.projectile"),
+                    new Identifier(EnergyManipulation.MOD_ID, "shape.ray")
+            ))
     ));
     public static final NodeData INSTRUCTION_MODIFY_POSITION = registerNode("instruction", "modify_position", new NodeData.NodeDataMaker("Modify Position", "Changes the position context", ModifyPositionInstructionNode::new), Map.of(
     ));
     public static final NodeData SHAPE_PROJECTILE = registerNode("shape", "projectile", new NodeData.NodeDataMaker("Projectile", "Projectile like spell", ProjectileShapeNode::new), Map.of(
-            "effects", new SubNodeData("Effects","The effects to apply", List.of())
+            "effects", new SubNodeData("Effects","The effects to apply", EffectProviderNode.class, List.of(
+                    new Identifier(EnergyManipulation.MOD_ID, "effect.effect_provider")
+            ))
     ));
     public static final NodeData SHAPE_RAY = registerNode("shape", "ray", new NodeData.NodeDataMaker("Ray", "Ray like spell", RayShapeNode::new), Map.of(
-            "effects", new SubNodeData("Effects","The effects to apply", List.of())
+            "effects", new SubNodeData("Effects","The effects to apply", EffectProviderNode.class, List.of(
+                    new Identifier(EnergyManipulation.MOD_ID, "effect.effect_provider")
+            ))
     ));
 
 

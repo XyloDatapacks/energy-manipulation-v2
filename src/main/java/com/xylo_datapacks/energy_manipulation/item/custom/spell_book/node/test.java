@@ -59,14 +59,14 @@ public class test {
     private static void printNodeFromPath(GenericNode node,  String path) {
         GenericNode nodeFound = node.getNodeFromPath(path);
         if (nodeFound != null) {
-            System.out.println("found node:" + nodeFound.getNodeId());
+            System.out.println("found node:" + nodeFound.getNodeIdentifier());
         }
     }
 
     /** prints path : nodeId */
     private static void printRawNodes(List<NodeResult> nodes) {
         for (NodeResult nodeResult : nodes) {
-            System.out.println(GenericNode.listPathToStringPath(nodeResult.path().list()) + " : " + nodeResult.node().getNodeId());
+            System.out.println(GenericNode.listPathToStringPath(nodeResult.path().list()) + " : " + nodeResult.node().getNodeIdentifier());
         }
     }
 
@@ -80,7 +80,7 @@ public class test {
             //System.out.println("subnode key:" + parentNode.getNodeFullId() + "." + id);
             NodeData nodeData = Nodes.NODES.get(node.getNodeIdentifier());
             if (nodeData != null) {
-                SubNodeData subNodeData = Nodes.NODES.get(parentNode.getNodeIdentifier()).subNodes().get(parentNode.getSubNodeIdentifier(id));
+                SubNodeData subNodeData = Nodes.NODES.get(parentNode.getNodeIdentifier()).subNodes().get(id);
                 if (subNodeData != null) {
                     System.out.println(subNodeData.name() + " : " + nodeData.name() + " -> [" + subNodeData.name() + " : " + subNodeData.description() + " ; " + nodeData.name() + " : " + nodeData.description() + "]");
                 } else {
@@ -88,7 +88,7 @@ public class test {
                 }
             }
             else {
-                System.out.println("errore: [" + "subNode: " + parentNode.getNodeFullId() + "." + id + " ; Node: " + node.getNodeFullId() + "]");
+                System.out.println("errore: [" + "subNode: " + parentNode.getNodeIdentifier() + "." + id + " ; Node: " + node.getNodeIdentifier() + "]");
             }
         }
     }

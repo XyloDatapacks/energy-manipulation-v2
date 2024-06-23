@@ -14,8 +14,8 @@ public abstract class AbstractNodeWithList extends AbstractNode {
     private Class<? extends GenericNode> subNodesClass;
     private List<GenericNode> subNodes = new ArrayList<>();;
     
-    public AbstractNodeWithList(String nodeId, String nodeGroupId) {
-        super(nodeId, nodeGroupId);
+    public AbstractNodeWithList(NodeData nodeData) {
+        super(nodeData);
     }
 
     public boolean appendSubNode(GenericNode subNode) {
@@ -98,16 +98,6 @@ public abstract class AbstractNodeWithList extends AbstractNode {
     
     /*----------------------------------------------------------------------------------------------------------------*/
     /* GenericNode Interface */
-
-    @Override
-    public NodeData getNodeData() {
-        return null;
-    }
-
-    @Override
-    public SubNodeData getSubNodeData(List<String> path) {
-        return null;
-    }
 
     @Override
     public List<NodeResult> getAllSubNodes() {

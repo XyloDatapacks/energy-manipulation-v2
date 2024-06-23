@@ -1,18 +1,20 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
+import net.minecraft.util.Identifier;
+
 import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class AbstractNode implements GenericNode {
-    private final String NODE_ID;
-    private final String NODE_GROUP_ID;
+    private final Identifier nodeIdentifier;
     private GenericNode parentNode;
-    public static Supplier<? extends AbstractNode> nodeSupplier;
     
-    public AbstractNode(String nodeId, String nodeGroupId) {
-        NODE_ID = nodeId;
-        NODE_GROUP_ID = nodeGroupId;
+    public AbstractNode(NodeData nodeData) {
+        this.nodeIdentifier = nodeData.identifier();
     }
     
     /** set parent node */
@@ -25,9 +27,17 @@ public abstract class AbstractNode implements GenericNode {
     /* GenericNode Interface */
     
     @Override
-    public String getNodeId() { return NODE_ID; }
+    public Identifier getNodeIdentifier() { return nodeIdentifier; }
+
     @Override
-    public String getNodeGroupId() { return NODE_GROUP_ID; }
+    public NodeData getNodeData() {
+        return Nodes.NODES.get(nodeIdentifier);
+    }
+
+    @Override
+    public SubNodeData getSubNodeData(String subNodeId) {
+        return Nodes.NODES.get(nodeIdentifier).subNodes().get(subNodeId);
+    }
     
     @Override
     public GenericNode getParentNode() { return parentNode; };
