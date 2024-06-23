@@ -1,7 +1,9 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.database.NodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.database.SubNodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodePath;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
 
 import java.util.*;
 
@@ -46,7 +48,7 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     }
 
     @Override
-    public SubNodeData<GenericNode> getSubNodeData(List<String> path) {
+    public SubNodeData getSubNodeData(List<String> path) {
         return null;
     }
 

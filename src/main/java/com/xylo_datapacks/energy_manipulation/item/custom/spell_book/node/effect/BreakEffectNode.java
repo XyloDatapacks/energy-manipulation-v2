@@ -2,18 +2,13 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effec
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 
 import java.util.function.Supplier;
 
 public class BreakEffectNode extends AbstractNodeWithMap implements EffectNode {
     public static Supplier<? extends AbstractNode> nodeSupplier = BreakEffectNode::new;
-
+    
     public BreakEffectNode() {
         super("break", "effect");
-    }
-
-    public static Supplier<? extends AbstractNode> getNodeSupplier() {
-        return BreakEffectNode::new;
     }
 }

@@ -1,12 +1,14 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.database.NodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.database.SubNodeData;
+import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 
 public interface GenericNode {
 
@@ -16,12 +18,18 @@ public interface GenericNode {
     public default String getNodeFullId() {
         return getNodeGroupId() + "." + getNodeId();
     };
+    public default Identifier getNodeIdentifier() {
+        return Identifier.of(EnergyManipulation.MOD_ID, getNodeGroupId() + "." + getNodeId());
+    };
+    public default Identifier getSubNodeIdentifier(String subNodeId) {
+        return Identifier.of(EnergyManipulation.MOD_ID, getNodeGroupId() + "." + getNodeId() + "." + subNodeId);
+    };
 
     /** get data of this node */
     public abstract NodeData getNodeData();
     /** get data of this sub node */
-    public abstract SubNodeData<GenericNode> getSubNodeData(List<String> path);
-    public default SubNodeData<GenericNode> getSubNodeData(String path) {
+    public abstract SubNodeData getSubNodeData(List<String> path);
+    public default SubNodeData getSubNodeData(String path) {
         return getSubNodeData(stringPathToListPath(path));
     }
     

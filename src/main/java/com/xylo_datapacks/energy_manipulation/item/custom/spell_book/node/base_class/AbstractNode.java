@@ -1,9 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.BreakEffectNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.EffectProviderNode;
-
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -23,10 +20,6 @@ public abstract class AbstractNode implements GenericNode {
     
     /** register a subNode and its class */
     protected abstract <T extends GenericNode> boolean registerSubNode(String subNodeId, Class<T> subNodeClass, T defaultNode);
-
-    public static Supplier<? extends AbstractNode> getNodeSupplier() {
-        return null;
-    }
 
     /*--------------------------------------------------------------------------------------------------------------------*/
     /* GenericNode Interface */
