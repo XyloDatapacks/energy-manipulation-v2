@@ -15,7 +15,6 @@ public class GenerateShapeInstructionNode extends AbstractNodeWithMap implements
     
     public GenerateShapeInstructionNode() {
         super(Nodes.INSTRUCTION_GENERATE_SHAPE);
-        this.registerSubNode("shape", ShapeNode.class, new ProjectileShapeNode());
     }
     
 

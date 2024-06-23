@@ -14,10 +14,21 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     
     public AbstractNodeWithMap(NodeData nodeData) {
         super(nodeData);
+        
+        Nodes.SUB_NODES.get(nodeData.identifier()).forEach((key, value) -> {
+            if (!value.possibleValues().isEmpty()) {
+                GenericNode newNode = Nodes.NODES.get(value.possibleValues().get(0)).nodeSupplier().get();
+                registerSubNode2(key, value.clazz(), value.clazz().cast(newNode));
+            }
+        });
     }
 
     public <T extends GenericNode> T getSubNode(String subNodeId, Class<T> subNodeClass) {
         GenericNode node = getSubNode(subNodeId);
+        return subNodeClass.isInstance(node) ? subNodeClass.cast(node) : null;
+    }
+
+    public <T extends GenericNode> T castSubNode(GenericNode node, Class<T> subNodeClass) {
         return subNodeClass.isInstance(node) ? subNodeClass.cast(node) : null;
     }
 
@@ -34,6 +45,21 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
             ((AbstractNode) defaultNode).setParentNode(this);
             subNodes.put(subNodeId, defaultNode);
             return true;
+        }
+        return false;
+    }
+
+    protected boolean registerSubNode2(String subNodeId, Class<? extends GenericNode> subNodeClass, GenericNode defaultNode) {
+        // if the defaultNode is not null and subNodeId is not in the classes map (not registered)
+        if (defaultNode != null && !subNodesClass.containsKey(subNodeId)) {
+            if (subNodeClass.isInstance(defaultNode)) {
+                // we add the name and class to the class map
+                subNodesClass.put(subNodeId, subNodeClass);
+                // we add the name and node to the nodes map
+                ((AbstractNode) defaultNode).setParentNode(this);
+                subNodes.put(subNodeId, defaultNode);
+                return true;
+            }
         }
         return false;
     }

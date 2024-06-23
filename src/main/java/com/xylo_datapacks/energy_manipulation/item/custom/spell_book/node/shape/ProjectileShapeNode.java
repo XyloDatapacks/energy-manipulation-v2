@@ -14,8 +14,6 @@ public class ProjectileShapeNode extends AbstractNodeWithMap implements ShapeNod
     
     public ProjectileShapeNode() {
         super(Nodes.SHAPE_PROJECTILE);
-        // movement
-        this.registerSubNode("effects", EffectProviderNode.class, new EffectProviderNode());
     }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

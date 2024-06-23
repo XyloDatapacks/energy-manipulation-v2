@@ -7,14 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public record NodeData(Identifier identifier, String name, String description, Supplier<? extends GenericNode> nodeSupplier, Map<String, SubNodeData> subNodes) {
+public record NodeData(Identifier identifier, String name, String description, Supplier<? extends GenericNode> nodeSupplier) {
     
     public static final class Builder {
         Identifier identifier;
         String name;
         String description;
         Supplier<? extends GenericNode> nodeSupplier;
-        Map<String, SubNodeData> subNodes = new HashMap<>();
 
         public Builder(Identifier identifier, NodeDataMaker nodeDataMaker) {
             this.identifier = identifier;
@@ -23,18 +22,8 @@ public record NodeData(Identifier identifier, String name, String description, S
             this.nodeSupplier = nodeDataMaker.nodeSupplier;
         }
 
-        public Builder addSubNode(String name, SubNodeData subNodeData) {
-            this.subNodes.put(name, subNodeData);
-            return this;
-        }
-
-        public Builder addSubNodes(Map<String, SubNodeData> subNodes) {
-            this.subNodes.putAll(subNodes);
-            return this;
-        }
-
         public NodeData build() {
-            return new NodeData(identifier, name, description, nodeSupplier, subNodes);
+            return new NodeData(identifier, name, description, nodeSupplier);
         }
     }
     

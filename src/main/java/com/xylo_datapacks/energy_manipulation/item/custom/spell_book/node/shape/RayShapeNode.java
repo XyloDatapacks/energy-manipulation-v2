@@ -14,8 +14,6 @@ public class RayShapeNode extends AbstractNodeWithMap implements ShapeNode {
     
     public RayShapeNode() {
         super(Nodes.SHAPE_RAY);
-        // movement
-        this.registerSubNode("effects", EffectProviderNode.class, new EffectProviderNode());
     }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

@@ -80,7 +80,7 @@ public class test {
             //System.out.println("subnode key:" + parentNode.getNodeFullId() + "." + id);
             NodeData nodeData = Nodes.NODES.get(node.getNodeIdentifier());
             if (nodeData != null) {
-                SubNodeData subNodeData = Nodes.NODES.get(parentNode.getNodeIdentifier()).subNodes().get(id);
+                SubNodeData subNodeData = Nodes.SUB_NODES.get(parentNode.getNodeIdentifier()).get(id);
                 if (subNodeData != null) {
                     System.out.println(subNodeData.name() + " : " + nodeData.name() + " -> [" + subNodeData.name() + " : " + subNodeData.description() + " ; " + nodeData.name() + " : " + nodeData.description() + "]");
                 } else {

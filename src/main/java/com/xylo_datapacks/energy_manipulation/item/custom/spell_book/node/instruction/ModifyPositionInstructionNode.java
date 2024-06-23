@@ -11,7 +11,6 @@ public class ModifyPositionInstructionNode extends AbstractNodeWithMap implement
     
     public ModifyPositionInstructionNode() {
         super(Nodes.INSTRUCTION_MODIFY_POSITION);
-        // position
     }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
