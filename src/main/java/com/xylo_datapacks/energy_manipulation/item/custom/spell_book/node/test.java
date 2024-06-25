@@ -7,6 +7,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.record
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.BreakEffectNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
+import net.minecraft.util.Identifier;
 import org.w3c.dom.Node;
 
 import java.lang.reflect.InvocationTargetException;
@@ -36,9 +37,9 @@ public class test {
 
         System.out.println();
         // modify shape node
-        modifyNodeAtPath(pageNode, "instruction_node[2].shape", new RayShapeNode());
+        modifyNodeAtPath(pageNode, "instruction_node[2].shape", Nodes.SHAPE_RAY.identifier());
         // modify effect
-        modifyNodeAtPath(pageNode, "instruction_node[2].shape.effects.effect[1]", new BreakEffectNode());
+        modifyNodeAtPath(pageNode, "instruction_node[2].shape.effects.effect[1]", Nodes.EFFECT_BREAK.identifier());
 
         System.out.println();
         printNodes(pageNode.getAllSubNodesRecursive());
@@ -51,8 +52,8 @@ public class test {
         System.out.println(Nodes.NODES.get(rayShapeNode.getNodeIdentifier()).identifier());
     }
 
-    private static void modifyNodeAtPath(GenericNode startingNode,  String path, GenericNode newValue) {
-       startingNode.modifyNodeFromPath(path, newValue);
+    private static void modifyNodeAtPath(GenericNode startingNode, String path, Identifier newNodeValueIdentifier) {
+       startingNode.modifyNodeFromPath(path, newNodeValueIdentifier);
     }
 
     /** prints id of the node at that path */

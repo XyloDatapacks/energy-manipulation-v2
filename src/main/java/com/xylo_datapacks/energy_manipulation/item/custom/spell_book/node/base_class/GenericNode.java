@@ -1,6 +1,5 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
@@ -38,7 +37,7 @@ public interface GenericNode {
     };
     
     /** modify a sub node using a one element path */
-    public abstract GenericNode getSubNode(String path);
+    public abstract SubNode<? extends GenericNode> getSubNode(String path);
     /** get a node from a path relative to this node. an empty path returns this node */
     public abstract GenericNode getNodeFromPath(List<String> path);
     /** get a node from a path relative to this node. an empty path returns this node */
@@ -47,11 +46,11 @@ public interface GenericNode {
     };
     
     /** modify a sub node using a one element path */
-    public abstract boolean modifySubNode(String path, GenericNode newNode);
+    public abstract boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier);
     /** modify a node from a path relative to this node */
-    public abstract boolean modifyNodeFromPath(List<String> path, GenericNode newNode);
-    public default boolean modifyNodeFromPath(String path, GenericNode newNode) {
-        return modifyNodeFromPath(stringPathToListPath(path), newNode);
+    public abstract boolean modifyNodeFromPath(List<String> path, Identifier newSubNodeValueIdentifier);
+    public default boolean modifyNodeFromPath(String path, Identifier newSubNodeValueIdentifier) {
+        return modifyNodeFromPath(stringPathToListPath(path), newSubNodeValueIdentifier);
     };
 
 

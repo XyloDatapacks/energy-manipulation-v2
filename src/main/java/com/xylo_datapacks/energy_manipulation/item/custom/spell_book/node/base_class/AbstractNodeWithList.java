@@ -3,98 +3,62 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodePath;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractNodeWithList extends AbstractNode {
+public abstract class AbstractNodeWithList<T extends GenericNode> extends AbstractNode {
     private String subNodesId;
-    private Class<? extends GenericNode> subNodesClass;
-    private List<GenericNode> subNodes = new ArrayList<>();;
+    private List<SubNode<T>> subNodes = new ArrayList<>();;
     
-    public AbstractNodeWithList(NodeData nodeData) {
+    public AbstractNodeWithList(NodeData nodeData, String subNodesId) {
         super(nodeData);
+        this.subNodesId = subNodesId;
     }
 
-    public boolean appendSubNode(GenericNode subNode) {
-        if (subNodesClass.isInstance(subNode)) {
-            ((AbstractNode) subNode).setParentNode(this);
-            subNodes.add(subNodes.size(), subNode);
-            return true;
-        }
-        return false;
+    public void appendSubNode(SubNode<T> subNode) {
+        subNodes.add(subNodes.size(), subNode);
     }
 
-    public GenericNode getSubNode(int index) {
+    public SubNode<? extends GenericNode> getSubNode(int index) {
         if (index >= 0 && index < subNodes.size()) {
             return subNodes.get(index);
         }
         return null;
     }
 
-    public boolean modifySubNode(int index, GenericNode subNode) {
-        if (index >= 0 && index < subNodes.size() && subNodesClass.isInstance(subNode)) {
-            ((AbstractNode) subNode).setParentNode(this);
-            subNodes.set(index, subNode);
-            return true;
+    public boolean modifySubNode(int index, Identifier newSubNodeValueIdentifier) {
+        if (index >= 0 && index < subNodes.size()) {
+            return subNodes.get(index).setNode(newSubNodeValueIdentifier, this);
         }
         return false;
     }
     
-    public boolean prependSubNode(GenericNode subNode) {
-        if (subNodesClass.isInstance(subNode)) {
-            ((AbstractNode) subNode).setParentNode(this);
-            subNodes.add(0, subNode);
-            return true;
-        }
-        return false;
+    public void prependSubNode(SubNode<T> subNode) {
+        subNodes.add(0, subNode);
     }
     
-    public boolean insertSubNode(int index, GenericNode subNode) {
-        if (index >= 0 && index < subNodes.size() && subNodesClass.isInstance(subNode)) {
-            ((AbstractNode) subNode).setParentNode(this);
-            subNodes.add(index, subNode);
-            return true;
-        }
-        return false;
+    public void insertSubNode(int index, SubNode<T> subNode) {
+        subNodes.add(index, subNode);
     }
 
-    public GenericNode removeSubNode(int index, GenericNode subNode) {
+    public SubNode<T> removeSubNode(int index) {
         return subNodes.remove(index);
     }
     
-    public GenericNode removeFirstSubNode() {
+    public SubNode<T> removeFirstSubNode() {
         return subNodes.remove(0);
     }
     
-    public GenericNode removeLastSubNode() {
+    public SubNode<T> removeLastSubNode() {
         return subNodes.remove(subNodes.size() - 1);
     }
 
-    public void removeAllSubNodes(GenericNode subNode) {
+    public void removeAllSubNodes() {
         subNodes.clear();
     }
-
-    /*----------------------------------------------------------------------------------------------------------------*/
-    /* AbstractNode Interface */
-
-    @Override
-    protected <T extends GenericNode> boolean registerSubNode(String subNodeId, Class<T> subNodeClass, T defaultNode) {
-        if (subNodesId == null || subNodesId.isEmpty()) {
-            subNodesId = subNodeId;
-            subNodesClass = subNodeClass;
-
-            if (defaultNode != null) {
-                appendSubNode(defaultNode);
-            }
-            return true;
-        };
-        return false;
-    }
-
-    /*----------------------------------------------------------------------------------------------------------------*/
     
     /*----------------------------------------------------------------------------------------------------------------*/
     /* GenericNode Interface */
@@ -107,7 +71,7 @@ public abstract class AbstractNodeWithList extends AbstractNode {
             // generate path
             List<String> subNodePath = new ArrayList<>(Collections.singletonList(subNodesId + "[" + index + "]"));
             // this sub node
-            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index)));
+            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index).getNode()));
         }
         return returnSubNodes;
     }
@@ -121,21 +85,21 @@ public abstract class AbstractNodeWithList extends AbstractNode {
             List<String> subNodePath = new ArrayList<>(pathStart);
             subNodePath.add(subNodesId + "[" + index + "]");
             // this sub node
-            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index)));
+            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index).getNode()));
             // recursive
-            returnSubNodes.addAll(subNodes.get(index).getAllSubNodesRecursive(subNodePath));
+            returnSubNodes.addAll(subNodes.get(index).getNode().getAllSubNodesRecursive(subNodePath));
         }
         return returnSubNodes;
     }
     
     @Override
-    public GenericNode getSubNode(String path) {
+    public SubNode<? extends GenericNode> getSubNode(String path) {
         return getSubNode(GenericNode.stripIndexFromPathElement(path));
     }
 
     @Override
-    public boolean modifySubNode(String path, GenericNode newNode) {
-        return modifySubNode(GenericNode.stripIndexFromPathElement(path), newNode);
+    public boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
+        return modifySubNode(GenericNode.stripIndexFromPathElement(path), newSubNodeValueIdentifier);
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
