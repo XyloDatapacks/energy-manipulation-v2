@@ -14,7 +14,6 @@ public class GenerateShapeInstructionNode extends AbstractNodeWithMap implements
             .addNodeValues(List.of(
                     Nodes.SHAPE_PROJECTILE,
                     Nodes.SHAPE_RAY))
-            .addNodeValue(Nodes.SHAPE_RAY, RayShapeNode::new)
             .build(this));
     
     public GenerateShapeInstructionNode() {
