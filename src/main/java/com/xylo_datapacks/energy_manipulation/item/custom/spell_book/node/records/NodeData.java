@@ -7,25 +7,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public record NodeData(Identifier identifier, String name, String description, Supplier<? extends GenericNode> nodeSupplier) {
+public record NodeData<T extends GenericNode>(Identifier identifier, String name, String description, Class<T> nodeClass, Supplier<T> nodeSupplier) {
     
-    public static final class Builder {
+    public static final class Builder<T extends GenericNode> {
         Identifier identifier;
         String name;
         String description;
-        Supplier<? extends GenericNode> nodeSupplier;
+        Class<T> nodeClass;
+        Supplier<T> nodeSupplier;
 
         public Builder(Identifier identifier, NodeDataMaker nodeDataMaker) {
             this.identifier = identifier;
             this.name = nodeDataMaker.name;
             this.description = nodeDataMaker.description;
+            this.nodeClass = nodeDataMaker.nodeClass;
             this.nodeSupplier = nodeDataMaker.nodeSupplier;
         }
 
-        public NodeData build() {
-            return new NodeData(identifier, name, description, nodeSupplier);
+        public NodeData<T> build() {
+            return new NodeData<T>(identifier, name, description, nodeClass, nodeSupplier);
         }
     }
     
-    public record NodeDataMaker(String name, String description, Supplier<? extends GenericNode> nodeSupplier) {}
+    public record NodeDataMaker<T extends GenericNode>(String name, String description, Class<T> nodeClass, Supplier<T> nodeSupplier) {}
 }

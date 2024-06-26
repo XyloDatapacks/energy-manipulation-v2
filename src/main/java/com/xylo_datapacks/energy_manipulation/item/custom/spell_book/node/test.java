@@ -1,6 +1,7 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node;
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.GenerateShapeInstructionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
@@ -31,8 +32,11 @@ public class test {
         // But for deserialization you have to specify the type
         Map<String, NodeData> target2 = gson.fromJson(json, listType);
         */
+
+        GenerateShapeInstructionNode generateShapeInstructionNode = new GenerateShapeInstructionNode();
+        printNodes(generateShapeInstructionNode.getAllSubNodesRecursive());
         
-        InstructionProviderNode pageNode = new InstructionProviderNode();
+        /*InstructionProviderNode pageNode = new InstructionProviderNode();
         printNodes(pageNode.getAllSubNodesRecursive());
 
         System.out.println();
@@ -54,6 +58,8 @@ public class test {
 
     private static void modifyNodeAtPath(GenericNode startingNode, String path, Identifier newNodeValueIdentifier) {
        startingNode.modifyNodeFromPath(path, newNodeValueIdentifier);
+       
+         */
     }
 
     /** prints id of the node at that path */
