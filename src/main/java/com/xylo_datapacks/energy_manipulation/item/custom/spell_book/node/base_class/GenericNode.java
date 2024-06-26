@@ -15,7 +15,7 @@ public interface GenericNode {
     public abstract Identifier getNodeIdentifier();
 
     /** get data of this node */
-    public abstract NodeData getNodeData();
+    public abstract NodeData<? extends GenericNode> getNodeData();
     /** get data of this sub node */
     public abstract SubNodeData getSubNodeData(String subNodeId);
     

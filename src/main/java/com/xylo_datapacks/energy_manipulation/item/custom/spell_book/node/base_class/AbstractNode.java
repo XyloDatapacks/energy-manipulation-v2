@@ -25,13 +25,13 @@ public abstract class AbstractNode implements GenericNode {
     public Identifier getNodeIdentifier() { return nodeIdentifier; }
 
     @Override
-    public NodeData getNodeData() {
+    public NodeData<? extends GenericNode> getNodeData() {
         return Nodes.NODES.get(nodeIdentifier);
     }
 
     @Override
     public SubNodeData getSubNodeData(String subNodeId) {
-        return Nodes.SUB_NODES.get(nodeIdentifier).get(subNodeId);
+        return Nodes.NODES.get(nodeIdentifier).subNodes().get(subNodeId);
     }
     
     @Override

@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import java.util.*;
 
 public abstract class AbstractNodeWithMap extends AbstractNode {
-    private Map<String, SubNode<? extends GenericNode>> subNodes = new LinkedHashMap<>();
+    private final Map<String, SubNode<? extends GenericNode>> subNodes = new LinkedHashMap<>();
     
     public AbstractNodeWithMap(NodeData nodeData) {
         super(nodeData);
@@ -60,8 +60,11 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     public boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
         // if the subNodeId is already registered
         if (subNodes.containsKey(path)) {
-            return subNodes.get(path).setNode(newSubNodeValueIdentifier, this);
+            if (subNodes.get(path).setNode(newSubNodeValueIdentifier, this)) {
+                return true;
+            }
         }
+        System.out.println("failed to modify sub node " + path + " with " + newSubNodeValueIdentifier);
         return false;
     }
 

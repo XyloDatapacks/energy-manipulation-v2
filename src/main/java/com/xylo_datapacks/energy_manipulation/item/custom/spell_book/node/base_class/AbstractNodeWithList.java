@@ -10,8 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractNodeWithList<T extends GenericNode> extends AbstractNode {
-    private String subNodesId;
-    private List<SubNode<T>> subNodes = new ArrayList<>();;
+    private final String subNodesId;
+    private final List<SubNode<T>> subNodes = new ArrayList<>();;
     
     public AbstractNodeWithList(NodeData nodeData, String subNodesId) {
         super(nodeData);
@@ -22,7 +22,7 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
         subNodes.add(subNodes.size(), subNode);
     }
 
-    public SubNode<? extends GenericNode> getSubNode(int index) {
+    public SubNode<T> getSubNode(int index) {
         if (index >= 0 && index < subNodes.size()) {
             return subNodes.get(index);
         }
@@ -99,7 +99,11 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
 
     @Override
     public boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
-        return modifySubNode(GenericNode.stripIndexFromPathElement(path), newSubNodeValueIdentifier);
+        if (modifySubNode(GenericNode.stripIndexFromPathElement(path), newSubNodeValueIdentifier)) {
+            return true;
+        }
+        System.out.println("failed to modify sub node " + path + " with " + newSubNodeValueIdentifier);
+        return false;
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/

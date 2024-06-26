@@ -1,21 +1,17 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.google.common.reflect.TypeToken;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.BreakEffectNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
 public class SubNode<T extends GenericNode> {
     private T node;
-    private Map<Identifier, Supplier<T>> nodeValues;
+    private final Map<Identifier, Supplier<T>> nodeValues;
     private Identifier SelectedValueIdentifier;
     
     private SubNode(GenericNode parentNode, Map<Identifier, Supplier<T>> nodeValues, Identifier SelectedValue) {
@@ -66,43 +62,28 @@ public class SubNode<T extends GenericNode> {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     public static final class Builder<T extends GenericNode> {
-        private Map<Identifier, Supplier<T>> nodeValues = new HashMap<>();
+        private final Map<Identifier, Supplier<T>> nodeValues = new HashMap<>();
         private Identifier selectedValueIdentifier;
         
         public Builder() {
         }
 
         /**
-         * @param identifiers node identifier of the node we want to add as possible value
+         * nodeData type (S) is defined by the class of the supplier it contains
+         * @param nodeData node identifier of the node we want to add as possible value
          */
-        public Builder<T> addNodeValues(Identifier ... identifiers) {
-            Arrays.stream(identifiers).forEach( identifier -> { addNodeValue(identifier, null); });
+        public Builder<T> addNodeValues(List<NodeData<? extends T>> nodeData) {
+            nodeData.forEach( singleNodeData -> { addNodeValue(singleNodeData, null); });
             return this;
         }
 
         /**
-         * @param identifier node identifier of the node we want to add as possible value
+         * nodeData type (S) is defined by the class of the supplier it contains
+         * @param nodeData node we want to add as possible value
          * @param customSupplier node supplier to use instead of the default one
          */
-        public Builder<T> addNodeValue(Identifier identifier, Supplier<T> customSupplier) {
-            // get the default node supplier linked to the identifier
-            Supplier<? extends GenericNode> defaultSupplier = Nodes.NODES.get(identifier).nodeSupplier();
-            // check if the default supplier is of the required class
-            if (true) { // TODO: how tf do i check
-                // if the node supplier provided is of the same class of the default one, use this one
-                if (defaultSupplier.getClass().isInstance(customSupplier)) { //TODO: not working
-                    nodeValues.put(identifier, customSupplier);
-                    System.out.println("added custom supplier");
-                }
-                // if the node supplier provided is of the WRONG class (relative to the identifier), use default
-                else { // TODO: in case of not specified, i just get it when needed instead of saving it already
-                    nodeValues.put(identifier, (Supplier<T>) defaultSupplier);
-                    System.out.println("added default supplier");
-                }
-            }
-            else {
-                System.out.println("Failed to add");
-            }
+        public <S extends T> Builder<T> addNodeValue(NodeData<S> nodeData, Supplier<S> customSupplier) {
+            this.nodeValues.put(nodeData.identifier(), (Supplier<T>) (customSupplier != null ? customSupplier : nodeData.nodeSupplier()) );
             return this;
         }
 

@@ -33,10 +33,10 @@ public class test {
         Map<String, NodeData> target2 = gson.fromJson(json, listType);
         */
 
-        GenerateShapeInstructionNode generateShapeInstructionNode = new GenerateShapeInstructionNode();
-        printNodes(generateShapeInstructionNode.getAllSubNodesRecursive());
+        //GenerateShapeInstructionNode generateShapeInstructionNode = new GenerateShapeInstructionNode();
+        //printNodes(generateShapeInstructionNode.getAllSubNodesRecursive());
         
-        /*InstructionProviderNode pageNode = new InstructionProviderNode();
+        InstructionProviderNode pageNode = new InstructionProviderNode();
         printNodes(pageNode.getAllSubNodesRecursive());
 
         System.out.println();
@@ -50,16 +50,12 @@ public class test {
 
         System.out.println();
         printNodeFromPath(pageNode, "instruction_node[2].shape.effects");
-        
-        System.out.println(Nodes.SHAPE_PROJECTILE.identifier());
-        RayShapeNode rayShapeNode = ((RayShapeNode) Nodes.SHAPE_RAY.nodeSupplier().get());
-        System.out.println(Nodes.NODES.get(rayShapeNode.getNodeIdentifier()).identifier());
     }
 
     private static void modifyNodeAtPath(GenericNode startingNode, String path, Identifier newNodeValueIdentifier) {
        startingNode.modifyNodeFromPath(path, newNodeValueIdentifier);
        
-         */
+         
     }
 
     /** prints id of the node at that path */
@@ -85,9 +81,9 @@ public class test {
             String id = nodeResult.path().id();
 
             //System.out.println("subnode key:" + parentNode.getNodeFullId() + "." + id);
-            NodeData nodeData = Nodes.NODES.get(node.getNodeIdentifier());
+            NodeData<? extends GenericNode> nodeData = Nodes.NODES.get(node.getNodeIdentifier());
             if (nodeData != null) {
-                SubNodeData subNodeData = Nodes.SUB_NODES.get(parentNode.getNodeIdentifier()).get(id);
+                SubNodeData subNodeData = Nodes.NODES.get(parentNode.getNodeIdentifier()).subNodes().get(id);
                 if (subNodeData != null) {
                     System.out.println(subNodeData.name() + " : " + nodeData.name() + " -> [" + subNodeData.name() + " : " + subNodeData.description() + " ; " + nodeData.name() + " : " + nodeData.description() + "]");
                 } else {
