@@ -1,6 +1,7 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.FakeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.BreakEffectNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.EffectProviderNode;
@@ -8,6 +9,11 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.GenerateShapeInstructionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.ModifyPositionInstructionNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.number.DoubleNumberNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.offset.CardinalOffsetNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.offset.DirectionalOffsetNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.position.AlignPositionNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.position.OffsetPositionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ProjectileShapeNode;
@@ -28,7 +34,7 @@ public class Nodes {
             "shape", new SubNodeData("Shape","The shape to generate")
     )));
     public static final NodeData<ModifyPositionInstructionNode> INSTRUCTION_MODIFY_POSITION = registerNode("instruction", "modify_position", new NodeData.NodeDataMaker<>("Modify Position", "Changes the position context", ModifyPositionInstructionNode::new, Map.of(
-            
+            "position", new SubNodeData("Position","Position Context")
     )));
 
     /** Shapes */
@@ -50,8 +56,41 @@ public class Nodes {
             
     )));
 
+    /** Position */
+    public static final NodeData<OffsetPositionNode> POSITION_OFFSET = registerNode("position", "offset", new NodeData.NodeDataMaker<>("Offset", "Offsets the context position", OffsetPositionNode::new, Map.of(
+            "offset", new SubNodeData("Offset","the offset to apply")
+    )));
+    public static final NodeData<AlignPositionNode> POSITION_ALIGN = registerNode("position", "align", new NodeData.NodeDataMaker<>("Align", "Align the position to one or more axis", AlignPositionNode::new, Map.of(
+            "x", new SubNodeData("X","Align to the X axis"),
+            "y", new SubNodeData("Y","Align to the Y axis"),
+            "z", new SubNodeData("Z","Align to the Z axis")
+    )));
+
+    /** Offset */
+    public static final NodeData<CardinalOffsetNode> OFFSET_CARDINAL = registerNode("offset", "cardinal", new NodeData.NodeDataMaker<>("Cardinal", "Offsets the context position in world space coords", CardinalOffsetNode::new, Map.of(
+            "x", new SubNodeData("X","X axis offset"),
+            "y", new SubNodeData("Y","Y axis offset"),
+            "z", new SubNodeData("Z","Z axis offset")
+    )));
+    public static final NodeData<DirectionalOffsetNode> OFFSET_DIRECTIONAL = registerNode("offset", "directional", new NodeData.NodeDataMaker<>("Directional", "Offsets the context position in view space coords", DirectionalOffsetNode::new, Map.of(
+            "x", new SubNodeData("Right","Right axis offset"),
+            "y", new SubNodeData("Up","Up axis offset"),
+            "z", new SubNodeData("Forward","Forward axis offset")
+    )));
+
+    /** Number */
+    public static final NodeData<DoubleNumberNode> NUMBER_DOUBLE = registerNode("number", "double", new NodeData.NodeDataMaker<>("Double", "A Double number", DoubleNumberNode::new, Map.of(
+            "value", new SubNodeData("Value","A double number")
+    )));
 
 
+    public static final NodeData<FakeNode> FAKE_NODE = registerNode("base_class", "fake_node", new NodeData.NodeDataMaker<>("Value", "A value", FakeNode::new, Map.of(
+            
+    )));
+
+    
+    
+    
     // Function called to add nodes
     public static <T extends GenericNode> NodeData<T> registerNode(String groupId, String nodeId, NodeData.NodeDataMaker<T> nodeDataMaker) {
         Identifier id = Identifier.of(EnergyManipulation.MOD_ID, groupId + "." + nodeId);

@@ -31,6 +31,21 @@ public class test {
         
         // But for deserialization you have to specify the type
         Map<String, NodeData> target2 = gson.fromJson(json, listType);
+        
+        
+        offset: directional
+            forward: float provider
+                value: 4.5
+            right: float provider
+                value: 5.3
+            up: float provider
+                value: 9.8
+        
+        float provider extends NumberNode interface
+        value is a subNode i guess, but that would also mean that the value has to be set through identifier. so it is a bad idea
+        instead of returning a subnode i return the value
+        
+        
         */
 
         //GenerateShapeInstructionNode generateShapeInstructionNode = new GenerateShapeInstructionNode();
@@ -40,6 +55,8 @@ public class test {
         printNodes(pageNode.getAllSubNodesRecursive());
 
         System.out.println();
+        // modify position node
+        modifyNodeAtPath(pageNode, "instruction_node[1].position", Nodes.POSITION_OFFSET.identifier());
         // modify shape node
         modifyNodeAtPath(pageNode, "instruction_node[2].shape", Nodes.SHAPE_RAY.identifier());
         // modify effect

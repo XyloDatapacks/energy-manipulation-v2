@@ -18,7 +18,7 @@ public abstract class AbstractNode implements GenericNode {
     /** set parent node */
     protected void setParentNode(GenericNode parent) { parentNode = parent; }
     
-    /*--------------------------------------------------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------------------------------------------*/
     /* GenericNode Interface */
     
     @Override

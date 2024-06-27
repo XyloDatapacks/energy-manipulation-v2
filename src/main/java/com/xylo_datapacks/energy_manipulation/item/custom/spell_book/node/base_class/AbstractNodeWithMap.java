@@ -3,6 +3,7 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodePath;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
@@ -21,6 +22,14 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     
     /*----------------------------------------------------------------------------------------------------------------*/
     /* GenericNode Interface */
+
+    @Override
+    public NbtCompound toNbt() {
+        NbtCompound nbt = new NbtCompound();
+        nbt.putString("node_type", getNodeIdentifier().toString());
+        // TODO: ...
+        return null;
+    }
 
     @Override
     public List<NodeResult> getAllSubNodes() {

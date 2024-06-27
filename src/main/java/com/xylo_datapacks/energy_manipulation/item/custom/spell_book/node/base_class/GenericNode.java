@@ -3,6 +3,7 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -13,18 +14,21 @@ public interface GenericNode {
 
     // node Id
     public abstract Identifier getNodeIdentifier();
+    // nbt
+    public abstract NbtCompound toNbt();
 
     /** get data of this node */
     public abstract NodeData<? extends GenericNode> getNodeData();
     /** get data of this sub node */
     public abstract SubNodeData getSubNodeData(String subNodeId);
     
+    
     /** get parent node */
     public abstract GenericNode getParentNode();
 
+    
     /** get all sub nodes of this node */
     public abstract List<NodeResult> getAllSubNodes();
-
     /** get all sub nodes and their sub nodes */
     public abstract List<NodeResult> getAllSubNodesRecursive(List<String> pathStart);
     /** get all sub nodes and their sub nodes */
@@ -36,6 +40,7 @@ public interface GenericNode {
         return getAllSubNodesRecursive(new ArrayList<>());
     };
     
+    
     /** modify a sub node using a one element path */
     public abstract SubNode<? extends GenericNode> getSubNode(String path);
     /** get a node from a path relative to this node. an empty path returns this node */
@@ -44,6 +49,7 @@ public interface GenericNode {
     public default GenericNode getNodeFromPath(String path) {
         return getNodeFromPath(stringPathToListPath(path));
     };
+    
     
     /** modify a sub node using a one element path */
     public abstract boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier);
