@@ -1,0 +1,39 @@
+package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
+
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
+
+import java.util.List;
+
+public class AbstractNodeValue<T> extends AbstractNode {
+    public AbstractNodeValue(NodeData nodeData) {
+        super(nodeData);
+    }
+
+    @Override
+    public NbtCompound toNbt() {
+        return null;
+    }
+
+    @Override
+    public List<NodeResult> getAllSubNodes() {
+        return List.of();
+    }
+
+    @Override
+    public List<NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
+        return List.of();
+    }
+
+    @Override
+    public SubNode<? extends GenericNode> getSubNode(String path) {
+        return null;
+    }
+
+    @Override
+    public boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
+        return false;
+    }
+}

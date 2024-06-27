@@ -1,7 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.FakeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.BreakEffectNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.EffectProviderNode;
@@ -18,6 +17,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.record
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ProjectileShapeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.DoubleValueTypeNode;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -83,11 +83,8 @@ public class Nodes {
             "value", new SubNodeData("Value","A double number")
     )));
 
-
-    public static final NodeData<FakeNode> FAKE_NODE = registerNode("base_class", "fake_node", new NodeData.NodeDataMaker<>("Value", "A value", FakeNode::new, Map.of(
-            
-    )));
-
+    /** Value Types */
+    public static final NodeData<DoubleValueTypeNode> VALUE_TYPE_DOUBLE = registerNode("value_type", "double", new NodeData.NodeDataMaker<>("Value Double", "value of a double number", DoubleValueTypeNode::new, Map.of()));
     
     
     
