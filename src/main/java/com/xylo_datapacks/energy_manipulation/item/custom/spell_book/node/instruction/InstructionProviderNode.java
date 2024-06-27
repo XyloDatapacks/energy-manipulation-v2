@@ -10,23 +10,14 @@ import java.util.List;
 public class InstructionProviderNode extends AbstractNodeWithList<InstructionNode> {
     
     public InstructionProviderNode() {
-        super(Nodes.INSTRUCTION_PROVIDER, "instruction");
+        super(Nodes.INSTRUCTION_PROVIDER, "instruction", new SubNode.Builder<InstructionNode>()
+                .addNodeValues(List.of(
+                        Nodes.INSTRUCTION_GENERATE_SHAPE,
+                        Nodes.INSTRUCTION_MODIFY_POSITION)
+                ));
         
-        this.appendSubNode(new SubNode.Builder<InstructionNode>()
-                .addNodeValues(List.of(
-                        Nodes.INSTRUCTION_GENERATE_SHAPE,
-                        Nodes.INSTRUCTION_MODIFY_POSITION))
-                .build(this));
-        this.appendSubNode(new SubNode.Builder<InstructionNode>()
-                .addNodeValues(List.of(
-                        Nodes.INSTRUCTION_GENERATE_SHAPE,
-                        Nodes.INSTRUCTION_MODIFY_POSITION))
-                .build(this));
-        this.appendSubNode(new SubNode.Builder<InstructionNode>()
-                .addNodeValues(List.of(
-                        Nodes.INSTRUCTION_GENERATE_SHAPE,
-                        Nodes.INSTRUCTION_MODIFY_POSITION))
-                .build(this, Nodes.INSTRUCTION_GENERATE_SHAPE.identifier()));
-        
+        this.appendSubNode(Nodes.INSTRUCTION_MODIFY_POSITION.identifier());
+        this.appendSubNode(Nodes.INSTRUCTION_MODIFY_POSITION.identifier());
+        this.appendSubNode(Nodes.INSTRUCTION_GENERATE_SHAPE.identifier());
     }
 }

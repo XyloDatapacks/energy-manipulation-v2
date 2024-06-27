@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodePath;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
@@ -8,18 +9,21 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class AbstractNodeWithList<T extends GenericNode> extends AbstractNode {
     private final String subNodesId;
-    private final List<SubNode<T>> subNodes = new ArrayList<>();;
+    private final SubNode.Builder<T> subNodeBuilderTemplate;
+    private final List<SubNode<T>> subNodes = new ArrayList<>();
     
-    public AbstractNodeWithList(NodeData nodeData, String subNodesId) {
+    public AbstractNodeWithList(NodeData nodeData, String subNodesId, SubNode.Builder<T> subNodeBuilderTemplate) {
         super(nodeData);
         this.subNodesId = subNodesId;
+        this.subNodeBuilderTemplate = subNodeBuilderTemplate;
     }
-
-    public void appendSubNode(SubNode<T> subNode) {
-        subNodes.add(subNodes.size(), subNode);
+    
+    public void appendSubNode(Identifier newSubNodeValueIdentifier) {
+        subNodes.add(subNodes.size(), subNodeBuilderTemplate.build(this, newSubNodeValueIdentifier));
     }
 
     public SubNode<T> getSubNode(int index) {
@@ -36,12 +40,12 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
         return false;
     }
     
-    public void prependSubNode(SubNode<T> subNode) {
-        subNodes.add(0, subNode);
+    public void prependSubNode(Identifier newSubNodeValueIdentifier) {
+        subNodes.add(0, subNodeBuilderTemplate.build(this, newSubNodeValueIdentifier));
     }
     
-    public void insertSubNode(int index, SubNode<T> subNode) {
-        subNodes.add(index, subNode);
+    public void insertSubNode(int index, Identifier newSubNodeValueIdentifier) {
+        subNodes.add(index, subNodeBuilderTemplate.build(this, newSubNodeValueIdentifier));
     }
 
     public SubNode<T> removeSubNode(int index) {

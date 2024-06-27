@@ -65,6 +65,10 @@ public class SubNode<T extends GenericNode> {
         private final Map<Identifier, Supplier<T>> nodeValues = new HashMap<>();
         private Identifier selectedValueIdentifier;
         
+        public Map<Identifier, Supplier<T>> getPossibleNodeValues() {
+            return nodeValues;
+        }
+        
         public Builder() {
         }
 
