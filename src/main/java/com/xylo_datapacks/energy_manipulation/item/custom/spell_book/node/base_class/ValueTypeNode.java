@@ -1,6 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.SelectorType;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.ValueSelector;
 
 public interface ValueTypeNode<T> extends GenericNode {
     
@@ -10,5 +10,7 @@ public interface ValueTypeNode<T> extends GenericNode {
 
     public abstract boolean setValue(T value);
     
-    public abstract SelectorType getValueSelectorType();
+    public abstract ValueSelector<?> getValueSelector();
+    
+    public abstract boolean setValueFromSelector(ValueSelector<?> valueSelector);
 }

@@ -1,6 +1,7 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.SelectorType;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.ValueSelector;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.ValueTypeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
@@ -9,6 +10,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import net.minecraft.util.Identifier;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class GuiManager {
     private final GenericNode rootNode;
@@ -39,18 +41,20 @@ public class GuiManager {
         return false;
     }
 
-    public static SelectorType getEditorValueSelectionMethod(NodeResult nodeResult) {
-        return nodeResult.node() instanceof ValueTypeNode<?> nodeValue ? nodeValue.getValueSelectorType() : SelectorType.NONE;
+    public static ValueSelector<?> getEditorValueSelectionMethod(NodeResult nodeResult) {
+        return nodeResult.node() instanceof ValueTypeNode<?> nodeValue ? nodeValue.getValueSelector() : null;
     }
     
-    public boolean modifyNodeValue(NodeResult nodeResult, Identifier newNodeClassIdentifier) {
-        if (nodeResult.node() instanceof ValueTypeNode<?> nodeValue) {
-            return false;
+    public boolean modifyNodeValue(NodeResult nodeResult, ValueSelector<?> valueSelector) {
+        if (nodeResult.node() instanceof AbstractNodeWithValue<?> nodeValue) {
+            return nodeValue.setValueFromSelector(valueSelector);
         }
         return false;
     }
 
     
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* Printing */
     
     public static void printAll(List<NodeResult> nodes) {
         for (NodeResult nodeResult : nodes) {
@@ -58,7 +62,7 @@ public class GuiManager {
             ButtonDisplay buttonDisplay = getButtonDisplay(nodeResult);
             EditorInfo editorHeader = getEditorHeader(nodeResult);
             EditorInfo EditorCurrentSelection = getEditorCurrentSelection(nodeResult);
-            String selector = getEditorValueSelectionMethod(nodeResult) != SelectorType.NONE ? "{" + getEditorValueSelectionMethod(nodeResult).toString() + "}" : "";
+            String selector = getEditorValueSelectionMethod(nodeResult) != null ? "{" + getEditorValueSelectionMethod(nodeResult).getClass().getSimpleName() + "}" : "";
             
             System.out.println(buttonDisplay.subNodeName + ": " + buttonDisplay.nodeName + " -> [" + editorHeader.name + ": " + editorHeader.description + " ; " + EditorCurrentSelection.name + ": " + EditorCurrentSelection.description + "] " + selector);
         }
@@ -105,7 +109,8 @@ public class GuiManager {
         }
         return new EditorInfo("error", "error");
     }
-    
+
+    /*----------------------------------------------------------------------------------------------------------------*/
     
     
 
