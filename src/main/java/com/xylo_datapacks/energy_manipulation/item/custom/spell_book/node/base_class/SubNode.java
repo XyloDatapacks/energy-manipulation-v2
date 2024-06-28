@@ -11,13 +11,13 @@ import java.util.function.Supplier;
 
 public class SubNode<T extends GenericNode> {
     private T node;
-    private final Map<Identifier, Supplier<T>> nodeValues;
-    private Identifier SelectedValueIdentifier;
+    private final Map<Identifier, Supplier<T>> nodeClasses;
+    private Identifier SelectedClassIdentifier;
     
     private SubNode(GenericNode parentNode, Map<Identifier, Supplier<T>> nodeValues, Identifier SelectedValue) {
-        this.nodeValues = nodeValues;
-        this.SelectedValueIdentifier = SelectedValue;
-        this.node = nodeValues.get(SelectedValueIdentifier).get();
+        this.nodeClasses = nodeValues;
+        this.SelectedClassIdentifier = SelectedValue;
+        this.node = nodeValues.get(SelectedClassIdentifier).get();
         ((AbstractNode) this.node).setParentNode(parentNode);
     }
     
@@ -29,13 +29,13 @@ public class SubNode<T extends GenericNode> {
     }
 
     /**
-     * @param identifier the identifier of the possibleNodeValue to use
+     * @param identifier the identifier of the node class to use, will be checked against nodeClasses
      * @return true if the operation was successful 
      */
-    public boolean setNode(Identifier identifier, GenericNode parentNode) {
-        if (this.nodeValues.containsKey(identifier)) {
-            this.SelectedValueIdentifier = identifier;
-            this.node = this.nodeValues.get(SelectedValueIdentifier).get();
+    public boolean setNodeClass(Identifier identifier, GenericNode parentNode) {
+        if (this.nodeClasses.containsKey(identifier)) {
+            this.SelectedClassIdentifier = identifier;
+            this.node = this.nodeClasses.get(SelectedClassIdentifier).get();
             ((AbstractNode) this.node).setParentNode(parentNode);
             return true;
         }
@@ -45,16 +45,16 @@ public class SubNode<T extends GenericNode> {
     /**
      * @return map with node identifier as key, and node supplier as value
      */
-    public Map<Identifier, Supplier<T>> getPossibleNodeValues() {
-        return nodeValues;
+    public Map<Identifier, Supplier<T>> getPossibleNodeClasses() {
+        return nodeClasses;
     }
 
     /**
      * @return pair with selected node identifier as left, and selected node supplier as right
      */
-    public Pair<Identifier, Supplier<T>> getSelectedValue() {
-        if (nodeValues.containsKey(SelectedValueIdentifier)) {
-            return new Pair<>(SelectedValueIdentifier, nodeValues.get(SelectedValueIdentifier));
+    public Pair<Identifier, Supplier<T>> getSelectedClass() {
+        if (nodeClasses.containsKey(SelectedClassIdentifier)) {
+            return new Pair<>(SelectedClassIdentifier, nodeClasses.get(SelectedClassIdentifier));
         }
         return null;
     }
@@ -62,11 +62,11 @@ public class SubNode<T extends GenericNode> {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     public static final class Builder<T extends GenericNode> {
-        private final Map<Identifier, Supplier<T>> nodeValues = new HashMap<>();
-        private Identifier selectedValueIdentifier;
+        private final Map<Identifier, Supplier<T>> nodeClasses = new HashMap<>();
+        private Identifier selectedClassIdentifier;
         
         public Map<Identifier, Supplier<T>> getPossibleNodeValues() {
-            return nodeValues;
+            return nodeClasses;
         }
         
         public Builder() {
@@ -87,7 +87,7 @@ public class SubNode<T extends GenericNode> {
          * @param customSupplier node supplier to use instead of the default one
          */
         public <S extends T> Builder<T> addNodeValue(NodeData<S> nodeData, Supplier<S> customSupplier) {
-            this.nodeValues.put(nodeData.identifier(), (Supplier<T>) (customSupplier != null ? customSupplier : nodeData.nodeSupplier()) );
+            this.nodeClasses.put(nodeData.identifier(), (Supplier<T>) (customSupplier != null ? customSupplier : nodeData.nodeSupplier()) );
             return this;
         }
 
@@ -96,9 +96,9 @@ public class SubNode<T extends GenericNode> {
          * @param defaultValue identifier of one of the node values added. if not found, use first one instead
          */
         public SubNode<T> build(GenericNode parentNode, Identifier defaultValue) {
-            if (nodeValues.containsKey(defaultValue)) {
-                selectedValueIdentifier = defaultValue;
-                return new SubNode<>(parentNode, nodeValues, selectedValueIdentifier);
+            if (nodeClasses.containsKey(defaultValue)) {
+                selectedClassIdentifier = defaultValue;
+                return new SubNode<>(parentNode, nodeClasses, selectedClassIdentifier);
             } 
            return build(parentNode);
         }
@@ -107,8 +107,8 @@ public class SubNode<T extends GenericNode> {
          * call to finalize the construction of the sub node
          */
         public SubNode<T> build(GenericNode parentNode) {
-            selectedValueIdentifier = nodeValues.keySet().iterator().next();
-            return new SubNode<>(parentNode, nodeValues, selectedValueIdentifier);
+            selectedClassIdentifier = nodeClasses.keySet().iterator().next();
+            return new SubNode<>(parentNode, nodeClasses, selectedClassIdentifier);
         }
     }
 } 

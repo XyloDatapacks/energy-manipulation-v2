@@ -69,7 +69,7 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     public boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
         // if the subNodeId is already registered
         if (subNodes.containsKey(path)) {
-            if (subNodes.get(path).setNode(newSubNodeValueIdentifier, this)) {
+            if (subNodes.get(path).setNodeClass(newSubNodeValueIdentifier, this)) {
                 return true;
             }
         }

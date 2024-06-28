@@ -1,9 +1,7 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.SubNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
@@ -11,8 +9,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 public class GuiManager {
 
@@ -80,6 +76,6 @@ public class GuiManager {
         GenericNode parentNode = nodeResult.node().getParentNode();
         String id = nodeResult.path().id();
 
-        return parentNode.getSubNode(id).getPossibleNodeValues().keySet().stream().toList();
+        return parentNode.getSubNode(id).getPossibleNodeClasses().keySet().stream().toList();
     }
 }

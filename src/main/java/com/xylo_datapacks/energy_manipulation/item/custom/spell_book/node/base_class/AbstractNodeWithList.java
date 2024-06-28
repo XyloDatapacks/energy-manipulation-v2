@@ -1,6 +1,5 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodePath;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
@@ -10,7 +9,6 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 
 public abstract class AbstractNodeWithList<T extends GenericNode> extends AbstractNode {
     private final String subNodesId;
@@ -36,7 +34,7 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
 
     public boolean modifySubNode(int index, Identifier newSubNodeValueIdentifier) {
         if (index >= 0 && index < subNodes.size()) {
-            return subNodes.get(index).setNode(newSubNodeValueIdentifier, this);
+            return subNodes.get(index).setNodeClass(newSubNodeValueIdentifier, this);
         }
         return false;
     }
