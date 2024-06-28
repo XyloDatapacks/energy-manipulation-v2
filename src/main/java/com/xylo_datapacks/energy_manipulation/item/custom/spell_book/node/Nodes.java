@@ -17,6 +17,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.record
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ProjectileShapeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.BooleanValueTypeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.DoubleValueTypeNode;
 import net.minecraft.util.Identifier;
 
@@ -84,10 +85,11 @@ public class Nodes {
     )));
 
     /** Value Types */
-    public static final NodeData<DoubleValueTypeNode> VALUE_TYPE_DOUBLE = registerNode("value_type", "double", new NodeData.NodeDataMaker<>("Value Double", "value of a double number", DoubleValueTypeNode::new, Map.of()));
-    
-    
-    
+    public static final NodeData<DoubleValueTypeNode> VALUE_TYPE_DOUBLE = registerNode("value_type", "double", new NodeData.NodeDataMaker<>("Value Double", "Move the slider to select a number", DoubleValueTypeNode::new, Map.of()));
+    public static final NodeData<BooleanValueTypeNode> VALUE_TYPE_BOOLEAN = registerNode("value_type", "boolean", new NodeData.NodeDataMaker<>("Value Boolean", "Select the value", BooleanValueTypeNode::new, Map.of()));
+
+
+
     // Function called to add nodes
     public static <T extends GenericNode> NodeData<T> registerNode(String groupId, String nodeId, NodeData.NodeDataMaker<T> nodeDataMaker) {
         Identifier id = Identifier.of(EnergyManipulation.MOD_ID, groupId + "." + nodeId);

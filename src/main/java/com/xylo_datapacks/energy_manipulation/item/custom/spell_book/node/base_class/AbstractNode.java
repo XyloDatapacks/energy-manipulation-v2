@@ -4,6 +4,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 
 import java.util.List;
 
@@ -67,8 +68,8 @@ public abstract class AbstractNode implements GenericNode {
         }
         return false;
     }
-    
-/*--------------------------------------------------------------------------------------------------------------------*/
+
+    /*----------------------------------------------------------------------------------------------------------------*/
     
     
 }

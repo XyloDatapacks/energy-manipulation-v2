@@ -7,11 +7,33 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
-public class AbstractNodeValue<T> extends AbstractNode {
+public abstract class AbstractNodeValue<T> extends AbstractNode implements ValueTypeNode<T> {
+    private T value;
+    
     public AbstractNodeValue(NodeData nodeData) {
         super(nodeData);
     }
 
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* ValueTypeNode Interface */
+    
+    @Override
+    public T getValue() { return value; }
+
+    @Override
+    public abstract String getValueDisplay();
+    
+    @Override
+    public boolean setValue(T value) {
+        this.value = value;
+        return true;
+    }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* GenericNode Interface */
+    
     @Override
     public NbtCompound toNbt() {
         return null;
@@ -36,4 +58,6 @@ public class AbstractNodeValue<T> extends AbstractNode {
     public boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
         return false;
     }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
 }

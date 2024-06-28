@@ -5,6 +5,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.record
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ public interface GenericNode {
     public abstract Identifier getNodeIdentifier();
     // nbt
     public abstract NbtCompound toNbt();
-
+    
     /** get data of this node */
     public abstract NodeData<? extends GenericNode> getNodeData();
     /** get data of this sub node */
@@ -58,10 +59,10 @@ public interface GenericNode {
     public default boolean modifyNodeFromPath(String path, Identifier newSubNodeValueIdentifier) {
         return modifyNodeFromPath(stringPathToListPath(path), newSubNodeValueIdentifier);
     };
-
-
-
-
+    
+    
+    
+    
     /** split a sting path into a list path */
     public static List<String> stringPathToListPath(String path) {
         return new ArrayList<String>(Arrays.asList(path.split("\\.")));

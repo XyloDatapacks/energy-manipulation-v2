@@ -1,5 +1,7 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.GenerateShapeInstructionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
@@ -48,11 +50,9 @@ public class test {
         
         */
 
-        //GenerateShapeInstructionNode generateShapeInstructionNode = new GenerateShapeInstructionNode();
-        //printNodes(generateShapeInstructionNode.getAllSubNodesRecursive());
         
         InstructionProviderNode pageNode = new InstructionProviderNode();
-        printNodes(pageNode.getAllSubNodesRecursive());
+        GuiManager.printAll(pageNode.getAllSubNodesRecursive());
 
         System.out.println();
         // modify position node
@@ -63,16 +63,19 @@ public class test {
         modifyNodeAtPath(pageNode, "instruction_node[2].shape.effects.effect[1]", Nodes.EFFECT_BREAK.identifier());
 
         System.out.println();
-        printNodes(pageNode.getAllSubNodesRecursive());
+        GuiManager.printAll(pageNode.getAllSubNodesRecursive());
 
         System.out.println();
         printNodeFromPath(pageNode, "instruction_node[2].shape.effects");
     }
-
+    
+    
+    
+    
+    
+    
     private static void modifyNodeAtPath(GenericNode startingNode, String path, Identifier newNodeValueIdentifier) {
        startingNode.modifyNodeFromPath(path, newNodeValueIdentifier);
-       
-         
     }
 
     /** prints id of the node at that path */
@@ -87,29 +90,6 @@ public class test {
     private static void printRawNodes(List<NodeResult> nodes) {
         for (NodeResult nodeResult : nodes) {
             System.out.println(GenericNode.listPathToStringPath(nodeResult.path().list()) + " : " + nodeResult.node().getNodeIdentifier());
-        }
-    }
-
-    /** prints all info */
-    private static void printNodes(List<NodeResult> nodes) {
-        for (NodeResult nodeResult : nodes) {
-            GenericNode node = nodeResult.node();
-            GenericNode parentNode = node.getParentNode();
-            String id = nodeResult.path().id();
-
-            //System.out.println("subnode key:" + parentNode.getNodeFullId() + "." + id);
-            NodeData<? extends GenericNode> nodeData = Nodes.NODES.get(node.getNodeIdentifier());
-            if (nodeData != null) {
-                SubNodeData subNodeData = Nodes.NODES.get(parentNode.getNodeIdentifier()).subNodes().get(id);
-                if (subNodeData != null) {
-                    System.out.println(subNodeData.name() + " : " + nodeData.name() + " -> [" + subNodeData.name() + " : " + subNodeData.description() + " ; " + nodeData.name() + " : " + nodeData.description() + "]");
-                } else {
-                    System.out.println("null" + " : " + nodeData.name() + " -> [" + "null" + " : " + "null" + " ; " + nodeData.name() + " : " + nodeData.description() + "]");
-                }
-            }
-            else {
-                System.out.println("errore: [" + "subNode: " + parentNode.getNodeIdentifier() + "." + id + " ; Node: " + node.getNodeIdentifier() + "]");
-            }
         }
     }
     
