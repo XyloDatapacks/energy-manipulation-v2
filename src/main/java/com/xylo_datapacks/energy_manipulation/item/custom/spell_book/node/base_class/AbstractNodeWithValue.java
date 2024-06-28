@@ -7,10 +7,10 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
-public abstract class AbstractNodeValue<T> extends AbstractNode implements ValueTypeNode<T> {
+public abstract class AbstractNodeWithValue<T> extends AbstractNode implements ValueTypeNode<T> {
     private T value;
     
-    public AbstractNodeValue(NodeData nodeData) {
+    public AbstractNodeWithValue(NodeData nodeData) {
         super(nodeData);
     }
 

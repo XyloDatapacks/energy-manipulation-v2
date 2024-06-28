@@ -1,7 +1,7 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.ValueTypeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
@@ -35,7 +35,7 @@ public class GuiManager {
         NodeData<? extends GenericNode> nodeData = node.getNodeData();
         
         if (nodeData != null) {
-            String nodeName = node instanceof AbstractNodeValue<?> nodeValue ? nodeValue.getValueDisplay() : nodeData.name();
+            String nodeName = node instanceof ValueTypeNode<?> nodeValue ? nodeValue.getValueDisplay() : nodeData.name();
             
             if (subNodeData != null) {
                 return new ButtonDisplay(subNodeData.name(), nodeName);

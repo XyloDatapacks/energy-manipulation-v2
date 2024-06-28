@@ -2,9 +2,9 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.SelectorType;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeValue;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithValue;
 
-public class DoubleValueTypeNode extends AbstractNodeValue<Double> {
+public class DoubleValueTypeNode extends AbstractNodeWithValue<Double> {
     private double minValue = -100;
     private double maxValue = 100;
     
@@ -19,7 +19,7 @@ public class DoubleValueTypeNode extends AbstractNodeValue<Double> {
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
-    /* AbstractNodeValue Interface */
+    /* AbstractNodeWithValue Interface */
     
     @Override
     public String getValueDisplay() {
