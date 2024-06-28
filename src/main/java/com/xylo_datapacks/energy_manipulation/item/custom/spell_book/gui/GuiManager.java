@@ -2,9 +2,9 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui;
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 

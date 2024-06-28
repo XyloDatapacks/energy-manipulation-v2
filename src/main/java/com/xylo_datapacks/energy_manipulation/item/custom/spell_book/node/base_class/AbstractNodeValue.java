@@ -1,7 +1,7 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
@@ -35,27 +35,27 @@ public abstract class AbstractNodeValue<T> extends AbstractNode implements Value
     /* GenericNode Interface */
     
     @Override
-    public NbtCompound toNbt() {
+    public final NbtCompound toNbt() {
         return null;
     }
 
     @Override
-    public List<NodeResult> getAllSubNodes() {
+    public final List<NodeResult> getAllSubNodes() {
         return List.of();
     }
 
     @Override
-    public List<NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
+    public final List<NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
         return List.of();
     }
 
     @Override
-    public SubNode<? extends GenericNode> getSubNode(String path) {
+    public final SubNode<? extends GenericNode> getSubNode(String path) {
         return null;
     }
 
     @Override
-    public boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
+    public final boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
         return false;
     }
 

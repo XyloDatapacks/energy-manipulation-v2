@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.SelectorType;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeValue;
 
@@ -16,6 +17,11 @@ public class BooleanValueTypeNode extends AbstractNodeValue<Boolean> {
     @Override
     public String getValueDisplay() {
         return getValue().toString();
+    }
+
+    @Override
+    public SelectorType getValueSelectorType() {
+        return SelectorType.BUTTON;
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/

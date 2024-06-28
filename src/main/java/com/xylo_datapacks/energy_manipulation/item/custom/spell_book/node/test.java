@@ -1,17 +1,10 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node;
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.GenerateShapeInstructionNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.BreakEffectNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
 import net.minecraft.util.Identifier;
-import org.w3c.dom.Node;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;

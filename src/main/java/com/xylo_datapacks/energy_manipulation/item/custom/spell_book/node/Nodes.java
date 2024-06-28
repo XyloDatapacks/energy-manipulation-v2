@@ -13,8 +13,8 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.offset
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.offset.DirectionalOffsetNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.position.AlignPositionNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.position.OffsetPositionNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.SubNodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ProjectileShapeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.BooleanValueTypeNode;

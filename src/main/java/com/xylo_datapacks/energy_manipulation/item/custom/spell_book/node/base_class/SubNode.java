@@ -1,6 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class SubNode<T extends GenericNode> {
+public final class SubNode<T extends GenericNode> {
     private T node;
     private final Map<Identifier, Supplier<T>> nodeClasses;
     private Identifier SelectedClassIdentifier;

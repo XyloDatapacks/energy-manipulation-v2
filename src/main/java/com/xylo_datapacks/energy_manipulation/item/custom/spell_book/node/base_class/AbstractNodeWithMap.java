@@ -1,8 +1,8 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodePath;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeResult;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodePath;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
@@ -15,7 +15,7 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
         super(nodeData);
     }
 
-    protected <T extends GenericNode> SubNode<T> registerSubNode(String subNodeId, SubNode<T> subNode) {
+    protected final <T extends GenericNode> SubNode<T> registerSubNode(String subNodeId, SubNode<T> subNode) {
         subNodes.put(subNodeId, subNode);
         return subNode;
     }
@@ -24,7 +24,7 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     /* GenericNode Interface */
 
     @Override
-    public NbtCompound toNbt() {
+    public final NbtCompound toNbt() {
         NbtCompound nbt = new NbtCompound();
         nbt.putString("node_type", getNodeIdentifier().toString());
         // TODO: ...
@@ -32,7 +32,7 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     }
 
     @Override
-    public List<NodeResult> getAllSubNodes() {
+    public final List<NodeResult> getAllSubNodes() {
         
         List<NodeResult> returnSubNodes = new ArrayList<>();
         for (Map.Entry<String, SubNode<? extends GenericNode>> subNode : subNodes.entrySet()) {
@@ -45,7 +45,7 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     }
     
     @Override
-    public List<NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
+    public final List<NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
         
         List<NodeResult> returnSubNodes = new ArrayList<>();
         for (Map.Entry<String, SubNode<? extends GenericNode>> subNode : subNodes.entrySet()) {
@@ -61,12 +61,12 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     }
     
     @Override
-    public SubNode<? extends GenericNode> getSubNode(String path) {
+    public final SubNode<? extends GenericNode> getSubNode(String path) {
         return subNodes.get(path);
     }
     
     @Override
-    public boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
+    public final boolean modifySubNode(String path, Identifier newSubNodeValueIdentifier) {
         // if the subNodeId is already registered
         if (subNodes.containsKey(path)) {
             if (subNodes.get(path).setNodeClass(newSubNodeValueIdentifier, this)) {

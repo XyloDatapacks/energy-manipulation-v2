@@ -4,7 +4,6 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.SubNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.number.NumberNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.records.NodeData;
 
 import java.util.List;
 
