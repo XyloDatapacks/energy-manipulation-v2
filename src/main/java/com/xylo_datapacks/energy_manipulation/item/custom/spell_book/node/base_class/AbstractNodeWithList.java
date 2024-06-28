@@ -34,7 +34,7 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
 
     public final boolean modifySubNode(int index, Identifier newSubNodeValueIdentifier) {
         if (index >= 0 && index < subNodes.size()) {
-            return subNodes.get(index).setNodeClass(newSubNodeValueIdentifier, this);
+            return subNodes.get(index).setNodeClass(newSubNodeValueIdentifier);
         }
         return false;
     }

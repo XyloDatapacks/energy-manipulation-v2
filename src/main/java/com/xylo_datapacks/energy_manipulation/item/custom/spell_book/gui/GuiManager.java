@@ -1,19 +1,56 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.SelectorType;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.ValueTypeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 
 import java.util.List;
 
 public class GuiManager {
+    private final GenericNode rootNode;
 
-    public record ButtonDisplay(String subNodeName, String nodeName) {}
-    public record EditorInfo(String name, String description) {}
+    public GuiManager(GenericNode rootNode) {
+        this.rootNode = rootNode;
+    }
+
+    public void refreshGui() {
+        printAll(rootNode.getAllSubNodesRecursive());
+    }
+
+    public static List<Identifier> getEditorClassOptions(NodeResult nodeResult) {
+        GenericNode parentNode = nodeResult.node().getParentNode();
+        String id = nodeResult.path().id();
+
+        return parentNode.getSubNode(id).getPossibleNodeClasses().keySet().stream().toList();
+    }
+    
+    public boolean modifyNodeClass(NodeResult nodeResult, Identifier newNodeClassIdentifier) {
+        GenericNode parentNode = nodeResult.node().getParentNode();
+        String id = nodeResult.path().id();
+        
+        if (parentNode.getSubNode(id).setNodeClass(newNodeClassIdentifier)) {
+            refreshGui();
+            return true;
+        }
+        return false;
+    }
+
+    public static SelectorType getEditorValueSelectionMethod(NodeResult nodeResult) {
+        return nodeResult.node() instanceof ValueTypeNode<?> nodeValue ? nodeValue.getValueSelectorType() : SelectorType.NONE;
+    }
+    
+    public boolean modifyNodeValue(NodeResult nodeResult, Identifier newNodeClassIdentifier) {
+        if (nodeResult.node() instanceof ValueTypeNode<?> nodeValue) {
+            return false;
+        }
+        return false;
+    }
+
+    
     
     public static void printAll(List<NodeResult> nodes) {
         for (NodeResult nodeResult : nodes) {
@@ -21,8 +58,9 @@ public class GuiManager {
             ButtonDisplay buttonDisplay = getButtonDisplay(nodeResult);
             EditorInfo editorHeader = getEditorHeader(nodeResult);
             EditorInfo EditorCurrentSelection = getEditorCurrentSelection(nodeResult);
+            String selector = getEditorValueSelectionMethod(nodeResult) != SelectorType.NONE ? "{" + getEditorValueSelectionMethod(nodeResult).toString() + "}" : "";
             
-            System.out.println(buttonDisplay.subNodeName + ": " + buttonDisplay.nodeName + " -> [" + editorHeader.name + ": " + editorHeader.description + " ; " + EditorCurrentSelection.name + ": " + EditorCurrentSelection.description + "]");
+            System.out.println(buttonDisplay.subNodeName + ": " + buttonDisplay.nodeName + " -> [" + editorHeader.name + ": " + editorHeader.description + " ; " + EditorCurrentSelection.name + ": " + EditorCurrentSelection.description + "] " + selector);
         }
     }
     
@@ -68,14 +106,13 @@ public class GuiManager {
         return new EditorInfo("error", "error");
     }
     
-    public static Pair<String, String> getEditorSelectionMethod(NodeResult nodeResult) {
-        return null;
-    }
     
-    public static List<Identifier> getEditorOptionList(NodeResult nodeResult) {
-        GenericNode parentNode = nodeResult.node().getParentNode();
-        String id = nodeResult.path().id();
+    
 
-        return parentNode.getSubNode(id).getPossibleNodeClasses().keySet().stream().toList();
-    }
+
+
+
+
+    public record ButtonDisplay(String subNodeName, String nodeName) {}
+    public record EditorInfo(String name, String description) {}
 }

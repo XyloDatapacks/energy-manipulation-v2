@@ -30,11 +30,13 @@ public final class SubNode<T extends GenericNode> {
 
     /**
      * @param identifier the identifier of the node class to use, will be checked against nodeClasses
-     * @return true if the operation was successful 
+     * @return true if the operation was successful
      */
-    public boolean setNodeClass(Identifier identifier, GenericNode parentNode) {
+    public boolean setNodeClass(Identifier identifier) {
         if (this.nodeClasses.containsKey(identifier)) {
             this.SelectedClassIdentifier = identifier;
+            // update class
+            GenericNode parentNode = this.node.getParentNode();
             this.node = this.nodeClasses.get(SelectedClassIdentifier).get();
             ((AbstractNode) this.node).setParentNode(parentNode);
             return true;
