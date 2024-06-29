@@ -76,6 +76,9 @@ public class test {
         System.out.println();
         guiManager.modifyNodeValue(guiManager.rootNode.getNodeResultFromPath( "instruction[1].position.offset.x.value"), new Slider(-20,20));
 
+        // modify value
+        System.out.println();
+        System.out.println();
         ((DoubleValueTypeNode) guiManager.rootNode.getNodeFromPath("instruction[1].position.offset.y.value")).setValue(4.0);
         guiManager.refreshGui();
         
