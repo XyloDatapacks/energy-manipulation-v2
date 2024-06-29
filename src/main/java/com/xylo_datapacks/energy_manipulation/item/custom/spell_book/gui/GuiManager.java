@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class GuiManager {
-    private final GenericNode rootNode;
+    public final GenericNode rootNode;
 
     public GuiManager(GenericNode rootNode) {
         this.rootNode = rootNode;
@@ -25,16 +25,16 @@ public class GuiManager {
 
     public static List<Identifier> getEditorClassOptions(NodeResult nodeResult) {
         GenericNode parentNode = nodeResult.node().getParentNode();
-        String id = nodeResult.path().id();
+        String path = nodeResult.path().list().get(nodeResult.path().list().size() - 1);
 
-        return parentNode.getSubNode(id).getPossibleNodeClasses().keySet().stream().toList();
+        return parentNode.getSubNode(path).getPossibleNodeClasses().keySet().stream().toList();
     }
     
     public boolean modifyNodeClass(NodeResult nodeResult, Identifier newNodeClassIdentifier) {
         GenericNode parentNode = nodeResult.node().getParentNode();
-        String id = nodeResult.path().id();
+        String path = nodeResult.path().list().get(nodeResult.path().list().size() - 1);
         
-        if (parentNode.getSubNode(id).setNodeClass(newNodeClassIdentifier)) {
+        if (parentNode.getSubNode(path).setNodeClass(newNodeClassIdentifier)) {
             refreshGui();
             return true;
         }
@@ -47,7 +47,10 @@ public class GuiManager {
     
     public boolean modifyNodeValue(NodeResult nodeResult, ValueSelector<?> valueSelector) {
         if (nodeResult.node() instanceof AbstractNodeWithValue<?> nodeValue) {
-            return nodeValue.setValueFromSelector(valueSelector);
+            if (nodeValue.setValueFromSelector(valueSelector)) {
+                refreshGui();
+                return true;
+            }
         }
         return false;
     }

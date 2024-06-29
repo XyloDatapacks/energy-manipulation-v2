@@ -1,13 +1,19 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node;
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.Button;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.Slider;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.DoubleValueTypeNode;
 import net.minecraft.util.Identifier;
+import org.w3c.dom.Node;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class test {
     
@@ -43,47 +49,39 @@ public class test {
         
         */
 
+        final InstructionProviderNode pageNode = new InstructionProviderNode();
+        final GuiManager guiManager = new GuiManager(pageNode);
         
-        InstructionProviderNode pageNode = new InstructionProviderNode();
-        GuiManager.printAll(pageNode.getAllSubNodesRecursive());
-
-        System.out.println();
+        guiManager.refreshGui();
+        
+       
         // modify position node
-        modifyNodeAtPath(pageNode, "instruction_node[1].position", Nodes.POSITION_OFFSET.identifier());
+        System.out.println();
+        System.out.println();
+        guiManager.modifyNodeClass(guiManager.rootNode.getNodeResultFromPath("instruction[1].position"), Nodes.POSITION_OFFSET.identifier());
         // modify shape node
-        modifyNodeAtPath(pageNode, "instruction_node[2].shape", Nodes.SHAPE_RAY.identifier());
+        System.out.println();
+        System.out.println();
+        guiManager.modifyNodeClass(guiManager.rootNode.getNodeResultFromPath("instruction[2].shape"), Nodes.SHAPE_RAY.identifier());
         // modify effect
-        modifyNodeAtPath(pageNode, "instruction_node[2].shape.effects.effect[1]", Nodes.EFFECT_BREAK.identifier());
-
         System.out.println();
-        GuiManager.printAll(pageNode.getAllSubNodesRecursive());
-
         System.out.println();
-        printNodeFromPath(pageNode, "instruction_node[2].shape.effects");
-    }
-    
-    
-    
-    
-    
-    
-    private static void modifyNodeAtPath(GenericNode startingNode, String path, Identifier newNodeValueIdentifier) {
-       startingNode.modifyNodeFromPath(path, newNodeValueIdentifier);
-    }
+        guiManager.modifyNodeClass(guiManager.rootNode.getNodeResultFromPath("instruction[2].shape.effects.effect[1]"), Nodes.EFFECT_BREAK.identifier());
+        // modify value
+        System.out.println();
+        System.out.println();
+        guiManager.modifyNodeValue(guiManager.rootNode.getNodeResultFromPath( "instruction[0].position.x"), new Button(2));
+        // modify value
+        System.out.println();
+        System.out.println();
+        guiManager.modifyNodeValue(guiManager.rootNode.getNodeResultFromPath( "instruction[1].position.offset.x.value"), new Slider(-20,20));
 
-    /** prints id of the node at that path */
-    private static void printNodeFromPath(GenericNode node,  String path) {
-        GenericNode nodeFound = node.getNodeFromPath(path);
-        if (nodeFound != null) {
-            System.out.println("found node:" + nodeFound.getNodeIdentifier());
-        }
+        ((DoubleValueTypeNode) guiManager.rootNode.getNodeFromPath("instruction[1].position.offset.y.value")).setValue(4.0);
+        guiManager.refreshGui();
+        
+        
     }
-
-    /** prints path : nodeId */
-    private static void printRawNodes(List<NodeResult> nodes) {
-        for (NodeResult nodeResult : nodes) {
-            System.out.println(GenericNode.listPathToStringPath(nodeResult.path().list()) + " : " + nodeResult.node().getNodeIdentifier());
-        }
-    }
+    
+    
     
 }

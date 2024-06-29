@@ -19,7 +19,7 @@ public class Slider implements ValueSelector<Double> {
     
     @Override
     public Double getValue() {
-        return 0.0;
+        return 3.0;
     }
     
     /*----------------------------------------------------------------------------------------------------------------*/

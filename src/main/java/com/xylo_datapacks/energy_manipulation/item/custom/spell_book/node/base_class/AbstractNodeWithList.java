@@ -77,7 +77,8 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
         List<NodeResult> returnSubNodes = new ArrayList<>();
         for (int index = 0; index < subNodes.size(); index++) {
             // generate path
-            List<String> subNodePath = new ArrayList<>(Collections.singletonList(subNodesId + "[" + index + "]"));
+            List<String> subNodePath = new ArrayList<>();
+            subNodePath.add(subNodesId + "[" + index + "]");
             // this sub node
             returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index).getNode()));
         }

@@ -1,6 +1,8 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodePath;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
 import net.minecraft.nbt.NbtCompound;
@@ -39,9 +41,20 @@ public interface GenericNode {
     public default List<NodeResult> getAllSubNodesRecursive() {
         return getAllSubNodesRecursive(new ArrayList<>());
     };
+
+
+    /** get a node result from a path */
+    public default NodeResult getNodeResultFromPath(List<String> path) {
+        List<String> pathSaved = new ArrayList<>(path);
+        return new NodeResult(new NodePath(pathSaved, pathSaved.get(pathSaved.size()-1)), getNodeFromPath(path));
+    };
+    /** get a node result from a path */
+    public default NodeResult getNodeResultFromPath(String path) {
+        return getNodeResultFromPath(stringPathToListPath(path));
+    };
     
     
-    /** modify a sub node using a one element path */
+    /** get a sub node using a one element path */
     public abstract SubNode<? extends GenericNode> getSubNode(String path);
     /** get a node from a path relative to this node. an empty path returns this node */
     public abstract GenericNode getNodeFromPath(List<String> path);

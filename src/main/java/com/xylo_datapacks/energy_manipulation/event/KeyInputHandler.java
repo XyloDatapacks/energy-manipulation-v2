@@ -1,7 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.event;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
-import com.xylo_datapacks.energy_manipulation.screen.spell_book.SpellBookSelectionScreen;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
