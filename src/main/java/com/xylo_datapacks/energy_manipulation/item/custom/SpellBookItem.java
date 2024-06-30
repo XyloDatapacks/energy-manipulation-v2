@@ -1,20 +1,40 @@
 package com.xylo_datapacks.energy_manipulation.item.custom;
 
+import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
+import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
+import com.xylo_datapacks.energy_manipulation.ui.spell_book.SpellBookScreenHandler;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.Generic3x3ContainerScreenHandler;
+import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpellBookItem extends Item implements FabricItem {
     private static final String CHARGED_KEY = "Charged";
@@ -157,4 +177,69 @@ public class SpellBookItem extends Item implements FabricItem {
     public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
         return SpellBookItem.getCharge(oldStack) == SpellBookItem.getCharge(new ItemStack(this));
     }
+
+
+    public static void openScreen(PlayerEntity player, ItemStack backpackItemStack) {
+        if (player.getWorld() != null && !player.getWorld().isClient()) {
+            player.openHandledScreen(new ExtendedScreenHandlerFactory() {
+                @Override
+                public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
+                    packetByteBuf.writeItemStack(backpackItemStack);
+                }
+
+                @Override
+                public Text getDisplayName() {
+                    return Text.translatable(backpackItemStack.getItem().getTranslationKey());
+                }
+
+                @Override
+                public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+                    return new SpellBookScreenHandler(syncId, inv, backpackItemStack);
+                }
+            });
+        }
+    }
+    
+    public SpellBookInfo getTier() {
+        return new SpellBookInfo("spell book", 9, 1, false, "");
+    }
+
+
+    public static boolean isBackpackEmpty(ItemStack stack) {
+        NbtList tag = stack.getOrCreateNbt().getList("Inventory", NbtElement.COMPOUND_TYPE);
+
+        // If any inventory element in the Backpack stack is non-empty, return false;
+        for (NbtElement element : tag) {
+            NbtCompound stackTag = (NbtCompound) element;
+            ItemStack backpackStack = ItemStack.fromNbt(stackTag.getCompound("Stack"));
+            if (!backpackStack.isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static List<ItemStack> getBackpackContents(ItemStack stack) {
+        List<ItemStack> stacks = new ArrayList<>();
+        NbtList tag = stack.getOrCreateNbt().getList("Inventory", NbtElement.COMPOUND_TYPE);
+
+        // If any inventory element in the Backpack stack is non-empty, return false;
+        for (NbtElement element : tag) {
+            NbtCompound stackTag = (NbtCompound) element;
+            ItemStack backpackStack = ItemStack.fromNbt(stackTag.getCompound("Stack"));
+            stacks.add(backpackStack);
+        }
+
+        return stacks;
+    }
+
+    public static void wipeBackpack(ItemStack stack) {
+        stack.getOrCreateNbt().remove("Inventory");
+    }
+
+    public static Identifier id(String name) {
+        return new Identifier(EnergyManipulation.MOD_ID, name);
+    }
+
 }
