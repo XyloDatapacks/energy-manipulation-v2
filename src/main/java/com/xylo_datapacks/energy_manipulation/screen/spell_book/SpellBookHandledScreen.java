@@ -1,9 +1,9 @@
-package com.xylo_datapacks.energy_manipulation.ui.spell_book;
+package com.xylo_datapacks.energy_manipulation.screen.spell_book;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import com.xylo_datapacks.energy_manipulation.ui.Dimension;
-import com.xylo_datapacks.energy_manipulation.ui.Rectangle;
+import com.xylo_datapacks.energy_manipulation.screen.Dimension;
+import com.xylo_datapacks.energy_manipulation.screen.Rectangle;
 import net.minecraft.util.Colors;
 import org.joml.Matrix4f;
 

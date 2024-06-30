@@ -1,7 +1,7 @@
 package com.xylo_datapacks.energy_manipulation;
 
 import com.xylo_datapacks.energy_manipulation.networking.ModPackets;
-import com.xylo_datapacks.energy_manipulation.ui.spell_book.SpellBookHandledScreen;
+import com.xylo_datapacks.energy_manipulation.screen.spell_book.SpellBookHandledScreen;
 import com.xylo_datapacks.energy_manipulation.util.ModModelPredicateProvider;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;

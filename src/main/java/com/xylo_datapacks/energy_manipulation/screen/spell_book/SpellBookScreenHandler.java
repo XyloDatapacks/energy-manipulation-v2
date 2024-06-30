@@ -1,10 +1,10 @@
-package com.xylo_datapacks.energy_manipulation.ui.spell_book;
+package com.xylo_datapacks.energy_manipulation.screen.spell_book;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
-import com.xylo_datapacks.energy_manipulation.ui.Dimension;
-import com.xylo_datapacks.energy_manipulation.ui.Point;
+import com.xylo_datapacks.energy_manipulation.screen.Dimension;
+import com.xylo_datapacks.energy_manipulation.screen.Point;
 import com.xylo_datapacks.energy_manipulation.util.InventoryUtils;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;

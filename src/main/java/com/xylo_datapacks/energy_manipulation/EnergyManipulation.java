@@ -5,25 +5,19 @@ import com.xylo_datapacks.energy_manipulation.item.ModItems;
 import com.xylo_datapacks.energy_manipulation.item.ModItemsGroups;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
 import com.xylo_datapacks.energy_manipulation.networking.ModPackets;
-import com.xylo_datapacks.energy_manipulation.ui.spell_book.SpellBookScreenHandler;
+import com.xylo_datapacks.energy_manipulation.screen.spell_book.SpellBookScreenHandler;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class EnergyManipulation implements ModInitializer {
