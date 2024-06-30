@@ -19,6 +19,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.village.TradeOfferList;
 
 public class SpellBookScreenHandler extends ScreenHandler {
 
@@ -177,4 +178,34 @@ public class SpellBookScreenHandler extends ScreenHandler {
         }
     }
 
+
+    public int getLevelProgress() {
+        return 0;
+    }
+
+    public boolean isLeveled() {
+        return false;
+    }
+
+    public int getExperience() {
+        return 0;
+    }
+
+    public int getMerchantRewardedExperience() {
+        return 0;
+    }
+
+    public TradeOfferList getRecipes() {
+        return new TradeOfferList();
+    }
+
+    public boolean canRefreshTrades() {
+        return false;
+    }
+
+    public void setRecipeIndex(int index) {
+        
+    }
+
+    public void switchTo(int recipeIndex) {}
 }
