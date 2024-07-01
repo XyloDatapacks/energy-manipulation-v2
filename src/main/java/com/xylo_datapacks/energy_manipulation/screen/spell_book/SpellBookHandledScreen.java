@@ -89,6 +89,12 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
             
             flowLayout.clearChildren();
 
+            /* TODO: use fixed size to set the vertical size
+                     add buttons to change class. on change, refresh list 
+                     add selectors when needed. on value changed refresh list
+                     on refresh list, run refreshNodeInfo for the currently selected node (using path) 
+                     find a way to refresh list without resetting position
+             */
             NodeDescription(flowLayout, editorHeader, 50);
             NodeDescription(flowLayout, editorCurrentSelection, 50);
 
