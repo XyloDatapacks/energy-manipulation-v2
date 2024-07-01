@@ -3,6 +3,8 @@ package com.xylo_datapacks.energy_manipulation.screen.spell_book;
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
 import com.xylo_datapacks.energy_manipulation.screen.Dimension;
 import com.xylo_datapacks.energy_manipulation.screen.Point;
 import com.xylo_datapacks.energy_manipulation.util.InventoryUtils;
@@ -28,6 +30,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
     private final int padding = 8;
     private final int titleSpace = 10;
     private final int verticalOffset = 67;
+    private final GuiManager guiManager;
 
     public SpellBookScreenHandler(int synchronizationID, PlayerInventory playerInventory, PacketByteBuf packetByteBuf) {
         this(synchronizationID, playerInventory, packetByteBuf.readItemStack());
@@ -36,6 +39,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
     public SpellBookScreenHandler(int synchronizationID, PlayerInventory playerInventory, ItemStack spellBookStack) {
         super(EnergyManipulation.SPELL_BOOK_MENU_TYPE, synchronizationID);
         this.spellBookStack = spellBookStack;
+        this.guiManager = new GuiManager(new InstructionProviderNode()); // TODO: init from spell book
 
         if (spellBookStack.getItem() instanceof SpellBookItem) {
             setupContainer(playerInventory, spellBookStack);
@@ -51,6 +55,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
         int rowWidth = tier.getRowWidth();
         int numberOfRows = tier.getNumberOfRows();
 
+        // get spell book inventory
         NbtList tag = spellBookStack.getOrCreateNbt().getList("Inventory", NbtElement.COMPOUND_TYPE);
         BackpackInventory inventory = new BackpackInventory(rowWidth * numberOfRows) {
             @Override
@@ -62,6 +67,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
 
         InventoryUtils.fromTag(tag, inventory);
 
+        // spell book inventory slots
         for (int y = 0; y < numberOfRows; y++) {
             for (int x = 0; x < rowWidth; x++) {
                 Point backpackSlotPosition = getBackpackSlotPosition(dimension, x, y);
@@ -69,6 +75,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
             }
         }
 
+        // player inventory
         for (int y = 0; y < 3; ++y) {
             for (int x = 0; x < 9; ++x) {
                 Point playerInvSlotPosition = getPlayerInvSlotPosition(dimension, x, y);
@@ -76,16 +83,37 @@ public class SpellBookScreenHandler extends ScreenHandler {
             }
         }
 
+        // hot bar
         for (int x = 0; x < 9; ++x) {
             Point playerInvSlotPosition = getPlayerInvSlotPosition(dimension, x, 3);
             this.addSlot(new BackpackLockedSlot(playerInventory, x, playerInvSlotPosition.x + 1, playerInvSlotPosition.y + 1));
         }
     }
 
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* Helper methods */
+    
+    public ItemStack getspellBookStack() {
+        return spellBookStack;
+    }
+    
     public SpellBookItem getItem() {
         return (SpellBookItem) spellBookStack.getItem();
     }
 
+    @Override
+    public boolean canUse(PlayerEntity player) {
+        return spellBookStack.getItem() instanceof SpellBookItem;
+    }
+    
+    public GuiManager getGuiManager() { return guiManager; }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+    
+    
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* Slot positioning */
+    
     public Dimension getDimension() {
         SpellBookInfo tier = getItem().getTier();
         return new Dimension(padding * 2 + Math.max(tier.getRowWidth(), 9) * 18, padding * 2 + titleSpace * 2 + 8 + (tier.getNumberOfRows() + 4) * 18);
@@ -101,14 +129,10 @@ public class SpellBookScreenHandler extends ScreenHandler {
         return new Point(dimension.getWidth() / 2 - 9 * 9 + x * 18, verticalOffset + dimension.getHeight() - padding - 4 * 18 - 3 + y * 18 + (y == 3 ? 4 : 0));
     }
 
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return spellBookStack.getItem() instanceof SpellBookItem;
-    }
+    /*----------------------------------------------------------------------------------------------------------------*/
 
-    public ItemStack getspellBookStack() {
-        return spellBookStack;
-    }
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* item moving */
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int index) {
@@ -135,7 +159,14 @@ public class SpellBookScreenHandler extends ScreenHandler {
 
         return itemStack;
     }
+    
+    /*----------------------------------------------------------------------------------------------------------------*/
 
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* Support classes */
+    
     private class BackpackLockedSlot extends Slot {
 
         public BackpackLockedSlot(Inventory inventory, int index, int x, int y) {
