@@ -6,6 +6,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
 import com.xylo_datapacks.energy_manipulation.screen.Dimension;
 import com.xylo_datapacks.energy_manipulation.screen.Point;
 import com.xylo_datapacks.energy_manipulation.util.InventoryUtils;
+import io.wispforest.owo.client.screens.OwoScreenHandler;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -178,34 +179,5 @@ public class SpellBookScreenHandler extends ScreenHandler {
         }
     }
 
-
-    public int getLevelProgress() {
-        return 0;
-    }
-
-    public boolean isLeveled() {
-        return false;
-    }
-
-    public int getExperience() {
-        return 0;
-    }
-
-    public int getMerchantRewardedExperience() {
-        return 0;
-    }
-
-    public TradeOfferList getRecipes() {
-        return new TradeOfferList();
-    }
-
-    public boolean canRefreshTrades() {
-        return false;
-    }
-
-    public void setRecipeIndex(int index) {
-        
-    }
-
-    public void switchTo(int recipeIndex) {}
+    
 }

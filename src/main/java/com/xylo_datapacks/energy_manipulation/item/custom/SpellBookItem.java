@@ -175,22 +175,22 @@ public class SpellBookItem extends Item implements FabricItem {
     }
 
 
-    public static void openScreen(PlayerEntity player, ItemStack backpackItemStack) {
+    public static void openScreen(PlayerEntity player, ItemStack spellBookItemStack) {
         if (player.getWorld() != null && !player.getWorld().isClient()) {
             player.openHandledScreen(new ExtendedScreenHandlerFactory() {
                 @Override
                 public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
-                    packetByteBuf.writeItemStack(backpackItemStack);
+                    packetByteBuf.writeItemStack(spellBookItemStack);
                 }
 
                 @Override
                 public Text getDisplayName() {
-                    return Text.translatable(backpackItemStack.getItem().getTranslationKey());
+                    return Text.translatable(spellBookItemStack.getItem().getTranslationKey());
                 }
 
                 @Override
                 public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-                    return new SpellBookScreenHandler(syncId, inv, backpackItemStack);
+                    return new SpellBookScreenHandler(syncId, inv, spellBookItemStack);
                 }
             });
         }
