@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class MyDataDrivenScreen extends BaseUIModelScreen<FlowLayout> {
-
+    
     public MyDataDrivenScreen() {
         super(FlowLayout.class, DataSource.asset(Identifier.of(EnergyManipulation.MOD_ID, "my_data_driven_screen")));
     }

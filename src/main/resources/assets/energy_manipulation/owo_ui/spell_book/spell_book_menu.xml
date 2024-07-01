@@ -4,43 +4,131 @@
         <flow-layout direction="vertical">
             <children>
                 <!--=================================================================================================-->
-                <!--MAIN BLOCK-->
-                <flow-layout direction="vertical">
+                <!--MAIN STACK-->
+                <stack-layout>
                     <children>
+                        <texture texture="energy_manipulation:textures/gui/spell_book/spell_book_menu.png" u="0"
+                                 v="0" region-width="292" region-height="268" texture-width="512"
+                                 texture-height="512"/>
+
                         <!--=========================================================================================-->
-                        <!--SCROLL BAR-->
-                        <scroll direction="vertical">
-                            <flow-layout direction="vertical" id="the_scroll_container">
-                                <children>
-                                </children>
+                        <!--PAGE DATA-->
+                        <flow-layout direction="horizontal">
+                            <children>
+                                <!--=================================================================================-->
+                                <!--FIRST PAGE-->
+                                <flow-layout direction="vertical">
+                                    <children>
+                                        <!--=========================================================================-->
+                                        <!--NODES SCROLL BAR-->
+                                        <scroll direction="vertical">
+                                            <flow-layout direction="vertical" id="nodes_list">
+                                                <children/>
+                
+                                                <sizing>
+                                                    <vertical method="content">0</vertical>
+                                                    <horizontal method="fill">100</horizontal>
+                                                </sizing>
+                
+                                                <padding>
+                                                    <all>5</all>
+                                                </padding>
+                
+                                                <surface>
+                                                    <panel-inset/>
+                                                </surface>
+                
+                                            </flow-layout>
+        
+                                            <padding>
+                                                <all>6</all>
+                                            </padding>
+                                            
+                                            <sizing>
+                                                <vertical method="fill">100</vertical>
+                                                <horizontal method="fill">100</horizontal>
+                                            </sizing>
 
-                                <sizing>
-                                    <vertical method="content">0</vertical>
-                                    <horizontal method="fill">100</horizontal>
-                                </sizing>
+                                            <surface>
+                                                <panel dark="true"></panel>
+                                            </surface>
+                                            
+                                        </scroll>
+                                        <!--END NODES SCROLL BAR-->
+                                        <!--=========================================================================-->
+                                    </children>
 
-                                <padding>
-                                    <all>5</all>
-                                </padding>
+                                    <!--first page style-->
+                                    <sizing>
+                                        <vertical method="fill">100</vertical>
+                                        <horizontal method="fill">50</horizontal>
+                                    </sizing>
 
-                                <surface>
-                                    <panel-inset/>
-                                </surface>
+                                    <padding> <!--padding so content stays in the left page's bounds-->
+                                        <top>7</top>
+                                        <left>8</left>
+                                        <bottom>8</bottom>
+                                        <right>6</right>
+                                    </padding>
 
-                            </flow-layout>
-                            
+                                </flow-layout>
+                                <!--END FIRST PAGE-->
+                                <!--=================================================================================-->
+
+                                <!--=================================================================================-->
+                                <!--SECOND PAGE-->
+                                <flow-layout direction="vertical">
+                                    <children>
+                                        <flow-layout direction="vertical">
+                                            <children></children>
+
+                                            <sizing>
+                                                <vertical method="fill">100</vertical>
+                                                <horizontal method="fill">100</horizontal>
+                                            </sizing>
+                                            
+                                            <surface>
+                                                <panel dark="true"></panel>
+                                            </surface>
+                                            
+                                        </flow-layout>
+                                    </children>
+
+                                    <!--second page style-->
+                                    <sizing>
+                                        <vertical method="fill">100</vertical>
+                                        <horizontal method="fill">50</horizontal>
+                                    </sizing>
+
+                                    <padding> <!--padding so content stays in the right page's bounds-->
+                                        <top>7</top>
+                                        <left>6</left>
+                                        <bottom>8</bottom>
+                                        <right>8</right>
+                                    </padding>
+                                    
+                                </flow-layout>
+                                <!--END SECOND PAGE-->
+                                <!--=================================================================================-->
+                            </children>
+
+                            <!--page data style-->
                             <sizing>
-                                <vertical method="fixed">100</vertical>
-                                <horizontal method="fixed">100</horizontal>
+                                <vertical method="fixed">180</vertical>
+                                <horizontal method="fixed">292</horizontal>
                             </sizing>
-                        </scroll>
+
+                            <positioning type="relative">50,0</positioning>
+                            
+                            <horizontal-alignment>center</horizontal-alignment>
+                            <vertical-alignment>center</vertical-alignment>
+                            
+                        </flow-layout>
+                        <!--END PAGE DATA-->
                         <!--=========================================================================================-->
                     </children>
-                    
-                    <padding>
-                        <all>10</all>
-                    </padding>
 
+                    <!--main stack style-->
                     <sizing>
                         <vertical method="content">0</vertical>
                         <horizontal method="content">0</horizontal>
@@ -49,11 +137,8 @@
                     <horizontal-alignment>center</horizontal-alignment>
                     <vertical-alignment>center</vertical-alignment>
                     
-                    <surface>
-                        <panel dark="true"></panel>
-                    </surface>
-                    
-                </flow-layout>
+                </stack-layout>
+                <!--END MAIN STACK-->
                 <!--=================================================================================================-->
             </children>
 

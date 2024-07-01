@@ -27,6 +27,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
     private final ItemStack spellBookStack;
     private final int padding = 8;
     private final int titleSpace = 10;
+    private final int verticalOffset = 67;
 
     public SpellBookScreenHandler(int synchronizationID, PlayerInventory playerInventory, PacketByteBuf packetByteBuf) {
         this(synchronizationID, playerInventory, packetByteBuf.readItemStack());
@@ -92,12 +93,12 @@ public class SpellBookScreenHandler extends ScreenHandler {
 
     public Point getBackpackSlotPosition(Dimension dimension, int x, int y) {
         SpellBookInfo tier = getItem().getTier();
-        return new Point(dimension.getWidth() / 2 - tier.getRowWidth() * 9 + x * 18, padding + titleSpace + y * 18);
+        return new Point(dimension.getWidth() / 2 - tier.getRowWidth() * 9 + x * 18, verticalOffset + padding + titleSpace + y * 18);
     }
 
     public Point getPlayerInvSlotPosition(Dimension dimension, int x, int y) {
         // SpellBookInfo tier = getItem().getTier();
-        return new Point(dimension.getWidth() / 2 - 9 * 9 + x * 18, dimension.getHeight() - padding - 4 * 18 - 3 + y * 18 + (y == 3 ? 4 : 0));
+        return new Point(dimension.getWidth() / 2 - 9 * 9 + x * 18, verticalOffset + dimension.getHeight() - padding - 4 * 18 - 3 + y * 18 + (y == 3 ? 4 : 0));
     }
 
     @Override
