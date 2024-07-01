@@ -100,8 +100,9 @@
                                     <children>
                                         <!--=========================================================================-->
                                         <!--SECOND PAGE CONTENT-->
-                                        <flow-layout direction="vertical">
-                                            <children></children>
+                                        <flow-layout direction="vertical" id="node_info">
+                                            <children>
+                                            </children>
 
                                             <!--second page content style-->
                                             <sizing>

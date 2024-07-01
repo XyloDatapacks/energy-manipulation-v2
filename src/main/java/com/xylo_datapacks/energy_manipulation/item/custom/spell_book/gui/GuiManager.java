@@ -23,6 +23,10 @@ public class GuiManager {
         printAll(rootNode.getAllSubNodesRecursive());
     }
 
+    public List<NodeResult> getAllSubNodesRecursive() {
+        return rootNode.getAllSubNodesRecursive();
+    }
+
     public static List<Identifier> getEditorClassOptions(NodeResult nodeResult) {
         GenericNode parentNode = nodeResult.node().getParentNode();
         String path = nodeResult.path().list().get(nodeResult.path().list().size() - 1);
