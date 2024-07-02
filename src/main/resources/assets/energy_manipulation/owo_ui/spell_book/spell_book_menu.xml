@@ -28,8 +28,8 @@
                                                 <scroll direction="vertical" id="nodes_list_scroll">
                                                     <!--=================================================================-->
                                                     <!--NODES CONTAINER-->
-                                                    <flow-layout direction="vertical" id="nodes_list">
-                                                        <children/>
+                                                    <flow-layout direction="vertical" id="nodes_list_scroll_content">
+                                                        <children/> <!--added at runtime-->
 
                                                         <!--nodes container style-->
                                                         <sizing>
@@ -108,9 +108,7 @@
                                                     <!--=================================================================-->
                                                     <!--NODES INFO CONTAINER-->
                                                     <flow-layout direction="vertical" id="node_info_scroll_content">
-                                                        <children>
-                                                            <template name="second_page"/>
-                                                        </children>
+                                                        <children/> <!--added at run time-->
 
                                                         <!--nodes container style-->
                                                         <sizing>

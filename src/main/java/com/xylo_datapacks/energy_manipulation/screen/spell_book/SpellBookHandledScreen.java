@@ -18,6 +18,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
+import java.util.Map;
 
 
 public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout, SpellBookScreenHandler> {
@@ -52,7 +53,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         ScrollContainer<?> scrollContainer = rootComponent.childById(ScrollContainer.class, "nodes_list_scroll");
         if (scrollContainer == null) return;
         
-        FlowLayout flowLayout = scrollContainer.childById(FlowLayout.class, "nodes_list");
+        FlowLayout flowLayout = scrollContainer.childById(FlowLayout.class, "nodes_list_scroll_content");
         if (flowLayout == null) return;
 
         // needed to calculate the scroll percentage
@@ -95,6 +96,15 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
     
     public void refreshNodeInfo(FlowLayout rootComponent, NodeResult nodeResult) {
 
+        FlowLayout flowLayout = rootComponent.childById(FlowLayout.class, "node_info_scroll_content");
+        if (flowLayout == null) return;
+        
+        if (flowLayout.children().isEmpty()) {
+            final var second_page= this.model.expandTemplate(FlowLayout.class, "second_page", Map.of());
+            flowLayout.child(second_page);
+        }
+        
+        
         // display data
         GuiManager.EditorInfo editorHeader = GuiManager.getEditorHeader(nodeResult);
         GuiManager.EditorInfo editorCurrentSelection = GuiManager.getEditorCurrentSelection(nodeResult);
