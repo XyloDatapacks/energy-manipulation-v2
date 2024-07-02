@@ -4,14 +4,17 @@ import com.ibm.icu.impl.number.parse.PaddingMatcher;
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.screen.Dimension;
 import io.wispforest.owo.ui.base.BaseUIModelHandledScreen;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
+import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
+import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.*;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
@@ -25,6 +28,8 @@ import java.util.List;
 
 
 public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout, SpellBookScreenHandler> {
+    
+    private String selectedNodePath;
     
     public SpellBookHandledScreen(SpellBookScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title, FlowLayout.class, BaseUIModelScreen.DataSource.asset(Identifier.of(EnergyManipulation.MOD_ID, "spell_book/spell_book_menu")));
@@ -47,113 +52,91 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
      */
     @Override
     protected void build(FlowLayout rootComponent) {
-        // add nodes buttons
         refreshNodesList(rootComponent);
     }
 
-    @Override
-    public void render(DrawContext vanillaContext, int mouseX, int mouseY, float delta) {
-        super.render(vanillaContext, mouseX, mouseY, delta);
-        
-        
-    }
-
     public void refreshNodesList(FlowLayout rootComponent) {
-        FlowLayout flowLayout = rootComponent.childById(FlowLayout.class, "nodes_list");
-        if (flowLayout != null) {
-            flowLayout.clearChildren();
-            List<NodeResult> nodeResults = this.handler.getGuiManager().getAllSubNodesRecursive();
-            for (int i = 0; i < nodeResults.size(); i++) {
-                NodeResult nodeResult = nodeResults.get(i);
-                GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
-                GuiManager.EditorInfo editorHeader = GuiManager.getEditorHeader(nodeResult);
-                GuiManager.EditorInfo EditorCurrentSelection = GuiManager.getEditorCurrentSelection(nodeResult);
+        ScrollContainer<FlowLayout> scrollContainer = rootComponent.childById(ScrollContainer.class, "nodes_list_scroll");
+        if (scrollContainer == null) return;
+        
+        FlowLayout flowLayout = scrollContainer.childById(FlowLayout.class, "nodes_list");
+        if (flowLayout == null) return;
 
-                flowLayout.child(Components
-                        .button(Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
-                            System.out.println("click: " + "[" + editorHeader.name() + ": " + editorHeader.description() + " ; " + EditorCurrentSelection.name() + ": " + EditorCurrentSelection.description() + "]" );
-                            refreshNodeInfo(rootComponent, nodeResult);
-                            
-                            //this.handler.getGuiManager().modifyNodeClass(this.handler.getGuiManager().rootNode.getNodeResultFromPath("instruction[1].position"), Nodes.POSITION_OFFSET.identifier());
-                            //refreshNodesList(rootComponent);
-                        })
-                        .horizontalSizing(Sizing.fill(100)));
+        // needed to calculate the scroll percentage
+        double flowLayoutHeightPreUpdate = flowLayout.fullSize().height();
+        
+        // reset and refresh list
+        flowLayout.clearChildren();
+        List<NodeResult> nodeResults = this.handler.getGuiManager().getAllSubNodesRecursive();
+        for (NodeResult nodeResult : nodeResults) {
+            // display data
+            GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
+            String nodePath = GenericNode.listPathToStringPath(nodeResult.path().list()); //TODO: use map path if i ever go back to giving NodeResults in map
+            
+            flowLayout.child(Components
+                    .button(Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
+                        // on click set this node path at the selected one and load info panel
+                        selectedNodePath = nodePath;
+                        refreshNodeInfo(rootComponent, nodeResult);
+                    })
+                    .id(nodePath)
+                    .horizontalSizing(Sizing.fill(100)));
+
+            // if the node is selected then update the info 
+            if (selectedNodePath != null && !selectedNodePath.isEmpty()) {
+                if (selectedNodePath.equals(nodePath)) {
+                    refreshNodeInfo(rootComponent, nodeResult);
+                }
             }
         }
+
+        // calculate scroll percentage
+        double maxScrollHeight = flowLayoutHeightPreUpdate - scrollContainer.height(); // container height minus the exposed area
+        double newMaxScrollHeight = flowLayout.fullSize().height() - scrollContainer.height(); // new container height minus the exposed area
+        double maxLayoutY = scrollContainer.y() - maxScrollHeight; // Y pos of the layout when scrolled down at 100%
+        double distance = Math.abs(flowLayout.y() - maxLayoutY); // goes from maxScrollHeight at 0% to 0 at 100%
+        double progressPercent = newMaxScrollHeight > 0.0 ? (Math.min((maxScrollHeight - distance) / newMaxScrollHeight, 1.0)) : 0.0; // clamp [Math.min((maxScrollHeight - distance) / newMaxScrollHeight]
+        // restore scroll percentage
+        scrollContainer.scrollTo(progressPercent);
     }
     
     public void refreshNodeInfo(FlowLayout rootComponent, NodeResult nodeResult) {
-        
+
+        // display data
         GuiManager.EditorInfo editorHeader = GuiManager.getEditorHeader(nodeResult);
         GuiManager.EditorInfo editorCurrentSelection = GuiManager.getEditorCurrentSelection(nodeResult);
 
-        FlowLayout nodeInfo = rootComponent.childById(FlowLayout.class, "node_info");
+        // update Header
+        FlowLayout nodeInfo = rootComponent.childById(FlowLayout.class, "template_node_info_layout");
         if (nodeInfo != null) {
-            nodeInfo.childById(LabelComponent.class, "template_node_info_name").text(Text.of(editorHeader.name()));
-            nodeInfo.childById(LabelComponent.class, "template_node_info_description").text(Text.of(editorHeader.description()));
+            nodeInfo.childById(LabelComponent.class, "template_node_info_name_label").text(Text.of(editorHeader.name()));
+            nodeInfo.childById(LabelComponent.class, "template_node_info_description_label").text(Text.of(editorHeader.description()));
         }
         
-        FlowLayout nodeClassInfo = rootComponent.childById(FlowLayout.class, "node_class_info");
+        // update current selection
+        FlowLayout nodeClassInfo = rootComponent.childById(FlowLayout.class, "template_node_info_class_layout");
         if (nodeClassInfo != null) {
-            nodeClassInfo.childById(LabelComponent.class, "template_node_info_name").text(Text.of(editorCurrentSelection.description()));
-            nodeClassInfo.childById(LabelComponent.class, "template_node_info_description").text(Text.of(editorCurrentSelection.description()));
-        
-            
-            
-            
-            //flowLayout.clearChildren();
+            nodeClassInfo.childById(LabelComponent.class, "template_node_info_name_label").text(Text.of(editorCurrentSelection.name()));
+            nodeClassInfo.childById(LabelComponent.class, "template_node_info_description_label").text(Text.of(editorCurrentSelection.description()));
+        }
 
-            /* TODO: use fixed size to set the vertical size
-                     add buttons to change class. on change, refresh list 
-                     add selectors when needed. on value changed refresh list
-                     on refresh list, run refreshNodeInfo for the currently selected node (using path) 
-                     find a way to refresh list without resetting position
-             */
-            //NodeDescription(flowLayout, editorHeader);
-            //NodeDescription(flowLayout, editorCurrentSelection);
+        // set prev button functionality
+        ButtonComponent buttonPrev = rootComponent.childById(ButtonComponent.class, "template_node_info_class_button_prev");
+        if (buttonPrev != null) {
+            buttonPrev.onPress(buttonComponent -> {
+                GuiManager.setPreviousNodeClass(nodeResult);
+                refreshNodesList(rootComponent);
+            });
+        }
 
-            // 132 165
+        // set next button functionality
+        ButtonComponent buttonNext = rootComponent.childById(ButtonComponent.class, "template_node_info_class_button_next");
+        if (buttonNext != null) {
+            buttonNext.onPress(buttonComponent -> {
+                GuiManager.setNextNodeClass(nodeResult);
+                refreshNodesList(rootComponent);
+            });
         }
     }
-
-    private static void NodeDescription(FlowLayout flowLayout, GuiManager.EditorInfo editorInfo) {
-        int height = 165/3;
-        int width = 132;
-        int textbox_height = 12;
-
-        // main flow
-        flowLayout.child(Containers.verticalFlow(Sizing.fixed(width), Sizing.fixed(height))
-                // name flow
-                .child(Containers.verticalFlow(Sizing.content(0), Sizing.content(0))
-                        // name label
-                        .child(Components.label(Text.of(editorInfo.name()))
-                                // name label style
-                                .sizing(Sizing.content(0), Sizing.content(0)))
-                        // name flow style
-                        .margins(Insets.bottom(1))
-                        .padding(Insets.both(6,4))
-                        .alignment(HorizontalAlignment.CENTER,VerticalAlignment.CENTER)
-                        .surface(Surface.PANEL))
-                // description flow
-                .child(Containers.verticalFlow(Sizing.fill(100), Sizing.fill(60))
-                        // vertical scroll
-                        .child(Containers.verticalScroll(Sizing.fill(100), Sizing.fill(100),
-                                // description label
-                                Components.label(Text.of(editorInfo.description()))
-                                        // description label style
-                                        .sizing(Sizing.fill(100), Sizing.content(0)))
-                                // vertical scroll style
-                                // ...
-                        )
-                        // description flow style
-                        .padding(Insets.both(6,4))
-                        .alignment(HorizontalAlignment.CENTER,VerticalAlignment.TOP)
-                        .surface(Surface.PANEL))
-                // main flow style
-                .alignment(HorizontalAlignment.CENTER,VerticalAlignment.CENTER)
-                .padding(Insets.both(4,4))
-                .surface(Surface.DARK_PANEL));
-    }
-
-
+    
 }

@@ -52,7 +52,7 @@ public class test {
         final InstructionProviderNode pageNode = new InstructionProviderNode();
         final GuiManager guiManager = new GuiManager(pageNode);
         
-        guiManager.refreshGui();
+        /*guiManager.refreshGui();
         
        
         // modify position node
@@ -81,7 +81,7 @@ public class test {
         System.out.println();
         ((DoubleValueTypeNode) guiManager.rootNode.getNodeFromPath("instruction[1].position.offset.y.value")).setValue(4.0);
         guiManager.refreshGui();
-        
+        */
         
     }
     

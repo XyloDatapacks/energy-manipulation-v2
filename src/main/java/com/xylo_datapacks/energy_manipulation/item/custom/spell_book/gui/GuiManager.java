@@ -19,61 +19,12 @@ public class GuiManager {
         this.rootNode = rootNode;
     }
 
-    public void refreshGui() {
-        printAll(rootNode.getAllSubNodesRecursive());
-    }
-
     public List<NodeResult> getAllSubNodesRecursive() {
         return rootNode.getAllSubNodesRecursive();
     }
 
-    public static List<Identifier> getEditorClassOptions(NodeResult nodeResult) {
-        GenericNode parentNode = nodeResult.node().getParentNode();
-        String path = nodeResult.path().list().get(nodeResult.path().list().size() - 1);
-
-        return parentNode.getSubNode(path).getPossibleNodeClasses().keySet().stream().toList();
-    }
-    
-    public boolean modifyNodeClass(NodeResult nodeResult, Identifier newNodeClassIdentifier) {
-        GenericNode parentNode = nodeResult.node().getParentNode();
-        String path = nodeResult.path().list().get(nodeResult.path().list().size() - 1);
-        
-        if (parentNode.getSubNode(path).setNodeClass(newNodeClassIdentifier)) {
-            refreshGui();
-            return true;
-        }
-        return false;
-    }
-
-    public static ValueSelector<?> getEditorValueSelectionMethod(NodeResult nodeResult) {
-        return nodeResult.node() instanceof ValueTypeNode<?> nodeValue ? nodeValue.getValueSelector() : null;
-    }
-    
-    public boolean modifyNodeValue(NodeResult nodeResult, ValueSelector<?> valueSelector) {
-        if (nodeResult.node() instanceof AbstractNodeWithValue<?> nodeValue) {
-            if (nodeValue.setValueFromSelector(valueSelector)) {
-                refreshGui();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    
     /*----------------------------------------------------------------------------------------------------------------*/
-    /* Printing */
-    
-    public static void printAll(List<NodeResult> nodes) {
-        for (NodeResult nodeResult : nodes) {
-            
-            ButtonDisplay buttonDisplay = getButtonDisplay(nodeResult);
-            EditorInfo editorHeader = getEditorHeader(nodeResult);
-            EditorInfo EditorCurrentSelection = getEditorCurrentSelection(nodeResult);
-            String selector = getEditorValueSelectionMethod(nodeResult) != null ? "{" + getEditorValueSelectionMethod(nodeResult).getClass().getSimpleName() + "}" : "";
-            
-            System.out.println(buttonDisplay.subNodeName + ": " + buttonDisplay.nodeName + " -> [" + editorHeader.name + ": " + editorHeader.description + " ; " + EditorCurrentSelection.name + ": " + EditorCurrentSelection.description + "] " + selector);
-        }
-    }
+    /* Display */
     
     public static ButtonDisplay getButtonDisplay(NodeResult nodeResult) {
         GenericNode node = nodeResult.node();
@@ -115,6 +66,23 @@ public class GuiManager {
             return new EditorInfo(nodeData.name(), nodeData.description());
         }
         return new EditorInfo("error", "error");
+    }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* Class Management */
+    
+    public static void setNextNodeClass(NodeResult nodeResult) {
+        GenericNode parentNode = nodeResult.node().getParentNode();
+        String path = nodeResult.path().list().get(nodeResult.path().list().size() - 1);
+        parentNode.getSubNode(path).setNextNodeClass();
+    }
+
+    public static void setPreviousNodeClass(NodeResult nodeResult) {
+        GenericNode parentNode = nodeResult.node().getParentNode();
+        String path = nodeResult.path().list().get(nodeResult.path().list().size() - 1);
+        parentNode.getSubNode(path).setPreviousNodeClass();
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/

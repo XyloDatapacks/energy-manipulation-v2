@@ -44,6 +44,28 @@ public final class SubNode<T extends GenericNode> {
         return false;
     }
 
+    /** 
+     * Cycle through the classes toward the left
+     */
+    public void setNextNodeClass() {
+        List<Identifier> ClassIdentifierList = nodeClasses.keySet().stream().toList();
+        int newIndex = ClassIdentifierList.indexOf(SelectedClassIdentifier) + 1;
+        newIndex = newIndex < ClassIdentifierList.size() ? newIndex : 0; 
+        Identifier newIdentifier = ClassIdentifierList.get(newIndex);
+        setNodeClass(newIdentifier);
+    }
+
+    /**
+     * Cycle through the classes toward the right
+     */
+    public void setPreviousNodeClass() {
+        List<Identifier> ClassIdentifierList = nodeClasses.keySet().stream().toList();
+        int newIndex = ClassIdentifierList.indexOf(SelectedClassIdentifier) - 1;
+        newIndex = newIndex >= 0 ? newIndex : ClassIdentifierList.size() - 1;
+        Identifier newIdentifier = ClassIdentifierList.get(newIndex);
+        setNodeClass(newIdentifier);
+    }
+
     /**
      * @return map with node identifier as key, and node supplier as value
      */
@@ -60,7 +82,7 @@ public final class SubNode<T extends GenericNode> {
         }
         return null;
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     public static final class Builder<T extends GenericNode> {
