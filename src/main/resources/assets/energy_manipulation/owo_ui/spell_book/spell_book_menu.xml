@@ -21,7 +21,7 @@
                                     <children>
                                         <!--=========================================================================-->
                                         <!--FIRST PAGE CONTENT-->
-                                        <flow-layout direction="vertical">
+                                        <flow-layout direction="vertical" id="first_page_content">
                                             <children>
                                                 <!--=================================================================-->
                                                 <!--NODES SCROLL BAR-->
@@ -100,14 +100,14 @@
                                     <children>
                                         <!--=========================================================================-->
                                         <!--SECOND PAGE CONTENT-->
-                                        <flow-layout direction="vertical" id="second_page">
+                                        <flow-layout direction="vertical" id="second_page_content">
                                             <children>
                                                 <!--=================================================================-->
                                                 <!--NODES INFO SCROLL BAR-->
                                                 <scroll direction="vertical">
                                                     <!--=================================================================-->
                                                     <!--NODES INFO CONTAINER-->
-                                                    <flow-layout direction="vertical">
+                                                    <flow-layout direction="vertical" id="node_info_scroll_content">
                                                         <children>
                                                             <template name="second_page"/>
                                                         </children>
@@ -258,9 +258,12 @@
 
             <flow-layout direction="vertical" id="template_node_info_layout">
                 <children>
-                    <template name="node_info_name"/>
+                    <template name="node_info_name">
+                        <label_id>node_info_name_label</label_id>
+                    </template>
 
                     <template name="node_info_description">
+                        <label_id>node_info_description_label</label_id>
                         <vertical_filling>30</vertical_filling>
                     </template>
                 </children>
@@ -297,11 +300,13 @@
 
             <flow-layout direction="vertical" id="template_node_info_class_layout">
                 <children>
-                    <template name="node_info_name"/>
+                    <template name="node_info_name">
+                        <label_id>node_info_class_name_label</label_id>
+                    </template>
 
                     <flow-layout direction="horizontal">
                         <children>
-                            <button id="template_node_info_class_button_prev">
+                            <button id="node_info_class_button_prev">
                                 <text translate="false">◄</text>
 
                                 <padding>
@@ -317,7 +322,8 @@
                             <flow-layout direction="vertical">
                                 <children>
                                     <template name="node_info_description">
-                                        <vertical_filling>30</vertical_filling>
+                                        <label_id>node_info_class_description_label</label_id>
+                                        <vertical_filling>35</vertical_filling>
                                     </template>
                                 </children>
                                 <sizing>
@@ -325,7 +331,7 @@
                                 </sizing>
                             </flow-layout>
 
-                            <button id="template_node_info_class_button_next">
+                            <button id="node_info_class_button_next">
                                 <text translate="false">►</text>
 
                                 <padding>
@@ -376,7 +382,7 @@
 
             <flow-layout direction="vertical">
                 <children>
-                    <label id="template_node_info_name_label">
+                    <label id="{{label_id}}">
                         <text translate="false">"node_info_name_label"</text>
 
                         <sizing>
@@ -421,7 +427,7 @@
             <flow-layout direction="vertical">
                 <children>
                     <scroll direction="vertical">
-                        <label id="template_node_info_description_label">
+                        <label id="{{label_id}}">
                             <text translate="false">"node_info_description_label"</text>
                             <sizing>
                                 <horizontal method="fill">100</horizontal>

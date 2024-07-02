@@ -2,8 +2,6 @@ package com.xylo_datapacks.energy_manipulation.event;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.networking.ModPackets;
-import com.xylo_datapacks.energy_manipulation.screen.test_owo.MyDataDrivenScreen;
-import com.xylo_datapacks.energy_manipulation.screen.test_owo.MyFirstScreen;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

@@ -49,7 +49,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
     }
 
     public void refreshNodesList(FlowLayout rootComponent) {
-        ScrollContainer<FlowLayout> scrollContainer = rootComponent.childById(ScrollContainer.class, "nodes_list_scroll");
+        ScrollContainer<?> scrollContainer = rootComponent.childById(ScrollContainer.class, "nodes_list_scroll");
         if (scrollContainer == null) return;
         
         FlowLayout flowLayout = scrollContainer.childById(FlowLayout.class, "nodes_list");
@@ -100,21 +100,16 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         GuiManager.EditorInfo editorCurrentSelection = GuiManager.getEditorCurrentSelection(nodeResult);
 
         // update Header
-        FlowLayout nodeInfo = rootComponent.childById(FlowLayout.class, "template_node_info_layout");
-        if (nodeInfo != null) {
-            nodeInfo.childById(LabelComponent.class, "template_node_info_name_label").text(Text.of(editorHeader.name()));
-            nodeInfo.childById(LabelComponent.class, "template_node_info_description_label").text(Text.of(editorHeader.description()));
-        }
+        rootComponent.childById(LabelComponent.class, "node_info_name_label").text(Text.of(editorHeader.name()));
+        rootComponent.childById(LabelComponent.class, "node_info_description_label").text(Text.of(editorHeader.description()));
         
         // update current selection
-        FlowLayout nodeClassInfo = rootComponent.childById(FlowLayout.class, "template_node_info_class_layout");
-        if (nodeClassInfo != null) {
-            nodeClassInfo.childById(LabelComponent.class, "template_node_info_name_label").text(Text.of(editorCurrentSelection.name()));
-            nodeClassInfo.childById(LabelComponent.class, "template_node_info_description_label").text(Text.of(editorCurrentSelection.description()));
-        }
-
+        rootComponent.childById(LabelComponent.class, "node_info_class_name_label").text(Text.of(editorCurrentSelection.name()));
+        rootComponent.childById(LabelComponent.class, "node_info_class_description_label").text(Text.of(editorCurrentSelection.description()));
+        
+        
         // set prev button functionality
-        ButtonComponent buttonPrev = rootComponent.childById(ButtonComponent.class, "template_node_info_class_button_prev");
+        ButtonComponent buttonPrev = rootComponent.childById(ButtonComponent.class, "node_info_class_button_prev");
         if (buttonPrev != null) {
             buttonPrev.onPress(buttonComponent -> {
                 GuiManager.setPreviousNodeClass(nodeResult);
@@ -123,7 +118,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         }
 
         // set next button functionality
-        ButtonComponent buttonNext = rootComponent.childById(ButtonComponent.class, "template_node_info_class_button_next");
+        ButtonComponent buttonNext = rootComponent.childById(ButtonComponent.class, "node_info_class_button_next");
         if (buttonNext != null) {
             buttonNext.onPress(buttonComponent -> {
                 GuiManager.setNextNodeClass(nodeResult);
