@@ -9,6 +9,7 @@ import com.xylo_datapacks.energy_manipulation.screen.Dimension;
 import io.wispforest.owo.ui.base.BaseUIModelHandledScreen;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.Components;
+import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.*;
@@ -82,12 +83,25 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
     }
     
     public void refreshNodeInfo(FlowLayout rootComponent, NodeResult nodeResult) {
-        FlowLayout flowLayout = rootComponent.childById(FlowLayout.class, "node_info");
-        if (flowLayout != null) {
-            GuiManager.EditorInfo editorHeader = GuiManager.getEditorHeader(nodeResult);
-            GuiManager.EditorInfo editorCurrentSelection = GuiManager.getEditorCurrentSelection(nodeResult);
+        
+        GuiManager.EditorInfo editorHeader = GuiManager.getEditorHeader(nodeResult);
+        GuiManager.EditorInfo editorCurrentSelection = GuiManager.getEditorCurrentSelection(nodeResult);
+
+        FlowLayout nodeInfo = rootComponent.childById(FlowLayout.class, "node_info");
+        if (nodeInfo != null) {
+            nodeInfo.childById(LabelComponent.class, "template_node_info_name").text(Text.of(editorHeader.name()));
+            nodeInfo.childById(LabelComponent.class, "template_node_info_description").text(Text.of(editorHeader.description()));
+        }
+        
+        FlowLayout nodeClassInfo = rootComponent.childById(FlowLayout.class, "node_class_info");
+        if (nodeClassInfo != null) {
+            nodeClassInfo.childById(LabelComponent.class, "template_node_info_name").text(Text.of(editorCurrentSelection.description()));
+            nodeClassInfo.childById(LabelComponent.class, "template_node_info_description").text(Text.of(editorCurrentSelection.description()));
+        
             
-            flowLayout.clearChildren();
+            
+            
+            //flowLayout.clearChildren();
 
             /* TODO: use fixed size to set the vertical size
                      add buttons to change class. on change, refresh list 
@@ -95,33 +109,49 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                      on refresh list, run refreshNodeInfo for the currently selected node (using path) 
                      find a way to refresh list without resetting position
              */
-            NodeDescription(flowLayout, editorHeader, 50);
-            NodeDescription(flowLayout, editorCurrentSelection, 50);
+            //NodeDescription(flowLayout, editorHeader);
+            //NodeDescription(flowLayout, editorCurrentSelection);
 
-
+            // 132 165
         }
     }
 
-    private static void NodeDescription(FlowLayout flowLayout, GuiManager.EditorInfo editorInfo, int size) {
-        flowLayout.child(Containers.verticalFlow(Sizing.fill(100), Sizing.fill(size))
+    private static void NodeDescription(FlowLayout flowLayout, GuiManager.EditorInfo editorInfo) {
+        int height = 165/3;
+        int width = 132;
+        int textbox_height = 12;
+
+        // main flow
+        flowLayout.child(Containers.verticalFlow(Sizing.fixed(width), Sizing.fixed(height))
+                // name flow
                 .child(Containers.verticalFlow(Sizing.content(0), Sizing.content(0))
+                        // name label
                         .child(Components.label(Text.of(editorInfo.name()))
-                                .sizing(Sizing.content(0), Sizing.content(0))
-                                .horizontalSizing(Sizing.fill(100)))
-                        .margins(Insets.bottom(2))
-                        .padding(Insets.both(8,6))
+                                // name label style
+                                .sizing(Sizing.content(0), Sizing.content(0)))
+                        // name flow style
+                        .margins(Insets.bottom(1))
+                        .padding(Insets.both(6,4))
                         .alignment(HorizontalAlignment.CENTER,VerticalAlignment.CENTER)
                         .surface(Surface.PANEL))
+                // description flow
                 .child(Containers.verticalFlow(Sizing.fill(100), Sizing.fill(60))
+                        // vertical scroll
                         .child(Containers.verticalScroll(Sizing.fill(100), Sizing.fill(100),
+                                // description label
                                 Components.label(Text.of(editorInfo.description()))
-                                        .sizing(Sizing.content(0), Sizing.content(0))
-                                        .horizontalSizing(Sizing.fill(100))))
-                        .padding(Insets.both(8,6))
+                                        // description label style
+                                        .sizing(Sizing.fill(100), Sizing.content(0)))
+                                // vertical scroll style
+                                // ...
+                        )
+                        // description flow style
+                        .padding(Insets.both(6,4))
                         .alignment(HorizontalAlignment.CENTER,VerticalAlignment.TOP)
                         .surface(Surface.PANEL))
+                // main flow style
                 .alignment(HorizontalAlignment.CENTER,VerticalAlignment.CENTER)
-                .padding(Insets.both(8,8))
+                .padding(Insets.both(4,4))
                 .surface(Surface.DARK_PANEL));
     }
 
