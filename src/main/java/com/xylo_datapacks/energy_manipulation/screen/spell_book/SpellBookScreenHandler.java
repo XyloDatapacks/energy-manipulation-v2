@@ -5,10 +5,9 @@ import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
-import com.xylo_datapacks.energy_manipulation.screen.Dimension;
-import com.xylo_datapacks.energy_manipulation.screen.Point;
+import com.xylo_datapacks.energy_manipulation.api.Dimension;
+import com.xylo_datapacks.energy_manipulation.api.Point;
 import com.xylo_datapacks.energy_manipulation.util.InventoryUtils;
-import io.wispforest.owo.client.screens.OwoScreenHandler;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -22,7 +21,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.village.TradeOfferList;
 
 public class SpellBookScreenHandler extends ScreenHandler {
 

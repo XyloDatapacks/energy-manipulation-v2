@@ -1,4 +1,4 @@
-package com.xylo_datapacks.energy_manipulation.screen;
+package com.xylo_datapacks.energy_manipulation.api;
 
 public class Dimension {
 
