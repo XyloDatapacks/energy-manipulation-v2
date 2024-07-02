@@ -22,8 +22,7 @@ import java.util.Map;
 
 
 public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout, SpellBookScreenHandler> {
-    
-    private String selectedNodePath;
+    private String selectedNodePath = "";
     
     public SpellBookHandledScreen(SpellBookScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title, FlowLayout.class, BaseUIModelScreen.DataSource.asset(Identifier.of(EnergyManipulation.MOD_ID, "spell_book/spell_book_menu")));
@@ -77,10 +76,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                     .horizontalSizing(Sizing.fill(100)));
 
             // if the node is selected then update the info 
-            if (selectedNodePath != null && !selectedNodePath.isEmpty()) {
-                if (selectedNodePath.equals(nodePath)) {
-                    refreshNodeInfo(rootComponent, nodeResult);
-                }
+            if (!selectedNodePath.isEmpty() && selectedNodePath.equals(nodePath)) {
+                refreshNodeInfo(rootComponent, nodeResult);
             }
         }
 
