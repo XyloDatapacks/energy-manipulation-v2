@@ -29,8 +29,6 @@ public class EnergyManipulation implements ModInitializer {
 
 	// spell book
 	public static final Identifier SPELL_BOOK_ID = SpellBookItem.id("spell_book");
-	public static final RegistryKey<ItemGroup> GROUP = RegistryKey.of(RegistryKeys.ITEM_GROUP, SPELL_BOOK_ID);
-	
 	// spell book menu
 	public static final ScreenHandlerType<SpellBookScreenHandler> SPELL_BOOK_MENU_TYPE = Registry.register(Registries.SCREEN_HANDLER, SPELL_BOOK_ID,
 			new ExtendedScreenHandlerType<>(SpellBookScreenHandler::new));
@@ -40,7 +38,6 @@ public class EnergyManipulation implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
-
 		LOGGER.info("Hello Fabric world!");
 		
 		// Register custom groups

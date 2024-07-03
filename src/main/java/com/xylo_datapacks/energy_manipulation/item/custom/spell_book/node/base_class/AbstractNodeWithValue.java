@@ -76,8 +76,27 @@ public abstract class AbstractNodeWithValue<T> extends AbstractNode implements V
     }
 
     @Override
-    public NbtCompound fromNbt(NbtCompound nbt) {
-        return null;
+    public GenericNode setFromNbt(NbtCompound nbt) {
+        if (value instanceof Integer intValue) {
+            intValue = nbt.getInt("value");
+        }
+        else if (value instanceof Double doubleValue) {
+            doubleValue = nbt.getDouble("value");
+        }
+        else if (value instanceof Float floatValue) {
+            floatValue = nbt.getFloat("value");
+        }
+        else if (value instanceof Boolean boolValue) {
+            boolValue = nbt.getBoolean("value");
+        }
+        else if (value instanceof String stringValue) {
+            stringValue = nbt.getString("value");
+        }
+        else {
+            value = null;
+        }
+        
+        return this;
     }
 
     @Override

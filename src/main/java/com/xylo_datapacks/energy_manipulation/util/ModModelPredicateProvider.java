@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 public class ModModelPredicateProvider {
     
     public static void registerModModels() {
-        registerSpellBook(ModItems.SPELLBOOK);
+        registerSpellBook(ModItems.SPELL_BOOK);
     }
     
     private static void registerSpellBook(Item spellBook) {

@@ -16,11 +16,12 @@ public class ModItemsGroups {
         FabricItemGroup
             .builder()
             .displayName(Text.translatable("itemgroup.energy_manipulation"))
-            .icon(() -> new ItemStack(ModItems.SPELLBOOK))
+            .icon(() -> new ItemStack(ModItems.SPELL_BOOK))
             .entries((displayContext, entries) -> {
                 
                 // Add items and blocks to group
-                entries.add(ModItems.SPELLBOOK);
+                entries.add(ModItems.SPELL_BOOK);
+                entries.add(ModItems.SPELL_BOOK_PAGE);
                 
                 
             })

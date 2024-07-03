@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
+import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodePath;
@@ -17,10 +18,17 @@ public interface GenericNode {
 
     // node Id
     public abstract Identifier getNodeIdentifier();
+    public static Identifier getNodeIdentifier(String identifier) {
+        List<String> splittedIdentifier = new ArrayList<String>(Arrays.asList(identifier.split(":")));
+        return Identifier.of(EnergyManipulation.MOD_ID, splittedIdentifier.get(1));
+    }
     // nbt
     public abstract NbtCompound toNbt();
-    public abstract NbtCompound fromNbt(NbtCompound nbt);
-    
+    public abstract GenericNode setFromNbt(NbtCompound nbt);
+    public static GenericNode generateFromNbt(NbtCompound nbt) {
+        return Nodes.NODES.get(Identifier.tryParse(nbt.getString("node_type"))).nodeSupplier().get().setFromNbt(nbt);
+    };
+
     /** get data of this node */
     public abstract NodeData<? extends GenericNode> getNodeData();
     /** get data of this sub node */

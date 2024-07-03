@@ -3,6 +3,7 @@ package com.xylo_datapacks.energy_manipulation.screen.spell_book;
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
+import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookPageItem;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
@@ -106,9 +107,9 @@ public class SpellBookScreenHandler extends ScreenHandler {
         System.out.println("try update");
         // get page itemStack
         ItemStack page = inventory.getStack(0);
-        if (!page.isEmpty() && page.getItem() instanceof Item) {
-            // TODO: check if page is instance of SpellBookPageItem and if so run method to save spell in nbt
-            System.out.println(guiManager.toNbt());
+        if (!page.isEmpty() && page.getItem() instanceof SpellBookPageItem) {
+            SpellBookPageItem.setSpell(page, guiManager.toNbt());
+            inventory.markDirty();
         }
     }
 
@@ -119,9 +120,8 @@ public class SpellBookScreenHandler extends ScreenHandler {
         System.out.println("try load");
         // get page itemStack
         ItemStack page = inventory.getStack(0);
-        if (!page.isEmpty() && page.getItem() instanceof Item) {
-            // TODO: check if page is instance of SpellBookPageItem and if so run method to get spell from nbt and use it fo init guiManager
-            this.guiManager.setRootNode(new InstructionProviderNode());
+        if (!page.isEmpty() && page.getItem() instanceof SpellBookPageItem) {
+            this.guiManager.setRootNode(SpellBookPageItem.getSpell(page));
         } 
         else {
             this.guiManager.reset();   

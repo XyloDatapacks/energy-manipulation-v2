@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
+import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodePath;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
@@ -54,8 +55,18 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     }
 
     @Override
-    public NbtCompound fromNbt(NbtCompound nbt) {
-        return null;
+    public GenericNode setFromNbt(NbtCompound nbt) {
+        NbtCompound subNodesCompound = nbt.getCompound("sub_nodes");
+        subNodesCompound.getKeys().forEach(key -> {
+            NbtCompound subNodeNbt = subNodesCompound.getCompound(key);
+            Identifier nodeIdentifier = GenericNode.getNodeIdentifier(subNodeNbt.getString("node_identifier"));
+            modifySubNode(key, nodeIdentifier);
+            SubNode<?> subNode = getSubNode(key);
+            if (subNode != null) {
+                subNode.getNode().setFromNbt(subNodeNbt);
+            } 
+        });
+        return this;
     }
 
     @Override
@@ -90,7 +101,12 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     
     @Override
     public final SubNode<? extends GenericNode> getSubNode(String path) {
-        return subNodes.get(path);
+        // if the subNodeId is already registered
+        if (subNodes.containsKey(path)) {
+            return subNodes.get(path);
+        }
+        System.out.println("failed to find sub node " + path);
+        return null;
     }
     
     @Override
