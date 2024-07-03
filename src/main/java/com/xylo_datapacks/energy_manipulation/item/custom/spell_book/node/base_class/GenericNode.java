@@ -19,6 +19,7 @@ public interface GenericNode {
     public abstract Identifier getNodeIdentifier();
     // nbt
     public abstract NbtCompound toNbt();
+    public abstract NbtCompound fromNbt(NbtCompound nbt);
     
     /** get data of this node */
     public abstract NodeData<? extends GenericNode> getNodeData();

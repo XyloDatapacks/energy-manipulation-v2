@@ -23,11 +23,38 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     /*----------------------------------------------------------------------------------------------------------------*/
     /* GenericNode Interface */
 
+    /**
+     *  {
+     *      node_type: "<@node_identifier>",
+     *      sub_nodes: {
+     *          <@subNodeId>: {...}, 
+     *          ... , 
+     *          <@subNodeId>: {...}
+     *      }
+     *  }
+     */
     @Override
     public final NbtCompound toNbt() {
+        // {}
         NbtCompound nbt = new NbtCompound();
+        // add node_type: "<@node_identifier>" to nbt
         nbt.putString("node_type", getNodeIdentifier().toString());
-        // TODO: ...
+
+        // sub_nodes: {}
+        NbtCompound subNodesCompound = new NbtCompound();
+        // add all <@subNodeId>: {...} to sub_nodes
+        for (Map.Entry<String, SubNode<? extends GenericNode>> entry : subNodes.entrySet()) {
+            GenericNode node = entry.getValue().getNode();
+            subNodesCompound.put(entry.getKey(), node.toNbt());
+        }
+        
+        // add sub_nodes to nbt
+        nbt.put("sub_nodes", subNodesCompound);
+        return nbt;
+    }
+
+    @Override
+    public NbtCompound fromNbt(NbtCompound nbt) {
         return null;
     }
 

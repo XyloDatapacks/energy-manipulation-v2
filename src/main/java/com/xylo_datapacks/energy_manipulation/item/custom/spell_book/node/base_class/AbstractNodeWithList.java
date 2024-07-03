@@ -4,6 +4,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodePath;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
@@ -64,8 +65,38 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
     /*----------------------------------------------------------------------------------------------------------------*/
     /* GenericNode Interface */
 
+    /**
+     *  {
+     *      node_type: "<@node_identifier>",
+     *      sub_nodes: [
+     *          {...}, 
+     *          ... , 
+     *          {...}
+     *      ]
+     *  }
+     */
     @Override
     public final NbtCompound toNbt() {
+        // {}
+        NbtCompound nbt = new NbtCompound();
+        // add node_type: "<@node_identifier>" to nbt
+        nbt.putString("node_type", getNodeIdentifier().toString());
+
+        // sub_nodes: []
+        NbtList subNodesList = new NbtList();
+        // add all {...} to sub_nodes
+        for (SubNode<? extends GenericNode> entry : subNodes) {
+            GenericNode node = entry.getNode();
+            subNodesList.add(node.toNbt());
+        }
+
+        // add sub_nodes to nbt
+        nbt.put("sub_nodes", subNodesList);
+        return nbt;
+    }
+
+    @Override
+    public NbtCompound fromNbt(NbtCompound nbt) {
         return null;
     }
 

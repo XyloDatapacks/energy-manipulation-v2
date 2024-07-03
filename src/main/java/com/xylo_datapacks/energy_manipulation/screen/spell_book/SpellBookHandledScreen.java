@@ -19,10 +19,12 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 
 public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout, SpellBookScreenHandler> {
     private String selectedNodePath = "";
+    
     
     public SpellBookHandledScreen(SpellBookScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title, FlowLayout.class, BaseUIModelScreen.DataSource.asset(Identifier.of(EnergyManipulation.MOD_ID, "spell_book/spell_book_menu")));
@@ -46,6 +48,9 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
     @Override
     protected void build(FlowLayout rootComponent) {
         refreshNodesList(rootComponent);
+        this.handler.registerSetScreenUpdate(bUpdate -> {
+            refreshNodesList(rootComponent);
+        });
     }
 
     public void refreshNodesList(FlowLayout rootComponent) {
@@ -59,6 +64,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         double flowLayoutHeightPreUpdate = flowLayout.fullSize().height();
         
         // reset and refresh list
+        boolean selectedNodeExists = false;
         flowLayout.clearChildren();
         Map<String, NodeResult> nodeResults = this.handler.getGuiManager().getAllSubNodesRecursive();
         for (Map.Entry<String, NodeResult> entry : nodeResults.entrySet()) {
@@ -80,7 +86,12 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
             // if the node is selected then update the info 
             if (!selectedNodePath.isEmpty() && selectedNodePath.equals(nodePath)) {
                 refreshNodeInfo(rootComponent, nodeResult);
+                selectedNodeExists = true;
             }
+        }
+        
+        if (!selectedNodeExists) {
+            refreshNodeInfo(rootComponent, null);
         }
 
         // calculate scroll percentage
@@ -88,7 +99,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         double newMaxScrollHeight = flowLayout.fullSize().height() - scrollContainer.height(); // new container height minus the exposed area
         double maxLayoutY = scrollContainer.y() - maxScrollHeight; // Y pos of the layout when scrolled down at 100%
         double distance = Math.abs(flowLayout.y() - maxLayoutY); // goes from maxScrollHeight at 0% to 0 at 100%
-        double progressPercent = newMaxScrollHeight > 0.0 ? (Math.min((maxScrollHeight - distance) / newMaxScrollHeight, 1.0)) : 0.0; // clamp [Math.min((maxScrollHeight - distance) / newMaxScrollHeight]
+        double progressPercent = newMaxScrollHeight > 0.0 ? (Math.min((maxScrollHeight - distance) / newMaxScrollHeight, 1.0)) : 0.0; // clamp [(maxScrollHeight - distance) / newMaxScrollHeight]
         // restore scroll percentage
         scrollContainer.scrollTo(progressPercent);
     }
@@ -98,11 +109,17 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         FlowLayout flowLayout = rootComponent.childById(FlowLayout.class, "node_info_scroll_content");
         if (flowLayout == null) return;
         
+        // reset children if needed
+        if (nodeResult == null) {
+            flowLayout.clearChildren();
+            return;
+        };
+        
+        // add child (second page)
         if (flowLayout.children().isEmpty()) {
             final var second_page= this.model.expandTemplate(FlowLayout.class, "second_page", Map.of());
             flowLayout.child(second_page);
         }
-        
         
         // display data
         GuiManager.EditorInfo editorHeader = GuiManager.getEditorHeader(nodeResult);
@@ -123,6 +140,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
             buttonPrev.onPress(buttonComponent -> {
                 GuiManager.setPreviousNodeClass(nodeResult);
                 refreshNodesList(rootComponent);
+                this.handler.updatePageSpell();
             });
         }
 
@@ -132,6 +150,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
             buttonNext.onPress(buttonComponent -> {
                 GuiManager.setNextNodeClass(nodeResult);
                 refreshNodesList(rootComponent);
+                this.handler.updatePageSpell();
             });
         }
     }

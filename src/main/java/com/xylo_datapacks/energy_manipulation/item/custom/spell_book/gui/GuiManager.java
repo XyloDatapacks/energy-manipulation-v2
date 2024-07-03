@@ -7,6 +7,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
@@ -14,15 +15,40 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class GuiManager {
-    public final GenericNode rootNode;
+    private GenericNode rootNode;
 
     public GuiManager(GenericNode rootNode) {
         this.rootNode = rootNode;
     }
 
-    public Map<String, NodeResult> getAllSubNodesRecursive() {
-        return rootNode.getAllSubNodesRecursive();
+    public GenericNode getRootNode()
+    {
+        return rootNode;
     }
+
+    public void reset() {
+        rootNode = null;
+    }
+    
+    public void setRootNode(GenericNode rootNode)
+    {
+        this.rootNode = rootNode;
+    }
+    
+    public Map<String, NodeResult> getAllSubNodesRecursive() {
+        if (rootNode != null) {
+            return rootNode.getAllSubNodesRecursive();
+        }
+        return Map.of();
+    }
+    
+    public NbtCompound toNbt() {
+        if (rootNode != null) {
+            return rootNode.toNbt();
+        }
+        return new NbtCompound();
+    }
+    
 
     /*----------------------------------------------------------------------------------------------------------------*/
     /* Display */
