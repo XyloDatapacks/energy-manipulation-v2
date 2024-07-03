@@ -32,30 +32,31 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     }
 
     @Override
-    public final List<NodeResult> getAllSubNodes() {
+    public final Map<String, NodeResult> getAllSubNodes() {
         
-        List<NodeResult> returnSubNodes = new ArrayList<>();
+        Map<String, NodeResult> returnSubNodes = new LinkedHashMap<>();
         for (Map.Entry<String, SubNode<? extends GenericNode>> subNode : subNodes.entrySet()) {
             // generate path
-            List<String> subNodePath = new ArrayList<>(Collections.singletonList(subNode.getKey()));
+            List<String> subNodePath = new ArrayList<>();
+            subNodePath.add(subNode.getKey());
             // this sub node
-            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNode.getKey()), subNode.getValue().getNode()));
+            returnSubNodes.put(GenericNode.listPathToStringPath(subNodePath), new NodeResult(new NodePath(subNodePath, subNode.getKey()), subNode.getValue().getNode()));
         }
         return returnSubNodes;
     }
     
     @Override
-    public final List<NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
+    public final Map<String, NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
         
-        List<NodeResult> returnSubNodes = new ArrayList<>();
+        Map<String, NodeResult> returnSubNodes = new LinkedHashMap<>();
         for (Map.Entry<String, SubNode<? extends GenericNode>> subNode : subNodes.entrySet()) {
             // generate path
             List<String> subNodePath = new ArrayList<>(pathStart);
             subNodePath.add(subNode.getKey());
             // this sub node
-            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNode.getKey()), subNode.getValue().getNode()));
+            returnSubNodes.put(GenericNode.listPathToStringPath(subNodePath), new NodeResult(new NodePath(subNodePath, subNode.getKey()), subNode.getValue().getNode()));
             // recursive
-            returnSubNodes.addAll(subNode.getValue().getNode().getAllSubNodesRecursive(subNodePath));
+            returnSubNodes.putAll(subNode.getValue().getNode().getAllSubNodesRecursive(subNodePath));
         }
         return returnSubNodes;
     }

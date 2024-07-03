@@ -10,15 +10,18 @@ import java.util.List;
 public class CardinalOffsetNode extends AbstractNodeWithMap implements OffsetNode {
     SubNode<NumberNode> x = registerSubNode("x", new SubNode.Builder<NumberNode>()
             .addNodeValues(List.of(
-                    Nodes.NUMBER_DOUBLE))
+                    Nodes.NUMBER_DOUBLE,
+                    Nodes.VALUE_TYPE_DOUBLE))
             .build(this));
     SubNode<NumberNode> y = registerSubNode("y", new SubNode.Builder<NumberNode>()
             .addNodeValues(List.of(
-                    Nodes.NUMBER_DOUBLE))
+                    Nodes.NUMBER_DOUBLE,
+                    Nodes.VALUE_TYPE_DOUBLE))
             .build(this));
     SubNode<NumberNode> z = registerSubNode("z", new SubNode.Builder<NumberNode>()
             .addNodeValues(List.of(
-                    Nodes.NUMBER_DOUBLE))
+                    Nodes.NUMBER_DOUBLE,
+                    Nodes.VALUE_TYPE_DOUBLE))
             .build(this));
     
     public CardinalOffsetNode() {

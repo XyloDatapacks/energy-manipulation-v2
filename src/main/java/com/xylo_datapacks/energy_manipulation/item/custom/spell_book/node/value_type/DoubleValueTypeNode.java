@@ -5,8 +5,9 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_s
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.ValueSelector;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithValue;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.number.NumberNode;
 
-public class DoubleValueTypeNode extends AbstractNodeWithValue<Double> {
+public class DoubleValueTypeNode extends AbstractNodeWithValue<Double> implements NumberNode {
     private double minValue = -100;
     private double maxValue = 100;
     

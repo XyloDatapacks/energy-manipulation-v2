@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractNodeWithValue<T> extends AbstractNode implements ValueTypeNode<T> {
     private T value;
@@ -40,13 +41,13 @@ public abstract class AbstractNodeWithValue<T> extends AbstractNode implements V
     }
 
     @Override
-    public final List<NodeResult> getAllSubNodes() {
-        return List.of();
+    public final Map<String, NodeResult> getAllSubNodes() {
+        return Map.of();
     }
 
     @Override
-    public final List<NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
-        return List.of();
+    public final Map<String, NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
+        return Map.of();
     }
 
     @Override

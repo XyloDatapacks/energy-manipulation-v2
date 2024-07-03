@@ -10,6 +10,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import net.minecraft.util.Identifier;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class GuiManager {
@@ -19,7 +20,7 @@ public class GuiManager {
         this.rootNode = rootNode;
     }
 
-    public List<NodeResult> getAllSubNodesRecursive() {
+    public Map<String, NodeResult> getAllSubNodesRecursive() {
         return rootNode.getAllSubNodesRecursive();
     }
 

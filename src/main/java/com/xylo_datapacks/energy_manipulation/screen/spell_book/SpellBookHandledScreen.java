@@ -60,12 +60,14 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         
         // reset and refresh list
         flowLayout.clearChildren();
-        List<NodeResult> nodeResults = this.handler.getGuiManager().getAllSubNodesRecursive();
-        for (NodeResult nodeResult : nodeResults) {
-            // display data
+        Map<String, NodeResult> nodeResults = this.handler.getGuiManager().getAllSubNodesRecursive();
+        for (Map.Entry<String, NodeResult> entry : nodeResults.entrySet()) {
+            // extract data
+            NodeResult nodeResult = entry.getValue();
+            String nodePath = entry.getKey();
+            // display data for button
             GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
-            String nodePath = GenericNode.listPathToStringPath(nodeResult.path().list()); //TODO: use map path if i ever go back to giving NodeResults in map
-            
+            // add button
             flowLayout.child(Components
                     .button(Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
                         // on click set this node path at the selected one and load info panel

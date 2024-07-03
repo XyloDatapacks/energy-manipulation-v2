@@ -6,9 +6,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public abstract class AbstractNodeWithList<T extends GenericNode> extends AbstractNode {
     private final String subNodesId;
@@ -72,31 +70,31 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
     }
 
     @Override
-    public final List<NodeResult> getAllSubNodes() {
+    public final Map<String, NodeResult> getAllSubNodes() {
         
-        List<NodeResult> returnSubNodes = new ArrayList<>();
+        Map<String, NodeResult> returnSubNodes = new LinkedHashMap<>();
         for (int index = 0; index < subNodes.size(); index++) {
             // generate path
             List<String> subNodePath = new ArrayList<>();
             subNodePath.add(subNodesId + "[" + index + "]");
             // this sub node
-            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index).getNode()));
+            returnSubNodes.put(GenericNode.listPathToStringPath(subNodePath), new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index).getNode()));
         }
         return returnSubNodes;
     }
 
     @Override
-    public final List<NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
+    public final Map<String, NodeResult> getAllSubNodesRecursive(List<String> pathStart) {
        
-        List<NodeResult> returnSubNodes = new ArrayList<>();
+        Map<String, NodeResult> returnSubNodes = new LinkedHashMap<>();
         for (int index = 0; index < subNodes.size(); index++) {
             // generate path
             List<String> subNodePath = new ArrayList<>(pathStart);
             subNodePath.add(subNodesId + "[" + index + "]");
             // this sub node
-            returnSubNodes.add(new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index).getNode()));
+            returnSubNodes.put(GenericNode.listPathToStringPath(subNodePath), new NodeResult(new NodePath(subNodePath, subNodesId), subNodes.get(index).getNode()));
             // recursive
-            returnSubNodes.addAll(subNodes.get(index).getNode().getAllSubNodesRecursive(subNodePath));
+            returnSubNodes.putAll(subNodes.get(index).getNode().getAllSubNodesRecursive(subNodePath));
         }
         return returnSubNodes;
     }

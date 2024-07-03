@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public interface GenericNode {
 
@@ -30,15 +31,15 @@ public interface GenericNode {
 
     
     /** get all sub nodes of this node */
-    public abstract List<NodeResult> getAllSubNodes();
+    public abstract Map<String, NodeResult> getAllSubNodes();
     /** get all sub nodes and their sub nodes */
-    public abstract List<NodeResult> getAllSubNodesRecursive(List<String> pathStart);
+    public abstract Map<String, NodeResult> getAllSubNodesRecursive(List<String> pathStart);
     /** get all sub nodes and their sub nodes */
-    public default List<NodeResult> getAllSubNodesRecursive(String pathStart) {
+    public default Map<String, NodeResult> getAllSubNodesRecursive(String pathStart) {
         return getAllSubNodesRecursive(stringPathToListPath(pathStart));
     };
     /** get all sub nodes and their sub nodes */
-    public default List<NodeResult> getAllSubNodesRecursive() {
+    public default Map<String, NodeResult> getAllSubNodesRecursive() {
         return getAllSubNodesRecursive(new ArrayList<>());
     };
 
