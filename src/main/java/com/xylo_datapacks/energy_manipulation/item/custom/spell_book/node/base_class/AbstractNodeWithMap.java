@@ -59,7 +59,7 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
         NbtCompound subNodesCompound = nbt.getCompound("sub_nodes");
         subNodesCompound.getKeys().forEach(key -> {
             NbtCompound subNodeNbt = subNodesCompound.getCompound(key);
-            Identifier nodeIdentifier = GenericNode.getNodeIdentifier(subNodeNbt.getString("node_identifier"));
+            Identifier nodeIdentifier = Identifier.tryParse(subNodeNbt.getString("node_type"));
             modifySubNode(key, nodeIdentifier);
             SubNode<?> subNode = getSubNode(key);
             if (subNode != null) {

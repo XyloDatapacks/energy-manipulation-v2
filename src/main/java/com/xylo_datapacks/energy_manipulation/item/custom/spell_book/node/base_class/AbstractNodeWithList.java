@@ -100,7 +100,7 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
     public GenericNode setFromNbt(NbtCompound nbt) {
         nbt.getList("sub_nodes", NbtCompound.COMPOUND_TYPE).forEach(compound -> {
             NbtCompound subNodeNbt = ((NbtCompound) compound);
-            Identifier nodeIdentifier = GenericNode.getNodeIdentifier(subNodeNbt.getString("node_identifier"));
+            Identifier nodeIdentifier = Identifier.tryParse(subNodeNbt.getString("node_type"));
             appendSubNode(nodeIdentifier);
             SubNode<?> subNode = getSubNode(subNodes.size() - 1);
             if (subNode != null) {

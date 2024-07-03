@@ -18,10 +18,6 @@ public interface GenericNode {
 
     // node Id
     public abstract Identifier getNodeIdentifier();
-    public static Identifier getNodeIdentifier(String identifier) {
-        List<String> splittedIdentifier = new ArrayList<String>(Arrays.asList(identifier.split(":")));
-        return Identifier.of(EnergyManipulation.MOD_ID, splittedIdentifier.get(1));
-    }
     // nbt
     public abstract NbtCompound toNbt();
     public abstract GenericNode setFromNbt(NbtCompound nbt);
