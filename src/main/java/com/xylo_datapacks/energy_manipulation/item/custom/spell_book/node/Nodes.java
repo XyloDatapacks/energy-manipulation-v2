@@ -28,7 +28,7 @@ public class Nodes {
     public static Map<Identifier, NodeData<? extends GenericNode>> NODES = new HashMap<>();
 
     /** Instructions */
-    public static final NodeData<GenericNode> INSTRUCTION_PROVIDER = registerNode("instruction", "instruction_provider", new NodeData.NodeDataMaker<>("Instruction Provider", "List of instructions", InstructionProviderNode::new, Map.of(
+    public static final NodeData<InstructionProviderNode> INSTRUCTION_PROVIDER = registerNode("instruction", "instruction_provider", new NodeData.NodeDataMaker<>("Instruction Provider", "List of instructions", InstructionProviderNode::new, Map.of(
             "instruction", new SubNodeData("Instruction","A single instruction")
     )));
     public static final NodeData<GenerateShapeInstructionNode> INSTRUCTION_GENERATE_SHAPE = registerNode("instruction", "generate_shape", new NodeData.NodeDataMaker<>("Generate Shape", "Generates a shape", GenerateShapeInstructionNode::new, Map.of(
