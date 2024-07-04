@@ -10,16 +10,20 @@ public class InventoryUtils {
     public static NbtList toTag(SimpleInventory inventory) {
         NbtList tag = new NbtList();
 
+        System.out.println("toTag ----------------");
         for(int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
             if (!stack.isEmpty()) {
                 NbtCompound stackTag = new NbtCompound();
                 stackTag.putInt("Slot", i);
+                System.out.println("stack: " + stack.getNbt());
                 stackTag.put("Stack", stack.writeNbt(new NbtCompound()));
+                System.out.println("stackTag: " + stackTag);
                 tag.add(stackTag);
+                System.out.println("tag: " + tag);
             }
         }
-
+        System.out.println("toTag END ----------------");
         return tag;
     }
 

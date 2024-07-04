@@ -2,6 +2,7 @@ package com.xylo_datapacks.energy_manipulation.item.custom;
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.ModifyPositionInstructionNode;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,7 +27,7 @@ public class SpellBookPageItem extends Item implements FabricItem {
     public static GenericNode getSpell(ItemStack stack) {
         NbtCompound nbtCompound = stack.getNbt();
         if (nbtCompound == null) {
-            return new InstructionProviderNode();
+            return new ModifyPositionInstructionNode();
         }
         return GenericNode.generateFromNbt(nbtCompound.getCompound(SPELL_KEY));
     }
