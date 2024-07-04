@@ -5,11 +5,9 @@ import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookPageItem;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction.InstructionProviderNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.api.Dimension;
 import com.xylo_datapacks.energy_manipulation.api.Point;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ProjectileShapeNode;
 import com.xylo_datapacks.energy_manipulation.util.InventoryUtils;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,6 +24,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class SpellBookScreenHandler extends ScreenHandler {
@@ -36,7 +36,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
     private final int verticalOffset = 67;
     private final GuiManager guiManager;
     private BackpackInventory inventory;
-    private Consumer<Boolean> sendScreenUpdateConsumer;
+    private Consumer<Boolean> NodeListUpdateConsumer;
 
     public SpellBookScreenHandler(int synchronizationID, PlayerInventory playerInventory, PacketByteBuf packetByteBuf) {
         this(synchronizationID, playerInventory, packetByteBuf.readItemStack());
@@ -99,7 +99,28 @@ public class SpellBookScreenHandler extends ScreenHandler {
             this.addSlot(new BackpackLockedSlot(playerInventory, x, playerInvSlotPosition.x + 1, playerInvSlotPosition.y + 1));
         }
     }
-    
+
+    @Override
+    public boolean onButtonClick(PlayerEntity player, int id) {
+        if (id == -1) {
+            guiManager.setPreviousNodeClass();
+            updatePageSpell();
+        }
+        else if (id == -2) {
+            guiManager.setNextNodeClass();
+            updatePageSpell();
+        }
+        else if (id >= 0) {
+            Map<String, NodeResult> nodeResultMap = guiManager.getAllNodes();
+            List<String> keyList = nodeResultMap.keySet().stream().toList();
+            if (id < keyList.size()) {
+                guiManager.selectNode(keyList.get(id));
+                sendNodeListUpdate();
+            }
+        }
+        return true;
+    }
+
     /**
      * has to be called after every manipulation from handledScreen
      */
@@ -127,7 +148,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
             this.guiManager.reset();   
         }
         // update screen
-        sendScreenUpdate();
+        sendNodeListUpdate();
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
@@ -159,13 +180,13 @@ public class SpellBookScreenHandler extends ScreenHandler {
     /**
      * call in screen constructor
      */
-    public void registerSetScreenUpdate(Consumer<Boolean> sendScreenUpdateConsumer) { 
-        this.sendScreenUpdateConsumer = sendScreenUpdateConsumer; 
+    public void registerNodeListUpdate(Consumer<Boolean> NodeListUpdateConsumer) { 
+        this.NodeListUpdateConsumer = NodeListUpdateConsumer; 
     }
     
-    private void sendScreenUpdate() {
-        if (sendScreenUpdateConsumer != null) {
-            this.sendScreenUpdateConsumer.accept(true);
+    private void sendNodeListUpdate() {
+        if (NodeListUpdateConsumer != null) {
+            this.NodeListUpdateConsumer.accept(true);
         }
     }
     

@@ -2,7 +2,6 @@ package com.xylo_datapacks.energy_manipulation.screen.spell_book;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.api.Dimension;
 import io.wispforest.owo.ui.base.BaseUIModelHandledScreen;
@@ -13,17 +12,17 @@ import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
-
+@Environment(value= EnvType.CLIENT)
 public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout, SpellBookScreenHandler> {
-    private String selectedNodePath = "";
+    private FlowLayout rootComponent;
     
     
     public SpellBookHandledScreen(SpellBookScreenHandler handler, PlayerInventory inventory, Text title) {
@@ -47,13 +46,15 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
      */
     @Override
     protected void build(FlowLayout rootComponent) {
-        refreshNodesList(rootComponent);
-        this.handler.registerSetScreenUpdate(bUpdate -> {
-            refreshNodesList(rootComponent);
+        this.rootComponent = rootComponent;
+        
+        refreshNodesList();
+        this.handler.registerNodeListUpdate(bUpdate -> {
+            refreshNodesList();
         });
     }
-
-    public void refreshNodesList(FlowLayout rootComponent) {
+    
+    public void refreshNodesList() {
         ScrollContainer<?> scrollContainer = rootComponent.childById(ScrollContainer.class, "nodes_list_scroll");
         if (scrollContainer == null) return;
         
@@ -64,9 +65,9 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         double flowLayoutHeightPreUpdate = flowLayout.fullSize().height();
         
         // reset and refresh list
-        boolean selectedNodeExists = false;
         flowLayout.clearChildren();
-        Map<String, NodeResult> nodeResults = this.handler.getGuiManager().getAllSubNodesRecursive();
+        Map<String, NodeResult> nodeResults = this.handler.getGuiManager().getAllNodes();
+        int nodeIndex = 0;
         for (Map.Entry<String, NodeResult> entry : nodeResults.entrySet()) {
             // extract data
             NodeResult nodeResult = entry.getValue();
@@ -74,25 +75,19 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
             // display data for button
             GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
             // add button
+            int finalNodeIndex = nodeIndex;
             flowLayout.child(Components
                     .button(Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
-                        // on click set this node path at the selected one and load info panel
-                        selectedNodePath = nodePath;
-                        refreshNodeInfo(rootComponent, nodeResult);
+                        if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, finalNodeIndex)) {
+                            this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, finalNodeIndex);
+                        }
                     })
                     .id(nodePath)
                     .horizontalSizing(Sizing.fill(100)));
 
-            // if the node is selected then update the info 
-            if (!selectedNodePath.isEmpty() && selectedNodePath.equals(nodePath)) {
-                refreshNodeInfo(rootComponent, nodeResult);
-                selectedNodeExists = true;
-            }
+            nodeIndex++;
         }
-        
-        if (!selectedNodeExists) {
-            refreshNodeInfo(rootComponent, null);
-        }
+        refreshNodeInfo();
 
         // calculate scroll percentage
         double maxScrollHeight = flowLayoutHeightPreUpdate - scrollContainer.height(); // container height minus the exposed area
@@ -104,11 +99,11 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         scrollContainer.scrollTo(progressPercent);
     }
     
-    public void refreshNodeInfo(FlowLayout rootComponent, NodeResult nodeResult) {
-
+    public void refreshNodeInfo() {
         FlowLayout flowLayout = rootComponent.childById(FlowLayout.class, "node_info_scroll_content");
         if (flowLayout == null) return;
         
+        NodeResult nodeResult = this.handler.getGuiManager().getSelectedNode();
         // reset children if needed
         if (nodeResult == null) {
             flowLayout.clearChildren();
@@ -138,9 +133,9 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         ButtonComponent buttonPrev = rootComponent.childById(ButtonComponent.class, "node_info_class_button_prev");
         if (buttonPrev != null) {
             buttonPrev.onPress(buttonComponent -> {
-                GuiManager.setPreviousNodeClass(nodeResult);
-                refreshNodesList(rootComponent);
-                this.handler.updatePageSpell();
+                if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, -1)) {
+                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, -1);
+                }
             });
         }
 
@@ -148,9 +143,9 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         ButtonComponent buttonNext = rootComponent.childById(ButtonComponent.class, "node_info_class_button_next");
         if (buttonNext != null) {
             buttonNext.onPress(buttonComponent -> {
-                GuiManager.setNextNodeClass(nodeResult);
-                refreshNodesList(rootComponent);
-                this.handler.updatePageSpell();
+                if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, -2)) {
+                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, -2);
+                }
             });
         }
     }
