@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithList;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.ValueTypeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
@@ -7,6 +8,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
 import net.minecraft.nbt.NbtCompound;
 
+import java.util.List;
 import java.util.Map;
 
 public class GuiManager {
@@ -43,7 +45,13 @@ public class GuiManager {
     }
     
     public NodeResult getNodeAtPath(String path) {
-        return getAllNodes().get(path);
+        return rootNode.getNodeResultFromPath(path);
+    }
+    
+    public String getPathAtIndex(int index) {
+        Map<String, NodeResult> nodeResultMap = getAllNodes();
+        List<String> keyList = nodeResultMap.keySet().stream().toList();
+        return index < keyList.size() ? keyList.get(index) : null;
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
@@ -107,8 +115,25 @@ public class GuiManager {
     /*----------------------------------------------------------------------------------------------------------------*/
 
 
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* List Management */
 
+    public void removeNodeFromList(String path) {
+        GenericNode parentNode = getNodeAtPath(path).node().getParentNode();
+        if (parentNode instanceof AbstractNodeWithList<?> listNode) {
+            listNode.removeSubNode(path);
+        }
+    }
 
+    public void addEntryToList(String path) {
+        GenericNode node = getNodeAtPath(path).node();
+        if (node instanceof AbstractNodeWithList<?> listNode) {
+            listNode.appendSubNode();
+        }
+    }
+    
+    /*----------------------------------------------------------------------------------------------------------------*/
+    
 
     /*----------------------------------------------------------------------------------------------------------------*/
     /* nbt */

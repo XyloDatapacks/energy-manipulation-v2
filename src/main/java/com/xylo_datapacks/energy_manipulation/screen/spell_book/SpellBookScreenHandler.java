@@ -5,6 +5,7 @@ import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookPageItem;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithList;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.api.Dimension;
 import com.xylo_datapacks.energy_manipulation.api.Point;
@@ -30,6 +31,7 @@ import java.util.function.Consumer;
 
 public class SpellBookScreenHandler extends ScreenHandler {
 
+    public static final int CATEGORY_BUTTON_ID_OFFSET = 5000;
     private final ItemStack spellBookStack;
     private final int padding = 8;
     private final int titleSpace = 10;
@@ -111,11 +113,22 @@ public class SpellBookScreenHandler extends ScreenHandler {
             updatePageSpell();
         }
         else if (id >= 0) {
-            Map<String, NodeResult> nodeResultMap = guiManager.getAllNodes();
-            List<String> keyList = nodeResultMap.keySet().stream().toList();
-            if (id < keyList.size()) {
-                guiManager.selectNode(keyList.get(id));
+            String path = guiManager.getPathAtIndex(id % CATEGORY_BUTTON_ID_OFFSET);
+            if (path == null) return false;
+            
+            int categoryId = id / CATEGORY_BUTTON_ID_OFFSET;
+            if (categoryId == 0) {
+                // update the selected node in the guiManager from the id
+                guiManager.selectNode(path);
                 sendNodeListUpdate();
+            } else if (categoryId == 1) {
+                // add element to list
+                guiManager.addEntryToList(path);
+                updatePageSpell();
+            } else if (categoryId == 2) {
+                // remove from list
+                guiManager.removeNodeFromList(path);
+                updatePageSpell();
             }
         }
         return true;

@@ -17,6 +17,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ProjectileShapeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.spell.SpellNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.BooleanValueTypeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.DoubleValueTypeNode;
 import net.minecraft.util.Identifier;
@@ -27,6 +28,10 @@ import java.util.Map;
 public class Nodes {
     public static Map<Identifier, NodeData<? extends GenericNode>> NODES = new HashMap<>();
 
+    public static final NodeData<SpellNode> SPELL = registerNode("spell", "spell", new NodeData.NodeDataMaker<>("Spell", "A Spell", SpellNode::new, Map.of(
+            "program", new SubNodeData("program","Something that the spell will execute")
+    )));
+    
     /** Instructions */
     public static final NodeData<InstructionProviderNode> INSTRUCTION_PROVIDER = registerNode("instruction", "instruction_provider", new NodeData.NodeDataMaker<>("Instruction Provider", "List of instructions", InstructionProviderNode::new, Map.of(
             "instruction", new SubNodeData("Instruction","A single instruction")

@@ -16,8 +16,8 @@ public class InstructionProviderNode extends AbstractNodeWithList<InstructionNod
                         Nodes.INSTRUCTION_MODIFY_POSITION)
                 ));
         
-        this.appendSubNode(Nodes.INSTRUCTION_MODIFY_POSITION.identifier());
-        this.appendSubNode(Nodes.INSTRUCTION_MODIFY_POSITION.identifier());
-        this.appendSubNode(Nodes.INSTRUCTION_GENERATE_SHAPE.identifier());
+        //this.appendSubNode(Nodes.INSTRUCTION_MODIFY_POSITION.identifier());
+        //this.appendSubNode(Nodes.INSTRUCTION_MODIFY_POSITION.identifier());
+        //this.appendSubNode(Nodes.INSTRUCTION_GENERATE_SHAPE.identifier());
     }
 }

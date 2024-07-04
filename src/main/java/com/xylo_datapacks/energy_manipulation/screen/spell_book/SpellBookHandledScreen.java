@@ -2,6 +2,7 @@ package com.xylo_datapacks.energy_manipulation.screen.spell_book;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithList;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.api.Dimension;
 import io.wispforest.owo.ui.base.BaseUIModelHandledScreen;
@@ -9,6 +10,7 @@ import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.LabelComponent;
+import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.*;
@@ -67,26 +69,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         // reset and refresh list
         flowLayout.clearChildren();
         Map<String, NodeResult> nodeResults = this.handler.getGuiManager().getAllNodes();
-        int nodeIndex = 0;
-        for (Map.Entry<String, NodeResult> entry : nodeResults.entrySet()) {
-            // extract data
-            NodeResult nodeResult = entry.getValue();
-            String nodePath = entry.getKey();
-            // display data for button
-            GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
-            // add button
-            int finalNodeIndex = nodeIndex;
-            flowLayout.child(Components
-                    .button(Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
-                        if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, finalNodeIndex)) {
-                            this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, finalNodeIndex);
-                        }
-                    })
-                    .id(nodePath)
-                    .horizontalSizing(Sizing.fill(100)));
-
-            nodeIndex++;
-        }
+        addButton(flowLayout, nodeResults);
+        // refresh node info panel
         refreshNodeInfo();
 
         // calculate scroll percentage
@@ -98,7 +82,71 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         // restore scroll percentage
         scrollContainer.scrollTo(progressPercent);
     }
-    
+
+    private void addButton(FlowLayout flowLayout, Map<String, NodeResult> nodeResults) {
+        int nodeIndex = 0;
+        for (Map.Entry<String, NodeResult> entry : nodeResults.entrySet()) {
+            // add button
+            flowLayout.child(generateButton(entry.getKey(), entry.getValue(), nodeIndex));
+            nodeIndex++;
+        }
+    }
+
+    private Component generateButton(String nodePath, NodeResult nodeResult, int nodeIndex) {
+        // create layout to contain button
+        FlowLayout buttonLayout = Containers.horizontalFlow(Sizing.fill(100), Sizing.content(0));
+
+        // display data for button
+        GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
+        // create button
+        ButtonComponent buttonComponent = (ButtonComponent) Components.button(
+                Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
+                    if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex)) {
+                        this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex);
+                    }
+                })
+                .id(nodePath)
+                .horizontalSizing(Sizing.fill(100));
+        
+        // add button component to layout
+        buttonLayout.child(buttonComponent);
+        
+        // add "+" button for list nodes
+        if (nodeResult.node() instanceof AbstractNodeWithList<?>) {
+            buttonComponent.horizontalSizing(Sizing.fill(80));
+
+            ButtonComponent plusButton = (ButtonComponent) Components.button(
+                            Text.literal("+"), button -> {
+                                if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.CATEGORY_BUTTON_ID_OFFSET)) {
+                                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + SpellBookScreenHandler.CATEGORY_BUTTON_ID_OFFSET);
+                                }
+                            })
+                    .id(nodePath)
+                    .horizontalSizing(Sizing.fill(20));
+
+            buttonLayout.child(plusButton);
+        }
+
+        // add "remove" button for children of list nodes
+        if (nodeResult.node().getParentNode() instanceof AbstractNodeWithList<?>) {
+            buttonComponent.horizontalSizing(Sizing.fill(80));
+
+            ButtonComponent removeButton = (ButtonComponent) Components.button(
+                            Text.literal("-"), button -> {
+                                if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + 2 * SpellBookScreenHandler.CATEGORY_BUTTON_ID_OFFSET)) {
+                                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + 2 * SpellBookScreenHandler.CATEGORY_BUTTON_ID_OFFSET);
+                                }
+                            })
+                    .id(nodePath)
+                    .horizontalSizing(Sizing.fill(20));
+
+            buttonLayout.child(removeButton);
+        }
+        
+        return buttonLayout;
+    }
+
+
     public void refreshNodeInfo() {
         FlowLayout flowLayout = rootComponent.childById(FlowLayout.class, "node_info_scroll_content");
         if (flowLayout == null) return;
@@ -149,5 +197,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
             });
         }
     }
+    
+    
     
 }

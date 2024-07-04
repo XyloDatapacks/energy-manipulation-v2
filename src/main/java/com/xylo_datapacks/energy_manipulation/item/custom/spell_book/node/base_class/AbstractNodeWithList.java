@@ -20,6 +20,10 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
         this.subNodesId = subNodesId;
         this.subNodeBuilderTemplate = subNodeBuilderTemplate;
     }
+
+    public final void appendSubNode() {
+        subNodes.add(subNodes.size(), subNodeBuilderTemplate.build(this));
+    }
     
     public final void appendSubNode(Identifier newSubNodeValueIdentifier) {
         subNodes.add(subNodes.size(), subNodeBuilderTemplate.build(this, newSubNodeValueIdentifier));
@@ -49,6 +53,14 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
 
     public final SubNode<T> removeSubNode(int index) {
         return subNodes.remove(index);
+    }
+
+    public final SubNode<T> removeSubNode(String path) {
+        return removeSubNode(GenericNode.stringPathToListPath(path));
+    }
+
+    public final SubNode<T> removeSubNode(List<String> listPath) {
+        return removeSubNode(GenericNode.stripIndexFromPathElement(listPath.get(listPath.size() - 1)));
     }
     
     public final SubNode<T> removeFirstSubNode() {

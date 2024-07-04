@@ -15,8 +15,8 @@ public class EffectProviderNode extends AbstractNodeWithList<EffectNode> {
                         Nodes.EFFECT_FIRE)
                 ));
         
-        this.appendSubNode(Nodes.EFFECT_FIRE.identifier());
-        this.appendSubNode(Nodes.EFFECT_FIRE.identifier());
-        this.appendSubNode(Nodes.EFFECT_FIRE.identifier());
+        //this.appendSubNode(Nodes.EFFECT_FIRE.identifier());
+        //this.appendSubNode(Nodes.EFFECT_FIRE.identifier());
+        //this.appendSubNode(Nodes.EFFECT_FIRE.identifier());
     }
 }
