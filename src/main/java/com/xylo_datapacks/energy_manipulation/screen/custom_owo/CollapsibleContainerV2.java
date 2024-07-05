@@ -103,6 +103,12 @@ public class CollapsibleContainerV2 extends FlowLayout  {
         this.toggledEvents.sink().onToggle(this.expanded);
     }
 
+    public void setExpanded(boolean expand) {
+        if (this.expanded != expand) {
+            toggleExpansion();
+        }
+    }
+
     @Override
     public boolean canFocus(FocusSource source) {
         return source == FocusSource.KEYBOARD_CYCLE;

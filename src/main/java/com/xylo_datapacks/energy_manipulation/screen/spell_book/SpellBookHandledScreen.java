@@ -25,12 +25,14 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Environment(value= EnvType.CLIENT)
 public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout, SpellBookScreenHandler> {
     private FlowLayout rootComponent;
+    private Map<String, Boolean> expandedMap = new HashMap<>();
     
     
     public SpellBookHandledScreen(SpellBookScreenHandler handler, PlayerInventory inventory, Text title) {
@@ -113,9 +115,14 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
         
         // create layout to contain button
-        CollapsibleContainerV2 buttonLayout = (CollapsibleContainerV2) XyloOwoContainers.collapsibleV2(Sizing.content(0), Sizing.content(0), Text.of(buttonDisplay.subNodeName()), true)
+        Boolean expand = expandedMap.get(nodePath);
+        expand = expand == null || expand;
+        CollapsibleContainerV2 buttonLayout = (CollapsibleContainerV2) XyloOwoContainers.collapsibleV2(Sizing.content(0), Sizing.content(0), Text.of(buttonDisplay.subNodeName()), expand)
                 .surface(Surface.DARK_PANEL)
                 .id(nodePath);
+        buttonLayout.onToggled().subscribe(expanded -> {
+            expandedMap.put(nodePath, expanded);
+        });
         
         // create button
         ButtonComponent buttonComponent = (ButtonComponent) Components.button(
