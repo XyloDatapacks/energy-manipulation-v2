@@ -48,14 +48,16 @@ public class CollapsibleContainerV2 extends FlowLayout  {
         // Title
 
         this.titleLayout = Containers.horizontalFlow(Sizing.content(), Sizing.content());
-        this.titleLayout.padding(Insets.of(5, 5, 5, 0));
-        this.allowOverflow(true);
-
-        title = title.copy().formatted(Formatting.UNDERLINE);
-        this.titleLayout.child(Components.button(title, buttonComponent -> {}));
+        this.titleLayout.padding(Insets.of(2, 2, 2, 2));
+        this.titleLayout.verticalAlignment(VerticalAlignment.CENTER);
+        this.allowOverflow(false);
 
         this.spinnyBoi = new SpinnyBoiComponent();
+        this.spinnyBoi.margins(Insets.of(0, 0, 4, 2));
         this.titleLayout.child(spinnyBoi);
+
+        //title = title.copy().formatted(Formatting.UNDERLINE);
+        //this.titleLayout.child(Components.button(title, buttonComponent -> {}));
 
         this.expanded = expanded;
         this.spinnyBoi.targetRotation = expanded ? 90 : 0;
@@ -66,7 +68,7 @@ public class CollapsibleContainerV2 extends FlowLayout  {
         // Content
 
         this.contentLayout = Containers.verticalFlow(Sizing.content(), Sizing.content());
-        this.contentLayout.padding(Insets.left(15));
+        this.contentLayout.padding(Insets.left(2));
         this.contentLayout.surface(SURFACE);
 
         super.child(this.contentLayout);

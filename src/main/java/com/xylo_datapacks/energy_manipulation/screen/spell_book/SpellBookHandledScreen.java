@@ -113,8 +113,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
         
         // create layout to contain button
-        CollapsibleContainerV2 buttonLayout = (CollapsibleContainerV2) XyloOwoContainers.collapsibleV2(Sizing.fill(100), Sizing.content(0), Text.of(buttonDisplay.subNodeName()), true)
-                .padding(Insets.left(2))
+        CollapsibleContainerV2 buttonLayout = (CollapsibleContainerV2) XyloOwoContainers.collapsibleV2(Sizing.content(0), Sizing.content(0), Text.of(buttonDisplay.subNodeName()), true)
                 .surface(Surface.DARK_PANEL)
                 .id(nodePath);
         
@@ -126,14 +125,14 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                     }
                 })
                 .id(nodePath)
-                .horizontalSizing(Sizing.fill(100));
+                .horizontalSizing(Sizing.content(0));
         
         // add button component to layout
-        buttonLayout.child(buttonComponent);
+        buttonLayout.titleLayout().child(buttonComponent);
         
         // add "+" button for list nodes
         if (nodeResult.node() instanceof AbstractNodeWithList<?>) {
-            buttonComponent.horizontalSizing(Sizing.fill(80));
+            //buttonComponent.horizontalSizing(Sizing.fill(80));
 
             ButtonComponent plusButton = (ButtonComponent) Components.button(
                             Text.literal("+"), button -> {
@@ -142,14 +141,14 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                                 }
                             })
                     .id(nodePath)
-                    .horizontalSizing(Sizing.fill(20));
+                    .horizontalSizing(Sizing.content(0));
 
-            buttonLayout.child(plusButton);
+            buttonLayout.titleLayout().child(plusButton);
         }
 
         // add "remove" button for children of list nodes
         if (nodeResult.node().getParentNode() instanceof AbstractNodeWithList<?>) {
-            buttonComponent.horizontalSizing(Sizing.fill(80));
+            //buttonComponent.horizontalSizing(Sizing.fill(80));
 
             ButtonComponent removeButton = (ButtonComponent) Components.button(
                             Text.literal("-"), button -> {
@@ -158,9 +157,9 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                                 }
                             })
                     .id(nodePath)
-                    .horizontalSizing(Sizing.fill(20));
+                    .horizontalSizing(Sizing.content(0));
 
-            buttonLayout.child(removeButton);
+            buttonLayout.titleLayout().child(removeButton);
         }
         
         return buttonLayout;
