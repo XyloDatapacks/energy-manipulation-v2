@@ -11,13 +11,17 @@ import java.util.List;
 public abstract class AbstractNode implements GenericNode {
     private final Identifier nodeIdentifier;
     private GenericNode parentNode;
+    private int nesting = 0;
     
     public AbstractNode(NodeData nodeData) {
         this.nodeIdentifier = nodeData.identifier();
     }
     
     /** set parent node */
-    protected final void setParentNode(GenericNode parent) { parentNode = parent; }
+    protected final void setParentNode(GenericNode parent) { 
+        parentNode = parent; 
+        nesting = parentNode.getNesting() + 1;
+    }
     
     /*----------------------------------------------------------------------------------------------------------------*/
     /* GenericNode Interface */
@@ -37,6 +41,11 @@ public abstract class AbstractNode implements GenericNode {
     
     @Override
     public final GenericNode getParentNode() { return parentNode; };
+
+    @Override
+    public int getNesting() {
+        return nesting;
+    }
 
     @Override
     public final GenericNode getNodeFromPath(List<String> path) {

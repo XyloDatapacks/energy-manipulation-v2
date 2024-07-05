@@ -33,7 +33,8 @@ public interface GenericNode {
     
     /** get parent node */
     public abstract GenericNode getParentNode();
-
+    /** get nesting */
+    public abstract int getNesting();
     
     /** get all sub nodes of this node */
     public abstract Map<String, NodeResult> getAllSubNodes();

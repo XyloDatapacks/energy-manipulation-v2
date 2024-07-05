@@ -3,13 +3,17 @@ package com.xylo_datapacks.energy_manipulation.screen.spell_book;
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithList;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.api.Dimension;
+import com.xylo_datapacks.energy_manipulation.screen.custom_owo.CollapsibleContainerV2;
+import com.xylo_datapacks.energy_manipulation.screen.custom_owo.XyloOwoContainers;
 import io.wispforest.owo.ui.base.BaseUIModelHandledScreen;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.LabelComponent;
+import io.wispforest.owo.ui.container.CollapsibleContainer;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
@@ -20,6 +24,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Environment(value= EnvType.CLIENT)
@@ -86,18 +92,32 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
     private void addButton(FlowLayout flowLayout, Map<String, NodeResult> nodeResults) {
         int nodeIndex = 0;
         for (Map.Entry<String, NodeResult> entry : nodeResults.entrySet()) {
+            // find parent container
+            List<String> parentNodeListPath = new ArrayList<>(entry.getValue().path().list());
+            parentNodeListPath.remove(parentNodeListPath.size() - 1);
+            String parentNodeStringPath = GenericNode.listPathToStringPath(parentNodeListPath);
+            CollapsibleContainerV2 parentContainer = flowLayout.childById(CollapsibleContainerV2.class, parentNodeStringPath);
             // add button
-            flowLayout.child(generateButton(entry.getKey(), entry.getValue(), nodeIndex));
+            if (parentContainer != null) {
+                parentContainer.child(generateButton(entry.getKey(), entry.getValue(), nodeIndex));
+            }
+            else {
+                flowLayout.child(generateButton(entry.getKey(), entry.getValue(), nodeIndex));
+            }
             nodeIndex++;
         }
     }
 
     private Component generateButton(String nodePath, NodeResult nodeResult, int nodeIndex) {
-        // create layout to contain button
-        FlowLayout buttonLayout = Containers.horizontalFlow(Sizing.fill(100), Sizing.content(0));
-
         // display data for button
         GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
+        
+        // create layout to contain button
+        CollapsibleContainerV2 buttonLayout = (CollapsibleContainerV2) XyloOwoContainers.collapsibleV2(Sizing.fill(100), Sizing.content(0), Text.of(buttonDisplay.subNodeName()), true)
+                .padding(Insets.left(2))
+                .surface(Surface.DARK_PANEL)
+                .id(nodePath);
+        
         // create button
         ButtonComponent buttonComponent = (ButtonComponent) Components.button(
                 Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
