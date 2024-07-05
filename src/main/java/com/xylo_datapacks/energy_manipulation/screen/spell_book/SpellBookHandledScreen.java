@@ -78,7 +78,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         double newMaxScrollHeight = flowLayout.fullSize().height() - scrollContainer.height(); // new container height minus the exposed area
         double maxLayoutY = scrollContainer.y() - maxScrollHeight; // Y pos of the layout when scrolled down at 100%
         double distance = Math.abs(flowLayout.y() - maxLayoutY); // goes from maxScrollHeight at 0% to 0 at 100%
-        double progressPercent = newMaxScrollHeight > 0.0 ? (Math.min((maxScrollHeight - distance) / newMaxScrollHeight, 1.0)) : 0.0; // clamp [(maxScrollHeight - distance) / newMaxScrollHeight]
+        double progressPercent = newMaxScrollHeight > 0.0 ? Math.max((Math.min((maxScrollHeight - distance) / newMaxScrollHeight, 1.0)), 0.0) : 0.0; // clamp [(maxScrollHeight - distance) / newMaxScrollHeight]
         // restore scroll percentage
         scrollContainer.scrollTo(progressPercent);
     }
@@ -101,8 +101,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         // create button
         ButtonComponent buttonComponent = (ButtonComponent) Components.button(
                 Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
-                    if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex)) {
-                        this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex);
+                    if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.NODE_SELECT_BUTTON.getOffset())) {
+                        this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.NODE_SELECT_BUTTON.getOffset());
                     }
                 })
                 .id(nodePath)
@@ -117,8 +117,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
 
             ButtonComponent plusButton = (ButtonComponent) Components.button(
                             Text.literal("+"), button -> {
-                                if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.CATEGORY_BUTTON_ID_OFFSET)) {
-                                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + SpellBookScreenHandler.CATEGORY_BUTTON_ID_OFFSET);
+                                if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.ADD_ELEMENT_TO_LIST_BUTTON.getOffset())) {
+                                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.ADD_ELEMENT_TO_LIST_BUTTON.getOffset());
                                 }
                             })
                     .id(nodePath)
@@ -133,8 +133,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
 
             ButtonComponent removeButton = (ButtonComponent) Components.button(
                             Text.literal("-"), button -> {
-                                if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + 2 * SpellBookScreenHandler.CATEGORY_BUTTON_ID_OFFSET)) {
-                                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + 2 * SpellBookScreenHandler.CATEGORY_BUTTON_ID_OFFSET);
+                                if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.REMOVE_NODE_FROM_LIST_BUTTON.getOffset())) {
+                                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.REMOVE_NODE_FROM_LIST_BUTTON.getOffset());
                                 }
                             })
                     .id(nodePath)

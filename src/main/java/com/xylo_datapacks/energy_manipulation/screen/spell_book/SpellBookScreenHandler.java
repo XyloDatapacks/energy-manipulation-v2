@@ -5,8 +5,6 @@ import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookPageItem;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithList;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.api.Dimension;
 import com.xylo_datapacks.energy_manipulation.api.Point;
 import com.xylo_datapacks.energy_manipulation.util.InventoryUtils;
@@ -25,13 +23,30 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class SpellBookScreenHandler extends ScreenHandler {
 
-    public static final int CATEGORY_BUTTON_ID_OFFSET = 5000;
+    public static final int BUTTON_CATEGORY_ID_OFFSET = 5000;
+    public enum BUTTON_CATEGORY {
+        NODE_SELECT_BUTTON(0),
+        ADD_ELEMENT_TO_LIST_BUTTON(1),
+        REMOVE_NODE_FROM_LIST_BUTTON(2);
+        
+        private final int id;
+        
+        BUTTON_CATEGORY(int id) {
+            this.id = id;
+        }
+        
+        public int getId() {
+            return id;
+        }
+        
+        public int getOffset() {
+            return id * BUTTON_CATEGORY_ID_OFFSET;
+        }
+    }
     private final ItemStack spellBookStack;
     private final int padding = 8;
     private final int titleSpace = 10;
@@ -113,19 +128,19 @@ public class SpellBookScreenHandler extends ScreenHandler {
             updatePageSpell();
         }
         else if (id >= 0) {
-            String path = guiManager.getPathAtIndex(id % CATEGORY_BUTTON_ID_OFFSET);
+            String path = guiManager.getPathAtIndex(id % BUTTON_CATEGORY_ID_OFFSET);
             if (path == null) return false;
             
-            int categoryId = id / CATEGORY_BUTTON_ID_OFFSET;
-            if (categoryId == 0) {
+            int categoryId = id / BUTTON_CATEGORY_ID_OFFSET;
+            if (categoryId == BUTTON_CATEGORY.NODE_SELECT_BUTTON.getId()) {
                 // update the selected node in the guiManager from the id
                 guiManager.selectNode(path);
                 sendNodeListUpdate();
-            } else if (categoryId == 1) {
+            } else if (categoryId == BUTTON_CATEGORY.ADD_ELEMENT_TO_LIST_BUTTON.getId()) {
                 // add element to list
                 guiManager.addEntryToList(path);
                 updatePageSpell();
-            } else if (categoryId == 2) {
+            } else if (categoryId == BUTTON_CATEGORY.REMOVE_NODE_FROM_LIST_BUTTON.getId()) {
                 // remove from list
                 guiManager.removeNodeFromList(path);
                 updatePageSpell();
