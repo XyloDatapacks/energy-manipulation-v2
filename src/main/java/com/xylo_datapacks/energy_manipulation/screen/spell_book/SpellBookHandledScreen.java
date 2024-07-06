@@ -1,9 +1,9 @@
 package com.xylo_datapacks.energy_manipulation.screen.spell_book;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
+import com.xylo_datapacks.energy_manipulation.api.Counter;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithList;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.api.Dimension;
 import com.xylo_datapacks.energy_manipulation.screen.custom_owo.CollapsibleContainerV2;
@@ -13,8 +13,6 @@ import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.LabelComponent;
-import io.wispforest.owo.ui.container.CollapsibleContainer;
-import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.*;
@@ -24,9 +22,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Environment(value= EnvType.CLIENT)
@@ -76,8 +72,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         
         // reset and refresh list
         flowLayout.clearChildren();
-        Map<String, NodeResult> nodeResults = this.handler.getGuiManager().getAllNodes();
-        addButton(flowLayout, nodeResults);
+        Map<String, NodeResult> nodeResults = this.handler.getGuiManager().getRootSubNodes();
+        addButtons(flowLayout, nodeResults, new Counter());
         // refresh node info panel
         refreshNodeInfo();
 
@@ -91,36 +87,27 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         scrollContainer.scrollTo(progressPercent);
     }
 
-    private void addButton(FlowLayout flowLayout, Map<String, NodeResult> nodeResults) {
-        int nodeIndex = 0;
+    private void addButtons(FlowLayout flowLayout, Map<String, NodeResult> nodeResults, Counter nodeIndexCounter) {
         for (Map.Entry<String, NodeResult> entry : nodeResults.entrySet()) {
-            // find parent container
-            List<String> parentNodeListPath = new ArrayList<>(entry.getValue().path().list());
-            parentNodeListPath.remove(parentNodeListPath.size() - 1);
-            String parentNodeStringPath = GenericNode.listPathToStringPath(parentNodeListPath);
-            CollapsibleContainerV2 parentContainer = flowLayout.childById(CollapsibleContainerV2.class, parentNodeStringPath);
             // add button
-            if (parentContainer != null) {
-                parentContainer.child(generateButton(entry.getKey(), entry.getValue(), nodeIndex));
+            if (flowLayout != null) {
+                flowLayout.child(generateNodeElement(entry.getKey(), entry.getValue(), nodeIndexCounter));
             }
-            else {
-                flowLayout.child(generateButton(entry.getKey(), entry.getValue(), nodeIndex));
-            }
-            nodeIndex++;
         }
     }
 
-    private Component generateButton(String nodePath, NodeResult nodeResult, int nodeIndex) {
+    private Component generateNodeElement(String nodePath, NodeResult nodeResult, Counter nodeIndexCounter) {
         // display data for button
         GuiManager.ButtonDisplay buttonDisplay = GuiManager.getButtonDisplay(nodeResult);
+        int nodeIndex = nodeIndexCounter.getValue();
         
         // create layout to contain button
         Boolean expand = expandedMap.get(nodePath);
         expand = expand == null || expand;
-        CollapsibleContainerV2 buttonLayout = (CollapsibleContainerV2) XyloOwoContainers.collapsibleV2(Sizing.content(0), Sizing.content(0), Text.of(buttonDisplay.subNodeName()), expand)
+        CollapsibleContainerV2 collapsibleTile = (CollapsibleContainerV2) XyloOwoContainers.collapsibleV2(Sizing.content(0), Sizing.content(0), Text.of(buttonDisplay.subNodeName()), expand)
                 .surface(Surface.DARK_PANEL)
                 .id(nodePath);
-        buttonLayout.onToggled().subscribe(expanded -> {
+        collapsibleTile.onToggled().subscribe(expanded -> {
             expandedMap.put(nodePath, expanded);
         });
         
@@ -135,12 +122,10 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                 .horizontalSizing(Sizing.content(0));
         
         // add button component to layout
-        buttonLayout.titleLayout().child(buttonComponent);
+        collapsibleTile.titleLayout().child(buttonComponent);
         
         // add "+" button for list nodes
         if (nodeResult.node() instanceof AbstractNodeWithList<?>) {
-            //buttonComponent.horizontalSizing(Sizing.fill(80));
-
             ButtonComponent plusButton = (ButtonComponent) Components.button(
                             Text.literal("+"), button -> {
                                 if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.ADD_ELEMENT_TO_LIST_BUTTON.getOffset())) {
@@ -150,13 +135,11 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                     .id(nodePath)
                     .horizontalSizing(Sizing.content(0));
 
-            buttonLayout.titleLayout().child(plusButton);
+            collapsibleTile.titleLayout().child(plusButton);
         }
 
         // add "remove" button for children of list nodes
         if (nodeResult.node().getParentNode() instanceof AbstractNodeWithList<?>) {
-            //buttonComponent.horizontalSizing(Sizing.fill(80));
-
             ButtonComponent removeButton = (ButtonComponent) Components.button(
                             Text.literal("-"), button -> {
                                 if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.REMOVE_NODE_FROM_LIST_BUTTON.getOffset())) {
@@ -166,10 +149,14 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                     .id(nodePath)
                     .horizontalSizing(Sizing.content(0));
 
-            buttonLayout.titleLayout().child(removeButton);
+            collapsibleTile.titleLayout().child(removeButton);
         }
         
-        return buttonLayout;
+        // add children recursive
+        Map<String, NodeResult> nodeResults = this.handler.getGuiManager().getSubNodes(nodeResult);
+        addButtons(collapsibleTile, nodeResults, nodeIndexCounter.increment());
+        
+        return collapsibleTile;
     }
 
 

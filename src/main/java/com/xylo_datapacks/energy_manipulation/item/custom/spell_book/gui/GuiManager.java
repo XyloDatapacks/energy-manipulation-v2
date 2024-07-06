@@ -43,6 +43,20 @@ public class GuiManager {
         }
         return Map.of();
     }
+
+    public Map<String, NodeResult> getRootSubNodes() {
+        if (rootNode != null) {
+            return rootNode.getAllSubNodes();
+        }
+        return Map.of();
+    }
+
+    public Map<String, NodeResult> getSubNodes(NodeResult nodeResult) {
+        if (nodeResult != null) {
+            return nodeResult.node().getAllSubNodes();
+        }
+        return Map.of();
+    }
     
     public NodeResult getNodeAtPath(String path) {
         return rootNode.getNodeResultFromPath(path);
