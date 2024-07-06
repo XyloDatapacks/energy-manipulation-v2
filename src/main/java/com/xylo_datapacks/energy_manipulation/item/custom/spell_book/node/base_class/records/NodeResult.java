@@ -12,4 +12,8 @@ public record NodeResult(NodePath path, GenericNode node) {
         parentNodeListPath.remove(parentNodeListPath.size() - 1);
         return GenericNode.listPathToStringPath(parentNodeListPath);
     }
+    
+    public static String getLastPathElement(NodeResult nodeResult) {
+        return nodeResult.path().list().get(nodeResult.path().list().size() - 1);
+    }
 }

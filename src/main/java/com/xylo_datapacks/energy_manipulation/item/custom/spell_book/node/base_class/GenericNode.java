@@ -26,6 +26,10 @@ public interface GenericNode {
     };
 
     /** get data of this node */
+    public static NodeData<? extends GenericNode> getNodeData(Identifier nodeIdentifier) {
+        return Nodes.NODES.get(nodeIdentifier);
+    };
+    /** get data of this node */
     public abstract NodeData<? extends GenericNode> getNodeData();
     /** get data of this sub node */
     public abstract SubNodeData getSubNodeData(String subNodeId);
@@ -52,9 +56,10 @@ public interface GenericNode {
 
     /** get a node result from a path */
     public default NodeResult getNodeResultFromPath(List<String> path) {
+        if (path.isEmpty()) return null;
         List<String> pathSaved = new ArrayList<>(path);
-        return new NodeResult(new NodePath(pathSaved, pathSaved.get(pathSaved.size()-1)), getNodeFromPath(path));
-    };
+        return new NodeResult(new NodePath(pathSaved, GenericNode.getSubNodeIdFromPathElement(pathSaved.get(pathSaved.size()-1))), getNodeFromPath(path)); 
+    }
     /** get a node result from a path */
     public default NodeResult getNodeResultFromPath(String path) {
         return getNodeResultFromPath(stringPathToListPath(path));
@@ -96,4 +101,9 @@ public interface GenericNode {
         int indexEnd = pathElement.length() - 1;
         return Integer.parseInt(pathElement.substring(indexStart, indexEnd));
     }
+    static String getSubNodeIdFromPathElement(String pathElement) {
+        int indexStart = pathElement.indexOf("[");
+        if (indexStart == -1) return pathElement;
+        return pathElement.substring(0, indexStart);
+    };
 }

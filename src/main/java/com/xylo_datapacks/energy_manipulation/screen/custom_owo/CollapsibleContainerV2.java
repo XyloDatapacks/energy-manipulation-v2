@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class CollapsibleContainerV2 extends FlowLayout  {
 
@@ -45,10 +46,11 @@ public class CollapsibleContainerV2 extends FlowLayout  {
     protected CollapsibleContainerV2(Sizing horizontalSizing, Sizing verticalSizing, Text title, boolean expanded) {
         super(horizontalSizing, verticalSizing, Algorithm.VERTICAL);
 
+        super.padding(Insets.bottom(2));
+        
         // Title
-
         this.titleLayout = Containers.horizontalFlow(Sizing.content(), Sizing.content());
-        this.titleLayout.padding(Insets.of(2, 2, 2, 2));
+        this.titleLayout.padding(Insets.of(4, 2, 2, 4));
         this.titleLayout.verticalAlignment(VerticalAlignment.CENTER);
         this.allowOverflow(false);
 

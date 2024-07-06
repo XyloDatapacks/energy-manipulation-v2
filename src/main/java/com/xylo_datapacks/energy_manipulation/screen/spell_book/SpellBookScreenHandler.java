@@ -120,11 +120,15 @@ public class SpellBookScreenHandler extends ScreenHandler {
     @Override
     public boolean onButtonClick(PlayerEntity player, int id) {
         if (id == -1) {
-            guiManager.setPreviousNodeClass();
+            guiManager.setPreviewPreviousNodeClass();
             updatePageSpell();
         }
         else if (id == -2) {
-            guiManager.setNextNodeClass();
+            guiManager.setPreviewNextNodeClass();
+            updatePageSpell();
+        }
+        else if (id == -3) {
+            guiManager.confirmNodeClassChange();
             updatePageSpell();
         }
         else if (id >= 0) {

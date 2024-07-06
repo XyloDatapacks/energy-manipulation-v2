@@ -124,7 +124,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                     }
                 })
                 .id(nodePath)
-                .horizontalSizing(Sizing.content(0));
+                .horizontalSizing(Sizing.content(0))
+                .verticalSizing(Sizing.fixed(16));
         
         // add button component to layout
         collapsibleTile.titleLayout().child(buttonComponent);
@@ -138,7 +139,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                                 }
                             })
                     .id(nodePath)
-                    .horizontalSizing(Sizing.content(0));
+                    .horizontalSizing(Sizing.content(0))
+                    .verticalSizing(Sizing.fixed(16));
 
             collapsibleTile.titleLayout().child(plusButton);
         }
@@ -152,7 +154,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                                 }
                             })
                     .id(nodePath)
-                    .horizontalSizing(Sizing.content(0));
+                    .horizontalSizing(Sizing.content(0))
+                    .verticalSizing(Sizing.fixed(16));
 
             collapsibleTile.titleLayout().child(removeButton);
         }
@@ -187,7 +190,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         
         NodeResult nodeResult = this.handler.getGuiManager().getSelectedNode();
         // reset children if needed
-        if (nodeResult == null) {
+        if (nodeResult.node() == null) {
             flowLayout.clearChildren();
             return;
         };
@@ -227,6 +230,16 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
             buttonNext.onPress(buttonComponent -> {
                 if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, -2)) {
                     this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, -2);
+                }
+            });
+        }
+        
+        // set confirm class button functionality
+        ButtonComponent buttonConfirm = rootComponent.childById(ButtonComponent.class, "node_info_confirm_class_button");
+        if (buttonConfirm != null) {
+            buttonConfirm.onPress(buttonComponent -> {
+                if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, -3)) {
+                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, -3);
                 }
             });
         }

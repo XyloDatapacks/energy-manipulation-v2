@@ -282,6 +282,23 @@
                         <horizontal-alignment>center</horizontal-alignment>
                         <vertical-alignment>center</vertical-alignment>
                     </flow-layout>
+
+                    <button id="node_info_confirm_class_button">
+                        <text translate="false">Apply Change</text>
+
+                        <padding>
+                            <all>0</all>
+                        </padding>
+
+                        <margins>
+                            <top>2</top>
+                        </margins>
+                        
+                        <sizing>
+                            <horizontal method="content">0</horizontal>
+                            <vertical method="fixed">16</vertical>
+                        </sizing>
+                    </button>
                 </children>
 
                 <sizing>

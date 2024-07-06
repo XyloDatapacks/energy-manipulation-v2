@@ -30,6 +30,16 @@ public class GuiManager {
     public void setRootNode(GenericNode rootNode)
     {
         this.rootNode = rootNode;
+        if (rootNode != null) {
+            // if selectedNodePath is no longer valid, reset
+            if (!isNodeValid(selectedNodePath)) {
+                selectedNodePath = "";
+            }
+        }
+        // if root node is null, reset selected path
+        else {
+            selectedNodePath = "";
+        }
     }
     
     public GenericNode getRootNode()
@@ -67,6 +77,10 @@ public class GuiManager {
         List<String> keyList = nodeResultMap.keySet().stream().toList();
         return index < keyList.size() ? keyList.get(index) : null;
     }
+    
+    public boolean isNodeValid(String path) {
+        return rootNode.getNodeFromPath(path) != null;
+    }
 
     /*----------------------------------------------------------------------------------------------------------------*/
     
@@ -79,7 +93,7 @@ public class GuiManager {
     }
     
     public boolean selectNode(String path) {
-        if (getAllNodes().containsKey(path)) {
+        if (isNodeValid(path)) {
             selectedNodePath = path;
             return true;
         }
@@ -89,7 +103,7 @@ public class GuiManager {
 
     public boolean selectNode(NodeResult nodeResult) {
         String path = GenericNode.listPathToStringPath(nodeResult.path().list());
-        if (getAllNodes().containsKey(path)) {
+        if (isNodeValid(path)) {
             selectedNodePath = path;
             return true;
         }
@@ -98,7 +112,7 @@ public class GuiManager {
     }
     
     public NodeResult getSelectedNode() {
-        return getAllNodes().get(selectedNodePath);
+        return rootNode.getNodeResultFromPath(selectedNodePath);
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
@@ -116,14 +130,26 @@ public class GuiManager {
     
     public static void setNextNodeClass(NodeResult nodeResult) {
         GenericNode parentNode = nodeResult.node().getParentNode();
-        String path = nodeResult.path().list().get(nodeResult.path().list().size() - 1);
+        String path = NodeResult.getLastPathElement(nodeResult);
         parentNode.getSubNode(path).setNextNodeClass();
     }
 
     public static void setPreviousNodeClass(NodeResult nodeResult) {
         GenericNode parentNode = nodeResult.node().getParentNode();
-        String path = nodeResult.path().list().get(nodeResult.path().list().size() - 1);
+        String path = NodeResult.getLastPathElement(nodeResult);
         parentNode.getSubNode(path).setPreviousNodeClass();
+    }
+    
+    public void setPreviewNextNodeClass() {
+        setNextNodeClass();
+    }
+
+    public void setPreviewPreviousNodeClass() {
+        setPreviousNodeClass();
+    }
+    
+    public void confirmNodeClassChange() {
+        System.out.println("Confirming node class change");
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
@@ -169,7 +195,7 @@ public class GuiManager {
         GenericNode node = nodeResult.node();
         GenericNode parentNode = node.getParentNode();
         String id = nodeResult.path().id();
-
+        
         SubNodeData subNodeData = parentNode.getSubNodeData(id);
         NodeData<? extends GenericNode> nodeData = node.getNodeData();
         
@@ -187,7 +213,7 @@ public class GuiManager {
     public static EditorInfo getEditorHeader(NodeResult nodeResult) {
         GenericNode parentNode = nodeResult.node().getParentNode();
         String id = nodeResult.path().id();
-
+        
         SubNodeData subNodeData = parentNode.getSubNodeData(id);
 
         if (subNodeData != null) {
