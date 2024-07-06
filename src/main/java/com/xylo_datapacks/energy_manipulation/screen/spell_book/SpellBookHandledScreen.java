@@ -13,8 +13,10 @@ import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.LabelComponent;
+import io.wispforest.owo.ui.container.DraggableContainer;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
+import io.wispforest.owo.ui.container.StackLayout;
 import io.wispforest.owo.ui.core.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,6 +24,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import javax.xml.transform.Templates;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -114,6 +117,8 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         // create button
         ButtonComponent buttonComponent = (ButtonComponent) Components.button(
                 Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
+                    addNodeInfoPanel();
+                    
                     if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.NODE_SELECT_BUTTON.getOffset())) {
                         this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.NODE_SELECT_BUTTON.getOffset());
                     }
@@ -159,8 +164,24 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         return collapsibleTile;
     }
 
+    private void addNodeInfoPanel() {
+        DraggableContainer<?> pop_up = rootComponent.childById(DraggableContainer.class, "node_info_pop_up");
+        if (pop_up == null) {
+            StackLayout screenStack = rootComponent.childById(StackLayout.class, "screen_stack");
+            if (screenStack != null) {
+                DraggableContainer<?> nodeInfoPopUp = model.expandTemplate(DraggableContainer.class, "node_info_pop_up", Map.of());
+                nodeInfoPopUp.childById(ButtonComponent.class, "close_node_info_panel").onPress(buttonComponent -> {
+                    screenStack.removeChild(nodeInfoPopUp);
+                });
+                screenStack.child(nodeInfoPopUp);
+            }
+        }
+    }
 
     public void refreshNodeInfo() {
+        DraggableContainer<?> pop_up = rootComponent.childById(DraggableContainer.class, "node_info_pop_up");
+        if (pop_up == null) return;
+        
         FlowLayout flowLayout = rootComponent.childById(FlowLayout.class, "node_info_scroll_content");
         if (flowLayout == null) return;
         

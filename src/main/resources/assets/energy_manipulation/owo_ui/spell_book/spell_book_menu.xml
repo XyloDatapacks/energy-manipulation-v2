@@ -3,129 +3,141 @@
     <components>
         <flow-layout direction="vertical">
             <children>
-                <!--=================================================================================================-->
-                <!--MAIN STACK-->
-                <stack-layout id="main_stack">
+                <stack-layout id="screen_stack">
                     <children>
-                        <texture texture="energy_manipulation:textures/gui/spell_book/spell_book_menu.png" u="0"
-                                 v="0" region-width="292" region-height="268" texture-width="512"
-                                 texture-height="512"/>
-
-                        <!--=========================================================================================-->
-                        <!--PAGE DATA-->
-                        <flow-layout direction="horizontal">
+                        <!--=================================================================================================-->
+                        <!--MAIN STACK-->
+                        <stack-layout id="main_stack">
                             <children>
-                                <!--=================================================================================-->
-                                <!--FIRST PAGE-->
-                                <flow-layout direction="vertical">
+                                <texture texture="energy_manipulation:textures/gui/spell_book/spell_book_menu.png" u="0"
+                                         v="0" region-width="292" region-height="268" texture-width="512"
+                                         texture-height="512"/>
+        
+                                <!--=========================================================================================-->
+                                <!--PAGE DATA-->
+                                <flow-layout direction="horizontal">
                                     <children>
-                                        <!--=========================================================================-->
-                                        <!--FIRST PAGE CONTENT-->
-                                        <flow-layout direction="vertical" id="first_page_content">
+                                        <!--=================================================================================-->
+                                        <!--FIRST PAGE-->
+                                        <flow-layout direction="vertical">
                                             <children>
-                                                <!--=================================================================-->
-                                                <!--NODES SCROLL BAR-->
-                                                <scroll direction="vertical" id="nodes_list_scroll">
-                                                    <!--=================================================================-->
-                                                    <!--NODES CONTAINER-->
-                                                    <flow-layout direction="vertical" id="nodes_list_scroll_content">
-                                                        <children/> <!--added at runtime-->
-
-                                                        <!--nodes container style-->
-                                                        <sizing>
-                                                            <vertical method="content">0</vertical>
-                                                            <horizontal method="fill">100</horizontal>
-                                                        </sizing>
-                        
-                                                        <padding> <!--padding for scroll bar content-->
-                                                            <right>4</right>
-                                                        </padding>
-                                                    </flow-layout>
-                                                    <!--END NODES CONTAINER-->
-                                                    <!--=================================================================-->
-
-                                                    <!--nodes scroll bar style-->
-                                                    <margins>
-                                                        <top>7</top>
-                                                        <bottom>32</bottom>
-                                                        <horizontal>8</horizontal>
-                                                    </margins>
-                                                    
+                                                <!--=========================================================================-->
+                                                <!--FIRST PAGE CONTENT-->
+                                                <flow-layout direction="vertical" id="first_page_content">
+                                                    <children>
+                                                        <!--=================================================================-->
+                                                        <!--NODES SCROLL BAR-->
+                                                        <scroll direction="vertical" id="nodes_list_scroll">
+                                                            <!--=================================================================-->
+                                                            <!--NODES CONTAINER-->
+                                                            <flow-layout direction="vertical" id="nodes_list_scroll_content">
+                                                                <children/> <!--added at runtime-->
+        
+                                                                <!--nodes container style-->
+                                                                <sizing>
+                                                                    <vertical method="content">0</vertical>
+                                                                    <horizontal method="fill">100</horizontal>
+                                                                </sizing>
+                                
+                                                                <padding> <!--padding for scroll bar content-->
+                                                                    <right>4</right>
+                                                                </padding>
+                                                            </flow-layout>
+                                                            <!--END NODES CONTAINER-->
+                                                            <!--=================================================================-->
+        
+                                                            <!--nodes scroll bar style-->
+                                                            <margins>
+                                                                <top>7</top>
+                                                                <bottom>32</bottom>
+                                                                <horizontal>8</horizontal>
+                                                            </margins>
+                                                            
+                                                            <sizing>
+                                                                <vertical method="fill">100</vertical>
+                                                                <horizontal method="fill">100</horizontal>
+                                                            </sizing>
+                                                        </scroll>
+                                                        <!--END NODES SCROLL BAR-->
+                                                        <!--=================================================================-->
+                                                    </children>
+        
+                                                    <!--first page content style-->
                                                     <sizing>
                                                         <vertical method="fill">100</vertical>
                                                         <horizontal method="fill">100</horizontal>
                                                     </sizing>
-                                                </scroll>
-                                                <!--END NODES SCROLL BAR-->
-                                                <!--=================================================================-->
+        
+                                                    <!--> 
+                                                    <surface>
+                                                        <panel dark="true"></panel>
+                                                    </surface>
+                                                    <!-->
+        
+                                                </flow-layout>
+                                                <!--END FIRST PAGE CONTENT-->
+                                                <!--=========================================================================-->
                                             </children>
-
-                                            <!--first page content style-->
+        
+                                            <!--first page style-->
                                             <sizing>
                                                 <vertical method="fill">100</vertical>
                                                 <horizontal method="fill">100</horizontal>
                                             </sizing>
-
-                                            <!--> 
-                                            <surface>
-                                                <panel dark="true"></panel>
-                                            </surface>
-                                            <!-->
-
+                                            
+                                            <padding> <!--padding so content stays in the left page's bounds-->
+                                                <top>7</top>
+                                                <left>8</left>
+                                                <bottom>8</bottom>
+                                                <right>6</right>
+                                            </padding>
+        
                                         </flow-layout>
-                                        <!--END FIRST PAGE CONTENT-->
-                                        <!--=========================================================================-->
+                                        <!--END FIRST PAGE-->
+                                        <!--=================================================================================-->
                                     </children>
-
-                                    <!--first page style-->
+        
+                                    <!--page data style-->
                                     <sizing>
-                                        <vertical method="fill">100</vertical>
-                                        <horizontal method="fill">100</horizontal>
+                                        <vertical method="fixed">180</vertical>
+                                        <horizontal method="fixed">292</horizontal>
                                     </sizing>
+        
+                                    <positioning type="relative">50,0</positioning>
                                     
-                                    <padding> <!--padding so content stays in the left page's bounds-->
-                                        <top>7</top>
-                                        <left>8</left>
-                                        <bottom>8</bottom>
-                                        <right>6</right>
-                                    </padding>
-
+                                    <horizontal-alignment>center</horizontal-alignment>
+                                    <vertical-alignment>center</vertical-alignment>
+                                    
                                 </flow-layout>
-                                <!--END FIRST PAGE-->
-                                <!--=================================================================================-->
+                                <!--END PAGE DATA-->
+                                <!--=========================================================================================-->
                             </children>
-
-                            <!--page data style-->
+        
+                            <!--main stack style-->
                             <sizing>
-                                <vertical method="fixed">180</vertical>
-                                <horizontal method="fixed">292</horizontal>
+                                <vertical method="content">0</vertical>
+                                <horizontal method="content">0</horizontal>
                             </sizing>
-
-                            <positioning type="relative">50,0</positioning>
-                            
+        
                             <horizontal-alignment>center</horizontal-alignment>
                             <vertical-alignment>center</vertical-alignment>
                             
-                        </flow-layout>
-                        <!--END PAGE DATA-->
-                        <!--=========================================================================================-->
+                        </stack-layout>
+                        <!--END MAIN STACK-->
+                        <!--=================================================================================================-->
 
-                        <template name="node_info_pop_up"/>
-                        
+                        <!--here goes the node info pop up, added at run time-->
                     </children>
-
-                    <!--main stack style-->
+                    
                     <sizing>
-                        <vertical method="content">0</vertical>
-                        <horizontal method="content">0</horizontal>
+                        <horizontal method="fill">100</horizontal>
+                        <vertical method="fill">100</vertical>
                     </sizing>
 
                     <horizontal-alignment>center</horizontal-alignment>
                     <vertical-alignment>center</vertical-alignment>
-                    
                 </stack-layout>
-                <!--END MAIN STACK-->
-                <!--=================================================================================================-->
+            
             </children>
 
             <horizontal-alignment>center</horizontal-alignment>
@@ -400,7 +412,7 @@
         <!--NODE INFO POP-UP TEMPLATE-->
         <template name="node_info_pop_up">
 
-            <draggable>
+            <draggable id="node_info_pop_up">
                 <stack-layout>
                     <children>
                         <texture texture="energy_manipulation:textures/gui/spell_book/spell_book_menu.png" u="292"
@@ -475,16 +487,26 @@
                                 <horizontal method="fill">100</horizontal>
                             </sizing>
             
-                            <padding> <!--padding so content stays in the right page's bounds-->
+                            <margins> <!--padding so content stays in the right page's bounds-->
                                 <top>7</top>
                                 <left>6</left>
                                 <bottom>8</bottom>
                                 <right>8</right>
-                            </padding>
+                            </margins>
             
                         </flow-layout>
                         <!--END SECOND PAGE-->
                         <!--=================================================================================-->
+
+                        <button id="close_node_info_panel">
+                            <text translate="false">x</text>
+                            <sizing>
+                                <horizontal method="fixed">10</horizontal>
+                                <vertical method="fixed">10</vertical>
+                            </sizing>
+                            <positioning type="relative">100,100</positioning>
+                        </button>
+                        
                     </children>
 
                     <sizing>
@@ -497,6 +519,12 @@
                     <horizontal method="content">0</horizontal>
                     <vertical method="content">0</vertical>
                 </sizing>
+                
+                <padding>
+                    <all>8</all>
+                </padding>
+                
+                <z-index>100</z-index>
             </draggable>
             
         </template>
