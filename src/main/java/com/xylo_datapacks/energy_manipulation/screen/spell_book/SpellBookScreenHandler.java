@@ -95,11 +95,11 @@ public class SpellBookScreenHandler extends ScreenHandler {
         loadInventoryFromNbt(spellBookStack);
 
         // spell book inventory slots
-        for (int y = 0; y < numberOfRows; y++) {
-            for (int x = 0; x < rowWidth; x++) {
-                Point backpackSlotPosition = getBackpackSlotPosition(dimension, x, y);
-                addSlot(new BackpackLockedSlot(inventory, y * rowWidth + x, backpackSlotPosition.x + 1, backpackSlotPosition.y + 1));
-            }
+        for (int i = 0; i < 8; i++) {
+            int x = i % 2 + (i / 4)*2; // (i / 4)*2 add 2 if i >= 4 (0,1,0,1,2,3,2,3)
+            int y = (i - (i / 4)*4) / 2; // -(i / 4)*4) removes 4 if i >= 4 (0,0,1,1,0,0,1,1)
+            Point backpackSlotPosition = getBackpackSlotPosition(dimension, x, y);
+            addSlot(new BackpackLockedSlot(inventory, i, backpackSlotPosition.x + 1, backpackSlotPosition.y + 1));
         }
 
         // player inventory
@@ -235,7 +235,8 @@ public class SpellBookScreenHandler extends ScreenHandler {
 
     public Point getBackpackSlotPosition(Dimension dimension, int x, int y) {
         SpellBookInfo tier = getItem().getTier();
-        return new Point(dimension.getWidth() / 2 - tier.getRowWidth() * 9 + x * 18, verticalOffset + padding + titleSpace + y * 18);
+        y++;
+        return new Point(dimension.getWidth() / 2 - 9 * 9 + (x < 2 ? x - 3 : x + 8) * 18 , verticalOffset + dimension.getHeight() - padding - 4 * 18 - 3 + y * 18);
     }
 
     public Point getPlayerInvSlotPosition(Dimension dimension, int x, int y) {
