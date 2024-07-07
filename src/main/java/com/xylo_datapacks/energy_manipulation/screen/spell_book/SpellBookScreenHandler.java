@@ -50,7 +50,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
     private final ItemStack spellBookStack;
     private final int padding = 8;
     private final int titleSpace = 10;
-    private final int verticalOffset = 67;
+    private final int verticalOffset = 68;
     private final GuiManager guiManager;
     private BackpackInventory inventory;
     private Consumer<Boolean> NodeListUpdateConsumer;

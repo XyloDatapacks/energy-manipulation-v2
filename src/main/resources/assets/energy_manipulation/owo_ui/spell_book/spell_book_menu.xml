@@ -9,9 +9,18 @@
                         <!--MAIN STACK-->
                         <stack-layout id="main_stack">
                             <children>
-                                <texture texture="energy_manipulation:textures/gui/spell_book/spell_book_menu.png" u="0"
-                                         v="0" region-width="292" region-height="268" texture-width="512"
-                                         texture-height="512"/>
+                                <flow-layout direction="vertical">
+                                    <children>
+                                        <texture texture="energy_manipulation:textures/gui/spell_book/spell_book_menu.png" u="0"
+                                                 v="0" region-width="292" region-height="180" texture-width="512"
+                                                 texture-height="512"/>
+                                        <texture texture="energy_manipulation:textures/gui/spell_book/spell_book_menu.png" u="0"
+                                                 v="180" region-width="292" region-height="90" texture-width="512"
+                                                 texture-height="512">
+                                            <z-index>100</z-index>
+                                        </texture>
+                                    </children>
+                                </flow-layout>
         
                                 <!--=========================================================================================-->
                                 <!--PAGE DATA-->
@@ -541,7 +550,9 @@
                     <all>8</all>
                 </padding>
                 
-                <z-index>100</z-index>
+                <positioning type="relative">85,8</positioning>
+                
+                <z-index>80</z-index>
             </draggable>
             
         </template>
