@@ -160,18 +160,6 @@ public class GuiManager {
         String path = NodeResult.getLastPathElement(nodeResult);
         parentNode.getSubNode(path).setPreviousNodeClass();
     }
-    
-    public void setPreviewNextNodeClass() {
-        setNextNodeClass();
-    }
-
-    public void setPreviewPreviousNodeClass() {
-        setPreviousNodeClass();
-    }
-    
-    public void confirmNodeClassChange() {
-        System.out.println("Confirming node class change");
-    }
 
     /*----------------------------------------------------------------------------------------------------------------*/
 

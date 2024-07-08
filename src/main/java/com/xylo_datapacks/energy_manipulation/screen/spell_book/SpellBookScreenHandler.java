@@ -136,10 +136,6 @@ public class SpellBookScreenHandler extends ScreenHandler {
             guiManager.setPreviewNextNodeClass();
             updatePageSpell();
         }
-        else if (id == -3) {
-            guiManager.confirmNodeClassChange();
-            updatePageSpell();
-        }
         else if (id >= 0) {
             String path = guiManager.getPathAtIndex(id % BUTTON_CATEGORY_ID_OFFSET);
             if (path == null) return false;

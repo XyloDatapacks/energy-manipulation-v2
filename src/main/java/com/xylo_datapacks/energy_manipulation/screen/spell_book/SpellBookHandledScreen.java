@@ -238,16 +238,6 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
             });
         }
         
-        // set confirm class button functionality
-        ButtonComponent buttonConfirm = second_page.childById(ButtonComponent.class, "node_info_confirm_class_button");
-        if (buttonConfirm != null) {
-            buttonConfirm.onPress(buttonComponent -> {
-                if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, -3)) {
-                    this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, -3);
-                }
-            });
-        }
-        
         /*------------------------------------------------------------------------------------------------------------*/
         
 
