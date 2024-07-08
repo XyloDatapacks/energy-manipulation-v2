@@ -105,7 +105,6 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
         if (subNodes.containsKey(path)) {
             return subNodes.get(path);
         }
-        System.out.println("failed to find sub node " + path);
         return null;
     }
     

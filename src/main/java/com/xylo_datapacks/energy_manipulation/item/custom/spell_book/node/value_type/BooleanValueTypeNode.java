@@ -32,9 +32,12 @@ public class BooleanValueTypeNode extends AbstractNodeWithValue<Boolean> {
     }
 
     @Override
-    public boolean setValueFromSelector(Object value) {
+    public boolean setValueFromObject(Object value) {
         if (value instanceof Boolean boolValue) {
             return setValue(boolValue);
+        }
+        if (value instanceof String stringValue) {
+            return setValue(Boolean.valueOf(stringValue));
         }
         return false;
     }

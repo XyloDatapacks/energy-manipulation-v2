@@ -15,5 +15,5 @@ public interface ValueTypeNode<T> extends GenericNode {
     
     public abstract FlowLayout getValueSelectorComponent(UIModel model, Consumer<T> onValueChanged);
     
-    public abstract boolean setValueFromSelector(Object value);
+    public abstract boolean setValueFromObject(Object value);
 }

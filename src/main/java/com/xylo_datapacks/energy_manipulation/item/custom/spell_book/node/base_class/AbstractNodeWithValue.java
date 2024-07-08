@@ -2,6 +2,7 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.DoubleValueTypeNode;
 import io.wispforest.owo.nbt.NbtKey;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -79,18 +80,23 @@ public abstract class AbstractNodeWithValue<T> extends AbstractNode implements V
     public GenericNode setFromNbt(NbtCompound nbt) {
         if (value instanceof Integer intValue) {
             intValue = nbt.getInt("value");
+            value = (T) intValue;
         }
         else if (value instanceof Double doubleValue) {
             doubleValue = nbt.getDouble("value");
+            value = (T) doubleValue;
         }
         else if (value instanceof Float floatValue) {
             floatValue = nbt.getFloat("value");
+            value = (T) floatValue;
         }
         else if (value instanceof Boolean boolValue) {
             boolValue = nbt.getBoolean("value");
+            value = (T) boolValue;
         }
         else if (value instanceof String stringValue) {
             stringValue = nbt.getString("value");
+            value = (T) stringValue;
         }
         else {
             value = null;

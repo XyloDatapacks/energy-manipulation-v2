@@ -89,7 +89,7 @@ public class GuiManager {
     }
     
     public boolean isNodeValid(String path) {
-        return rootNode.getNodeFromPath(path) != null;
+        return rootNode != null && rootNode.getNodeFromPath(path) != null;
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
@@ -130,7 +130,10 @@ public class GuiManager {
     }
     
     public NodeResult getSelectedNode() {
-        return rootNode.getNodeResultFromPath(selectedNodePath);
+        if (rootNode != null) {
+            return rootNode.getNodeResultFromPath(selectedNodePath);
+        }
+        return null;
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
@@ -178,7 +181,7 @@ public class GuiManager {
 
     public void setSelectedNodeValue(Object value) {
         if (getSelectedNode().node() instanceof AbstractNodeWithValue<?> nodeWithValue) {
-            nodeWithValue.setValueFromSelector(value);
+            nodeWithValue.setValueFromObject(value);
         }
     }
 

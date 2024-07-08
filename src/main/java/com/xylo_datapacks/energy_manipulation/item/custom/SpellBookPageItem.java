@@ -18,11 +18,11 @@ public class SpellBookPageItem extends Item implements FabricItem {
 
     
     public static void setSpell(ItemStack stack, NbtCompound spell) {
-        System.out.println(spell);
+        System.out.println("NEW INPUT: " + spell);
         NbtCompound nbtCompound = stack.getOrCreateNbt();
-        System.out.println(nbtCompound);
+        System.out.println("INITIAL NBT: " + nbtCompound);
         nbtCompound.put(SPELL_KEY, spell);
-        System.out.println(nbtCompound);
+        System.out.println("FINAL NBT: " + nbtCompound);
     }
 
     public static GenericNode getSpell(ItemStack stack) {

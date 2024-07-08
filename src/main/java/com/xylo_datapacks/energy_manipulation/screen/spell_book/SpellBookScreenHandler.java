@@ -70,6 +70,9 @@ public class SpellBookScreenHandler extends ScreenHandler {
             PlayerEntity player = playerInventory.player;
             this.onClosed(player);
         }
+
+        // server rpc
+        this.addServerboundMessage(SelectorValue.class, this::updateSelectorValue);
     }
 
     private void setupContainer(PlayerInventory playerInventory, ItemStack spellBookStack) {
@@ -117,6 +120,12 @@ public class SpellBookScreenHandler extends ScreenHandler {
         }
     }
 
+    public void updateSelectorValue(SelectorValue selectorValue) {
+        System.out.println("UPDATING SELECTOR " + (this.player().getWorld().isClient ? "CLIENT" : "SERVER"));
+        this.guiManager.setSelectedNodeValue(selectorValue.value());
+        updatePageSpell();
+    }
+
     @Override
     public boolean onButtonClick(PlayerEntity player, int id) {
         if (id == -1) {
@@ -157,12 +166,19 @@ public class SpellBookScreenHandler extends ScreenHandler {
      * has to be called after every manipulation from handledScreen
      */
     public void updatePageSpell() {
-        System.out.println("try update");
+        if (this.player() != null) {
+            System.out.println("SAVING SPELL " + (this.player().getWorld().isClient ? "CLIENT" : "SERVER"));
+        }
+        else {
+            System.out.println("SAVING SPELL");
+        }
         // get page itemStack
         ItemStack page = inventory.getStack(0);
         if (!page.isEmpty() && page.getItem() instanceof SpellBookPageItem) {
             SpellBookPageItem.setSpell(page, guiManager.toNbt());
+            System.out.println("SAVED NBT: " + page.getNbt());
             inventory.markDirty();
+            System.out.println("POST SAVED NBT: " + page.getNbt());
         }
     }
 
@@ -170,15 +186,22 @@ public class SpellBookScreenHandler extends ScreenHandler {
      * has to be called by constructor and after every inventory change
      */
     private void loadPageSpell() {
-        System.out.println("try load");
+        if (this.player() != null) {
+            System.out.println("LOADING SPELL " + (this.player().getWorld().isClient ? "CLIENT" : "SERVER"));
+        } 
+        else {
+            System.out.println("LOADING SPELL");
+        }
         // get page itemStack
         ItemStack page = inventory.getStack(0);
         if (!page.isEmpty() && page.getItem() instanceof SpellBookPageItem) {
             this.guiManager.setRootNode(SpellBookPageItem.getSpell(page));
+            System.out.println("FOUND NBT: " + page.getNbt());
         } 
         else {
             this.guiManager.reset();   
         }
+        System.out.println("LOADED SPELL: " + guiManager.toNbt());
         // update screen
         sendNodeListUpdate();
     }
@@ -218,6 +241,7 @@ public class SpellBookScreenHandler extends ScreenHandler {
     
     private void sendNodeListUpdate() {
         if (NodeListUpdateConsumer != null) {
+            System.out.println("SENDING NODE LIST UPDATE");
             this.NodeListUpdateConsumer.accept(true);
         }
     }
@@ -331,6 +355,8 @@ public class SpellBookScreenHandler extends ScreenHandler {
             
         }
     }
+    
+    public record SelectorValue(String value) {}
 
     
 }

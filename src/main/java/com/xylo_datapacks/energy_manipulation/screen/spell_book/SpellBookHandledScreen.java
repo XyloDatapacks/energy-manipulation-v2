@@ -190,7 +190,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         
         NodeResult nodeResult = this.handler.getGuiManager().getSelectedNode();
         // reset children if needed
-        if (nodeResult.node() == null) {
+        if (nodeResult == null ||  nodeResult.node() == null) {
             flowLayout.clearChildren();
             return;
         };
@@ -268,7 +268,9 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
             selectorBoxLayout.clearChildren();
             // add selector (from node)
             selectorBoxLayout.child(nodeWithValue.getValueSelectorComponent(this.model, result -> {
+                this.handler.sendMessage(new SpellBookScreenHandler.SelectorValue(String.valueOf(result)));
                 // TODO: send packet to handler with the value, to call guiManager.setSelectedNodeValue(value)
+                // /data get entity @s SelectedItem.tag.Inventory[0].tag.spell
             }));
         }
         // if selector not needed and layout is already there, remove layout

@@ -51,9 +51,12 @@ public class DoubleValueTypeNode extends AbstractNodeWithValue<Double> implement
     }
 
     @Override
-    public boolean setValueFromSelector(Object value) {
+    public boolean setValueFromObject(Object value) {
         if (value instanceof Double doubleValue) {
             return setValue(doubleValue) ;
+        }
+        if (value instanceof String stringValue) {
+            return setValue(Double.valueOf(stringValue));
         }
         return false;
     }
