@@ -1,6 +1,9 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.ValueSelector;
+import io.wispforest.owo.ui.container.FlowLayout;
+import io.wispforest.owo.ui.parsing.UIModel;
+
+import java.util.function.Consumer;
 
 public interface ValueTypeNode<T> extends GenericNode {
     
@@ -10,7 +13,7 @@ public interface ValueTypeNode<T> extends GenericNode {
 
     public abstract boolean setValue(T value);
     
-    public abstract ValueSelector<?> getValueSelector();
+    public abstract FlowLayout getValueSelectorComponent(UIModel model, Consumer<T> onValueChanged);
     
-    public abstract boolean setValueFromSelector(ValueSelector<?> valueSelector);
+    public abstract boolean setValueFromSelector(Object value);
 }

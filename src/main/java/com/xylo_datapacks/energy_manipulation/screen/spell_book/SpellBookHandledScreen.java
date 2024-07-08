@@ -4,6 +4,7 @@ import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.api.Counter;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.GuiManager;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithList;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.api.Dimension;
 import com.xylo_datapacks.energy_manipulation.screen.custom_owo.CollapsibleContainerV2;
@@ -24,7 +25,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import javax.xml.transform.Templates;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -197,25 +197,29 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         
         // add child (second page)
         if (flowLayout.children().isEmpty()) {
-            final var second_page= this.model.expandTemplate(FlowLayout.class, "second_page", Map.of());
+            final var second_page = this.model.expandTemplate(FlowLayout.class, "second_page", Map.of());
             flowLayout.child(second_page);
         }
+        FlowLayout second_page = flowLayout.childById(FlowLayout.class, "second_page_content");
+
+        /*------------------------------------------------------------------------------------------------------------*/
+        /* Info and class info */
         
         // display data
         GuiManager.EditorInfo editorHeader = GuiManager.getEditorHeader(nodeResult);
         GuiManager.EditorInfo editorCurrentSelection = GuiManager.getEditorCurrentSelection(nodeResult);
 
         // update Header
-        rootComponent.childById(LabelComponent.class, "node_info_name_label").text(Text.of(editorHeader.name()));
-        rootComponent.childById(LabelComponent.class, "node_info_description_label").text(Text.of(editorHeader.description()));
+        second_page.childById(LabelComponent.class, "node_info_name_label").text(Text.of(editorHeader.name()));
+        second_page.childById(LabelComponent.class, "node_info_description_label").text(Text.of(editorHeader.description()));
         
         // update current selection
-        rootComponent.childById(LabelComponent.class, "node_info_class_name_label").text(Text.of(editorCurrentSelection.name()));
-        rootComponent.childById(LabelComponent.class, "node_info_class_description_label").text(Text.of(editorCurrentSelection.description()));
+        second_page.childById(LabelComponent.class, "node_info_class_name_label").text(Text.of(editorCurrentSelection.name()));
+        second_page.childById(LabelComponent.class, "node_info_class_description_label").text(Text.of(editorCurrentSelection.description()));
         
         
         // set prev button functionality
-        ButtonComponent buttonPrev = rootComponent.childById(ButtonComponent.class, "node_info_class_button_prev");
+        ButtonComponent buttonPrev = second_page.childById(ButtonComponent.class, "node_info_class_button_prev");
         if (buttonPrev != null) {
             buttonPrev.onPress(buttonComponent -> {
                 if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, -1)) {
@@ -225,7 +229,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         }
 
         // set next button functionality
-        ButtonComponent buttonNext = rootComponent.childById(ButtonComponent.class, "node_info_class_button_next");
+        ButtonComponent buttonNext = second_page.childById(ButtonComponent.class, "node_info_class_button_next");
         if (buttonNext != null) {
             buttonNext.onPress(buttonComponent -> {
                 if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, -2)) {
@@ -235,7 +239,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         }
         
         // set confirm class button functionality
-        ButtonComponent buttonConfirm = rootComponent.childById(ButtonComponent.class, "node_info_confirm_class_button");
+        ButtonComponent buttonConfirm = second_page.childById(ButtonComponent.class, "node_info_confirm_class_button");
         if (buttonConfirm != null) {
             buttonConfirm.onPress(buttonComponent -> {
                 if (((SpellBookScreenHandler)this.handler).onButtonClick(this.client.player, -3)) {
@@ -243,6 +247,40 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                 }
             });
         }
+        
+        /*------------------------------------------------------------------------------------------------------------*/
+        
+
+        /*------------------------------------------------------------------------------------------------------------*/
+        /* Selector */
+        
+        // get selector box layout (template which will contain the slector)
+        FlowLayout selectorBoxLayout = second_page.childById(FlowLayout.class, "selector_box_layout");
+        // if node is a node with value (so it needs a selector), add the selector to the layout 
+        // (after removing eventual prev selector)
+        if (nodeResult.node() instanceof AbstractNodeWithValue<?> nodeWithValue) {
+            // if the layout is null, add it to the second page
+            if (selectorBoxLayout == null) {
+                selectorBoxLayout = this.model.expandTemplate(FlowLayout.class, "selector_box", Map.of());
+                second_page.child(selectorBoxLayout);
+            }
+            // clear layout children
+            selectorBoxLayout.clearChildren();
+            // add selector (from node)
+            selectorBoxLayout.child(nodeWithValue.getValueSelectorComponent(this.model, result -> {
+                // TODO: send packet to handler with the value, to call guiManager.setSelectedNodeValue(value)
+            }));
+        }
+        // if selector not needed and layout is already there, remove layout
+        else {
+            if (selectorBoxLayout != null) {
+                second_page.removeChild(selectorBoxLayout);
+            }
+        }
+
+        /*------------------------------------------------------------------------------------------------------------*/
+        
+        
     }
     
     

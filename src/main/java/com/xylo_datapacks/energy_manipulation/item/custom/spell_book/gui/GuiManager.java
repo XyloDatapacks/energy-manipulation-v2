@@ -1,6 +1,7 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui;
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithList;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.ValueTypeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
@@ -19,6 +20,10 @@ public class GuiManager {
         this.rootNode = rootNode;
     }
 
+    /**
+     * set the root node to null and selectedNodePath empty
+     * should only be called by the server
+     */
     public void reset() {
         rootNode = null;
         selectedNodePath = "";
@@ -27,6 +32,11 @@ public class GuiManager {
     /*----------------------------------------------------------------------------------------------------------------*/
     /* Set and Get */
 
+    /**
+     * set the new value for the root node
+     * (can make selectedNodePath empty)
+     * should only be called by the server
+     */
     public void setRootNode(GenericNode rootNode)
     {
         this.rootNode = rootNode;
@@ -92,6 +102,10 @@ public class GuiManager {
         return selectedNodePath;
     }
     
+    /**
+     * set the new selectedNodePath
+     * should only be called by the server
+     */
     public boolean selectNode(String path) {
         if (isNodeValid(path)) {
             selectedNodePath = path;
@@ -101,6 +115,10 @@ public class GuiManager {
         return false;
     }
 
+    /**
+     * set the new selectedNodePath
+     * should only be called by the server
+     */
     public boolean selectNode(NodeResult nodeResult) {
         String path = GenericNode.listPathToStringPath(nodeResult.path().list());
         if (isNodeValid(path)) {
@@ -155,6 +173,18 @@ public class GuiManager {
     /*----------------------------------------------------------------------------------------------------------------*/
 
 
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* Value Management */
+
+    public void setSelectedNodeValue(Object value) {
+        if (getSelectedNode().node() instanceof AbstractNodeWithValue<?> nodeWithValue) {
+            nodeWithValue.setValueFromSelector(value);
+        }
+    }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+    
+    
     /*----------------------------------------------------------------------------------------------------------------*/
     /* List Management */
 

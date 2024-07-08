@@ -1,9 +1,13 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.Button;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.gui.value_selector.ValueSelector;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithValue;
+import io.wispforest.owo.ui.component.CheckboxComponent;
+import io.wispforest.owo.ui.container.FlowLayout;
+import io.wispforest.owo.ui.parsing.UIModel;
+
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class BooleanValueTypeNode extends AbstractNodeWithValue<Boolean> {
     
@@ -21,14 +25,16 @@ public class BooleanValueTypeNode extends AbstractNodeWithValue<Boolean> {
     }
 
     @Override
-    public ValueSelector<?> getValueSelector() {
-        return new Button(2);
+    public FlowLayout getValueSelectorComponent(UIModel model, Consumer<Boolean> onValueChanged) {
+        FlowLayout flowLayout = model.expandTemplate(FlowLayout.class, "checkbox_selector_template", Map.of("checked", Boolean.toString(getValue())));
+        flowLayout.childById(CheckboxComponent.class, "checkbox").onChanged(onValueChanged);
+        return flowLayout;
     }
 
     @Override
-    public boolean setValueFromSelector(ValueSelector<?> valueSelector) {
-        if (valueSelector instanceof Button button) {
-            return setValue(button.getValue() == 1);
+    public boolean setValueFromSelector(Object value) {
+        if (value instanceof Boolean boolValue) {
+            return setValue(boolValue);
         }
         return false;
     }

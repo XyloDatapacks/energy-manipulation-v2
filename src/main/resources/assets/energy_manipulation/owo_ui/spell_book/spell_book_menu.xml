@@ -174,7 +174,7 @@
         <!--SECOND PAGE TEMPLATE-->
         <template name="second_page">
             
-            <flow-layout direction="vertical">
+            <flow-layout direction="vertical" id="second_page_content">
                 <children>
                     <template name="node_info"/>
                     <template name="node_info_class"/>
@@ -446,12 +446,12 @@
                                  texture-height="512"/>
 
                         <!--=================================================================================-->
-                        <!--SECOND PAGE-->
+                        <!--NODE INFO PAGE-->
                         <flow-layout direction="vertical">
                             <children>
                                 <!--=========================================================================-->
-                                <!--SECOND PAGE CONTENT-->
-                                <flow-layout direction="vertical" id="second_page_content">
+                                <!--NODE INFO PAGE CONTENT-->
+                                <flow-layout direction="vertical">
                                     <children>
                                         <!--=================================================================-->
                                         <!--NODES INFO SCROLL BAR-->
@@ -503,7 +503,7 @@
                                     <!-->
             
                                 </flow-layout>
-                                <!--END SECOND PAGE CONTENT-->
+                                <!--END NODE INFO PAGE CONTENT-->
                                 <!--=========================================================================-->
                             </children>
             
@@ -521,7 +521,7 @@
                             </margins>
             
                         </flow-layout>
-                        <!--END SECOND PAGE-->
+                        <!--END NODE INFO PAGE-->
                         <!--=================================================================================-->
 
                         <button id="close_node_info_panel">
@@ -561,5 +561,103 @@
         <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
+
+
+
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--=========================================================================================================-->
+        <!--SELECTOR BOX TEMPLATE-->
+        <template name="selector_box">
+
+            <flow-layout direction="vertical" id="selector_box_layout">
+                <children>
+                    
+                </children>
+
+                <sizing>
+                    <horizontal method="fill">100</horizontal>
+                    <vertical method="content">0</vertical>
+                </sizing>
+
+                <horizontal-alignment>center</horizontal-alignment>
+                <vertical-alignment>center</vertical-alignment>
+
+                <padding>
+                    <horizontal>4</horizontal>
+                    <vertical>4</vertical>
+                </padding>
+
+                <surface>
+                    <panel dark="true"></panel>
+                </surface>
+            </flow-layout>
+
+        </template>
+        <!--SELECTOR BOX TEMPLATE-->
+        <!--=========================================================================================================-->
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--=========================================================================================================-->
+        <!--SLIDER SELECTOR TEMPLATE-->
+        <template name="slider_selector_template">
+
+            <flow-layout direction="vertical">
+                <children>
+                    <discrete-slider min="{{min_value}}" max="{{max_value}}" id="slider">
+                        <value>{{value}}</value>
+                        
+                        <sizing>
+                            <horizontal method="fill">100</horizontal>
+                            <vertical method="fixed">30</vertical>
+                        </sizing>
+                    </discrete-slider>
+                </children>
+
+                <sizing>
+                    <horizontal method="fill">100</horizontal>
+                    <vertical method="content">0</vertical>
+                </sizing>
+
+                <horizontal-alignment>center</horizontal-alignment>
+                <vertical-alignment>center</vertical-alignment>
+            </flow-layout>
+
+        </template>
+        <!--SLIDER SELECTOR TEMPLATE-->
+        <!--=========================================================================================================-->
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--=========================================================================================================-->
+        <!--CHECKBOX SELECTOR TEMPLATE-->
+        <template name="checkbox_selector_template">
+
+            <flow-layout direction="vertical">
+                <children>
+                    <checkbox id="checkbox">
+                        <checked>{{checked}}</checked>
+                    </checkbox>
+                </children>
+
+                <sizing>
+                    <horizontal method="fill">100</horizontal>
+                    <vertical method="content">0</vertical>
+                </sizing>
+
+                <horizontal-alignment>center</horizontal-alignment>
+                <vertical-alignment>center</vertical-alignment>
+            </flow-layout>
+
+        </template>
+        <!--CHECKBOX SELECTOR TEMPLATE-->
+        <!--=========================================================================================================-->
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        
+        
     </templates>
 </owo-ui>
