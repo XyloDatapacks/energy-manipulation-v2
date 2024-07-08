@@ -2,6 +2,7 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithValue;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.ValueTypeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.number.NumberNode;
 import io.wispforest.owo.ui.component.DiscreteSliderComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
@@ -43,8 +44,9 @@ public class DoubleValueTypeNode extends AbstractNodeWithValue<Double> implement
     @Override
     public FlowLayout getValueSelectorComponent(UIModel model, Consumer<Double> onValueChanged) {
         FlowLayout flowLayout = model.expandTemplate(FlowLayout.class, "slider_selector_template", Map.of("value", Double.toString(getValue()), "min_value", Double.toString(minValue), "max_value", Double.toString(maxValue)));
-        DiscreteSliderComponent sliderComponent = flowLayout.childById(DiscreteSliderComponent.class, "slider");
-        flowLayout.child(sliderComponent);
+        flowLayout.childById(DiscreteSliderComponent.class, "slider").<DiscreteSliderComponent>configure(slider -> {
+            slider.onChanged().subscribe(onValueChanged::accept);
+        });
         return flowLayout;
     }
 

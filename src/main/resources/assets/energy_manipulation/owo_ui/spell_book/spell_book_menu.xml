@@ -611,7 +611,7 @@
                         
                         <sizing>
                             <horizontal method="fill">100</horizontal>
-                            <vertical method="fixed">30</vertical>
+                            <vertical method="content">0</vertical>
                         </sizing>
                     </discrete-slider>
                 </children>
