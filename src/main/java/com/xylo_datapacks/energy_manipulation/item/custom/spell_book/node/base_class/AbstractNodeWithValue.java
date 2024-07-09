@@ -43,16 +43,15 @@ public abstract class AbstractNodeWithValue<T> extends AbstractNode implements V
     /**
      *  {
      *      node_type: "<@node_identifier>",
+     *      gui_data: {...},
      *      value: <@value>
      *  }
      */
     @Override
     public final NbtCompound toNbt() {
-        // {}
-        NbtCompound nbt = new NbtCompound();
-        // add node_type: "<@node_identifier>" to nbt
-        nbt.putString("node_type", getNodeIdentifier().toString());
-
+        // get base nbt compound
+        NbtCompound nbt = super.toNbt();
+        
         // add value to nbt
         if (value instanceof Integer intValue) {
             nbt.putInt("value", intValue);
@@ -78,6 +77,9 @@ public abstract class AbstractNodeWithValue<T> extends AbstractNode implements V
 
     @Override
     public GenericNode setFromNbt(NbtCompound nbt) {
+        // set guiData
+        getGuiData().setFromNbt(nbt.getCompound("gui_data"));
+        // set value
         if (value instanceof Integer intValue) {
             intValue = nbt.getInt("value");
             value = (T) intValue;

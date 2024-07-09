@@ -81,6 +81,7 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
     /**
      *  {
      *      node_type: "<@node_identifier>",
+     *      gui_data: {...},
      *      sub_nodes: [
      *          {...}, 
      *          ... , 
@@ -90,11 +91,9 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
      */
     @Override
     public final NbtCompound toNbt() {
-        // {}
-        NbtCompound nbt = new NbtCompound();
-        // add node_type: "<@node_identifier>" to nbt
-        nbt.putString("node_type", getNodeIdentifier().toString());
-
+        // get base nbt compound
+        NbtCompound nbt = super.toNbt();
+        
         // sub_nodes: []
         NbtList subNodesList = new NbtList();
         // add all {...} to sub_nodes
@@ -102,14 +101,17 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
             GenericNode node = entry.getNode();
             subNodesList.add(node.toNbt());
         }
-
         // add sub_nodes to nbt
         nbt.put("sub_nodes", subNodesList);
+        
         return nbt;
     }
 
     @Override
     public GenericNode setFromNbt(NbtCompound nbt) {
+        // set guiData
+        getGuiData().setFromNbt(nbt.getCompound("gui_data"));
+        // set subNodes
         nbt.getList("sub_nodes", NbtCompound.COMPOUND_TYPE).forEach(compound -> {
             NbtCompound subNodeNbt = ((NbtCompound) compound);
             Identifier nodeIdentifier = Identifier.tryParse(subNodeNbt.getString("node_type"));

@@ -1,9 +1,11 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.GuiData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
@@ -12,9 +14,11 @@ public abstract class AbstractNode implements GenericNode {
     private final Identifier nodeIdentifier;
     private GenericNode parentNode;
     private int nesting = 0;
+    private final GuiData guiData;
     
     public AbstractNode(NodeData nodeData) {
         this.nodeIdentifier = nodeData.identifier();
+        guiData = new GuiData();
     }
     
     /** set parent node */
@@ -28,6 +32,30 @@ public abstract class AbstractNode implements GenericNode {
     
     @Override
     public final Identifier getNodeIdentifier() { return nodeIdentifier; }
+    
+    /**
+     *  {
+     *      node_type: "<@node_identifier>",
+     *      gui_data: {...}
+     *  }
+     */
+    @Override
+    public NbtCompound toNbt() {
+        // {}
+        NbtCompound nbt = new NbtCompound();
+        // add node_type: "<@node_identifier>" to nbt
+        nbt.putString("node_type", getNodeIdentifier().toString());
+
+        // add guiData
+        nbt.put("gui_data", getGuiData().toNbt());
+        
+        return nbt;
+    }
+
+    @Override
+    public final GuiData getGuiData() {
+        return guiData;
+    }
 
     @Override
     public final NodeData<? extends GenericNode> getNodeData() {

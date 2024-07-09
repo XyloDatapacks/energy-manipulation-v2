@@ -2,10 +2,7 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodePath;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
@@ -25,6 +22,9 @@ public interface GenericNode {
         return Nodes.NODES.get(Identifier.tryParse(nbt.getString("node_type"))).nodeSupplier().get().setFromNbt(nbt);
     };
 
+    /** get guiData of this node */
+    public abstract GuiData getGuiData();
+    
     /** get data of this node */
     public static NodeData<? extends GenericNode> getNodeData(Identifier nodeIdentifier) {
         return Nodes.NODES.get(nodeIdentifier);

@@ -30,8 +30,9 @@ public class SpellBookScreenHandler extends ScreenHandler {
     public static final int BUTTON_CATEGORY_ID_OFFSET = 5000;
     public enum BUTTON_CATEGORY {
         NODE_SELECT_BUTTON(0),
-        ADD_ELEMENT_TO_LIST_BUTTON(1),
-        REMOVE_NODE_FROM_LIST_BUTTON(2);
+        TOGGLE_NODE_EXPANDED_BUTTON(1),
+        ADD_ELEMENT_TO_LIST_BUTTON(2),
+        REMOVE_NODE_FROM_LIST_BUTTON(3);
         
         private final int id;
         
@@ -129,11 +130,11 @@ public class SpellBookScreenHandler extends ScreenHandler {
     @Override
     public boolean onButtonClick(PlayerEntity player, int id) {
         if (id == -1) {
-            guiManager.setPreviewPreviousNodeClass();
+            guiManager.setPreviousNodeClass();
             updatePageSpell();
         }
         else if (id == -2) {
-            guiManager.setPreviewNextNodeClass();
+            guiManager.setNextNodeClass();
             updatePageSpell();
         }
         else if (id >= 0) {
@@ -145,6 +146,10 @@ public class SpellBookScreenHandler extends ScreenHandler {
                 // update the selected node in the guiManager from the id
                 guiManager.selectNode(path);
                 sendNodeListUpdate();
+            } else if (categoryId == BUTTON_CATEGORY.TOGGLE_NODE_EXPANDED_BUTTON.getId()) {
+                // toggle expanded
+                guiManager.getNodeAtPath(path).node().getGuiData().toggleExpanded();
+                updatePageSpell();
             } else if (categoryId == BUTTON_CATEGORY.ADD_ELEMENT_TO_LIST_BUTTON.getId()) {
                 // add element to list
                 guiManager.addEntryToList(path);

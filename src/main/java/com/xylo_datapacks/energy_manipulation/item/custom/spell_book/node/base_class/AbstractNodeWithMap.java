@@ -27,6 +27,7 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
     /**
      *  {
      *      node_type: "<@node_identifier>",
+     *      gui_data: {...},
      *      sub_nodes: {
      *          <@subNodeId>: {...}, 
      *          ... , 
@@ -36,10 +37,8 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
      */
     @Override
     public final NbtCompound toNbt() {
-        // {}
-        NbtCompound nbt = new NbtCompound();
-        // add node_type: "<@node_identifier>" to nbt
-        nbt.putString("node_type", getNodeIdentifier().toString());
+        // get base nbt compound
+        NbtCompound nbt = super.toNbt();
 
         // sub_nodes: {}
         NbtCompound subNodesCompound = new NbtCompound();
@@ -48,14 +47,17 @@ public abstract class AbstractNodeWithMap extends AbstractNode {
             GenericNode node = entry.getValue().getNode();
             subNodesCompound.put(entry.getKey(), node.toNbt());
         }
-        
         // add sub_nodes to nbt
         nbt.put("sub_nodes", subNodesCompound);
+        
         return nbt;
     }
 
     @Override
     public GenericNode setFromNbt(NbtCompound nbt) {
+        // set guiData
+        getGuiData().setFromNbt(nbt.getCompound("gui_data"));
+        // set subNodes
         NbtCompound subNodesCompound = nbt.getCompound("sub_nodes");
         subNodesCompound.getKeys().forEach(key -> {
             NbtCompound subNodeNbt = subNodesCompound.getCompound(key);

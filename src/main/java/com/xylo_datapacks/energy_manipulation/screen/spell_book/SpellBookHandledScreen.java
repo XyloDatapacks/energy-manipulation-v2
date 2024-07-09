@@ -105,13 +105,14 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
         int nodeIndex = nodeIndexCounter.getValue();
         
         // create layout to contain button
-        Boolean expand = expandedMap.get(nodePath);
-        expand = expand == null || expand;
-        CollapsibleContainerV2 collapsibleTile = (CollapsibleContainerV2) XyloOwoContainers.collapsibleV2(Sizing.content(0), Sizing.content(0), Text.of(buttonDisplay.subNodeName()), expand)
+        CollapsibleContainerV2 collapsibleTile = (CollapsibleContainerV2) XyloOwoContainers.collapsibleV2(Sizing.content(0), Sizing.content(0), Text.of(buttonDisplay.subNodeName()), nodeResult.node().getGuiData().getExpanded())
                 .surface(Surface.DARK_PANEL)
                 .id(nodePath);
         collapsibleTile.onToggled().subscribe(expanded -> {
-            expandedMap.put(nodePath, expanded);
+            // node expanded packet
+            if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.TOGGLE_NODE_EXPANDED_BUTTON.getOffset())) {
+                this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.TOGGLE_NODE_EXPANDED_BUTTON.getOffset());
+            }
         });
         
         // create button
@@ -119,6 +120,7 @@ public class SpellBookHandledScreen extends BaseUIModelHandledScreen<FlowLayout,
                 Text.literal(buttonDisplay.subNodeName() + ": " + buttonDisplay.nodeName()), button -> {
                     addNodeInfoPanel();
                     
+                    // node selection packet
                     if (((SpellBookScreenHandler) this.handler).onButtonClick(this.client.player, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.NODE_SELECT_BUTTON.getOffset())) {
                         this.client.interactionManager.clickButton(((SpellBookScreenHandler) this.handler).syncId, nodeIndex + SpellBookScreenHandler.BUTTON_CATEGORY.NODE_SELECT_BUTTON.getOffset());
                     }
