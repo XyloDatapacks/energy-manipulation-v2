@@ -1,6 +1,8 @@
 package com.xylo_datapacks.energy_manipulation;
 
 import com.xylo_datapacks.energy_manipulation.block.ModBlocks;
+import com.xylo_datapacks.energy_manipulation.entity.ModEntities;
+import com.xylo_datapacks.energy_manipulation.entity.custom.SpellEntity;
 import com.xylo_datapacks.energy_manipulation.item.ModItems;
 import com.xylo_datapacks.energy_manipulation.item.ModItemsGroups;
 import com.xylo_datapacks.energy_manipulation.item.custom.SpellBookItem;
@@ -8,6 +10,7 @@ import com.xylo_datapacks.energy_manipulation.networking.ModPackets;
 import com.xylo_datapacks.energy_manipulation.screen.spell_book.SpellBookScreenHandler;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
@@ -46,6 +49,7 @@ public class EnergyManipulation implements ModInitializer {
 		// Register mod additions
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
+		ModEntities.registerModEntities();
 
 		// Register Client RPCs (so server can receive client rpcs)
 		ModPackets.registerC2SPackets();
