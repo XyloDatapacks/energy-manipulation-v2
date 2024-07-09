@@ -4,6 +4,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.SubNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.ValueTypeNode;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
@@ -24,4 +25,18 @@ public class AlignPositionNode extends AbstractNodeWithMap implements PositionNo
     public AlignPositionNode() {
         super(Nodes.POSITION_ALIGN);
     }
+
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* PositionNode Interface */
+
+    @Override
+    public Vec3d getPosition(Vec3d initialPosition) {
+        double x = Math.floor(initialPosition.x);
+        double y = Math.floor(initialPosition.x);
+        double z = Math.floor(initialPosition.x);
+        return new Vec3d(x, y, z);
+    }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
 }

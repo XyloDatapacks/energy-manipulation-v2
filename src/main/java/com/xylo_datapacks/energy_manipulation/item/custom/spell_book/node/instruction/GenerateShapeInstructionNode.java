@@ -26,8 +26,7 @@ public class GenerateShapeInstructionNode extends AbstractNodeWithMap implements
 
     @Override
     public boolean executeInstruction() {
-        shape.getNode().shapeInit();
-        return false;
+        return shape.getNode().shapeInit();
     }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

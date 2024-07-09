@@ -5,6 +5,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.SubNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.EffectProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.position.PositionNode;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class ModifyPositionInstructionNode extends AbstractNodeWithMap implement
     
     @Override
     public boolean executeInstruction() {
-        // do stuff
-        return false;
+        position.getNode().getPosition(new Vec3d(0, 0, 0)); //TODO: use real pos
+        return true;
     }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

@@ -2,6 +2,8 @@ package com.xylo_datapacks.energy_manipulation.item.custom;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.spell.SpellNode;
 import com.xylo_datapacks.energy_manipulation.screen.spell_book.SpellBookScreenHandler;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -30,7 +32,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SpellBookItem extends Item implements FabricItem {
     private static final String CHARGED_KEY = "Charged";
@@ -43,12 +47,47 @@ public class SpellBookItem extends Item implements FabricItem {
         super(settings);
     }
 
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* Casting Logic */
+
+    public SpellNode getSpellNode(ItemStack itemStack) {
+        // get inventory items
+        Map<Integer, ItemStack> spellBookContent = getBackpackContents(itemStack);
+        // check if there is slot zero
+        if (spellBookContent.containsKey(0)) {
+            // check if slot zero is spell book page
+            if (spellBookContent.get(0).getItem() instanceof SpellBookPageItem) {
+                // fetch spell node
+                GenericNode node = SpellBookPageItem.getSpell(spellBookContent.get(0));
+                if (node instanceof SpellNode spellNode) {
+                    return spellNode;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public void runSpell(ItemStack itemStack) {
+        SpellNode spellNode = getSpellNode(itemStack);
+        spellNode.runNode();
+    }
+
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    
+    
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* Usage Logic */
+    
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (SpellBookItem.isCharged(itemStack)) {
             SpellBookItem.setCharged(itemStack, false);
             SpellBookItem.setCharge(itemStack, 0.f);
+            runSpell(itemStack);
             return TypedActionResult.success(itemStack);
         }
         if (!SpellBookItem.isCharged(itemStack)) {
@@ -174,6 +213,13 @@ public class SpellBookItem extends Item implements FabricItem {
         return SpellBookItem.getCharge(oldStack) == SpellBookItem.getCharge(new ItemStack(this));
     }
 
+    /*----------------------------------------------------------------------------------------------------------------*/
+    
+    
+    
+    
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* Gui */
 
     public static void openScreen(PlayerEntity player, ItemStack spellBookItemStack) {
         if (player.getWorld() != null && !player.getWorld().isClient()) {
@@ -195,12 +241,18 @@ public class SpellBookItem extends Item implements FabricItem {
             });
         }
     }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+    
+    
+    
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* Inventory */
     
     public SpellBookInfo getTier() {
         return new SpellBookInfo("spell book", 9, 1, false, "");
     }
-
-
+    
     public static boolean isBackpackEmpty(ItemStack stack) {
         NbtList tag = stack.getOrCreateNbt().getList("Inventory", NbtElement.COMPOUND_TYPE);
 
@@ -216,23 +268,40 @@ public class SpellBookItem extends Item implements FabricItem {
         return true;
     }
 
-    public static List<ItemStack> getBackpackContents(ItemStack stack) {
-        List<ItemStack> stacks = new ArrayList<>();
+    public static Map<Integer, ItemStack> getBackpackContents(ItemStack stack) {
+        Map<Integer, ItemStack> stacks = new LinkedHashMap<>();
         NbtList tag = stack.getOrCreateNbt().getList("Inventory", NbtElement.COMPOUND_TYPE);
 
         // If any inventory element in the Backpack stack is non-empty, return false;
         for (NbtElement element : tag) {
             NbtCompound stackTag = (NbtCompound) element;
-            ItemStack backpackStack = ItemStack.fromNbt(stackTag.getCompound("Stack"));
-            stacks.add(backpackStack);
+            ItemStack backpackStack = ItemStack.fromNbt(stackTag);
+            stacks.put(stackTag.getInt("Slot"), backpackStack);
         }
 
         return stacks;
     }
 
+    public static NbtCompound getSlotNbt(ItemStack stack, int slot) {
+        NbtList tag = stack.getOrCreateNbt().getList("Inventory", NbtElement.COMPOUND_TYPE);
+
+        // return the element with matching slot
+        for (NbtElement element : tag) {
+            NbtCompound stackTag = (NbtCompound) element;
+            if (stackTag.getInt("Slot") == slot) {
+                return stackTag;
+            }
+        }
+
+        return null;
+    }
+
     public static void wipeBackpack(ItemStack stack) {
         stack.getOrCreateNbt().remove("Inventory");
     }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+    
 
     public static Identifier id(String name) {
         return new Identifier(EnergyManipulation.MOD_ID, name);

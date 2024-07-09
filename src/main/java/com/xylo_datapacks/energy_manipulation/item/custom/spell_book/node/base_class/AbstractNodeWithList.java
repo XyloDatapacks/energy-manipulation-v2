@@ -4,7 +4,6 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodePath;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 
@@ -34,6 +33,10 @@ public abstract class AbstractNodeWithList<T extends GenericNode> extends Abstra
             return subNodes.get(index);
         }
         return null;
+    }
+    
+    public List<SubNode<T>> getSubNodes() {
+        return Collections.unmodifiableList(subNodes);
     }
 
     public final boolean modifySubNode(int index, Identifier newSubNodeValueIdentifier) {

@@ -15,9 +15,11 @@ public class InstructionProviderNode extends AbstractNodeWithList<InstructionNod
                         Nodes.INSTRUCTION_GENERATE_SHAPE,
                         Nodes.INSTRUCTION_MODIFY_POSITION)
                 ));
-        
-        //this.appendSubNode(Nodes.INSTRUCTION_MODIFY_POSITION.identifier());
-        //this.appendSubNode(Nodes.INSTRUCTION_MODIFY_POSITION.identifier());
-        //this.appendSubNode(Nodes.INSTRUCTION_GENERATE_SHAPE.identifier());
+    }
+    
+    public void runInstructions() {
+        getSubNodes().forEach(instruction -> {
+            instruction.getNode().executeInstruction();
+        });
     }
 }

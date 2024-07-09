@@ -4,6 +4,7 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.SubNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.offset.OffsetNode;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
@@ -17,4 +18,17 @@ public class OffsetPositionNode extends AbstractNodeWithMap implements PositionN
     public OffsetPositionNode() {
         super(Nodes.POSITION_OFFSET);
     }
+
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+    /* PositionNode Interface */
+
+    @Override
+    public Vec3d getPosition(Vec3d initialPosition) {
+        
+        
+        return initialPosition;
+    }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
 }

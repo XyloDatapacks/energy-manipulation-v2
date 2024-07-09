@@ -14,7 +14,7 @@ public class InventoryUtils {
             ItemStack stack = inventory.getStack(i);
             if (!stack.isEmpty()) {
                 NbtCompound stackTag = stack.writeNbt(new NbtCompound());
-                stackTag.putInt("Slot", i);
+                stackTag.putByte("Slot", (byte) i); 
                 tag.add(stackTag);
             }
         }

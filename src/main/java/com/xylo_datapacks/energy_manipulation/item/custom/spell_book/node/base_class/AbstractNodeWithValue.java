@@ -2,12 +2,7 @@ package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_
 
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.DoubleValueTypeNode;
-import io.wispforest.owo.nbt.NbtKey;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtType;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
