@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 import java.util.Map;
 
-public abstract non-sealed class AbstractNodeWithValue<T> extends AbstractNode implements ValueTypeNode<T> {
+public abstract class AbstractNodeWithValue<T> extends AbstractNode implements ValueTypeNode<T> {
     private T value;
     
     public AbstractNodeWithValue(NodeData nodeData) {

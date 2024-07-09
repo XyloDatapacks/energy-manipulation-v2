@@ -5,7 +5,7 @@ import io.wispforest.owo.ui.parsing.UIModel;
 
 import java.util.function.Consumer;
 
-public sealed interface ValueTypeNode<T> extends GenericNode permits AbstractNodeWithValue {
+public interface ValueTypeNode<T> extends GenericNode {
     
     public abstract T getValue();
 
