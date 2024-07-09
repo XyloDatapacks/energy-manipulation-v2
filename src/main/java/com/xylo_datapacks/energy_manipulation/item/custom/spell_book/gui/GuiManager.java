@@ -4,9 +4,9 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithValue;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.ValueTypeNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeResult;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.SubNodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.record.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.record.NodeResult;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.record.SubNodeData;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.List;

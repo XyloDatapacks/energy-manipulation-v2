@@ -1,6 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class;
 
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.records.NodeData;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.record.NodeData;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
