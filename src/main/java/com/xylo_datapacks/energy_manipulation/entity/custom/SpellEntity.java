@@ -1,23 +1,33 @@
 package com.xylo_datapacks.energy_manipulation.entity.custom;
 
 import com.xylo_datapacks.energy_manipulation.entity.ModEntities;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.SpellExecutor;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.spell.SpellNode;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.*;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtDouble;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtTypes;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.Arm;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class SpellEntity extends PersistentProjectileEntity {
+public class SpellEntity extends PersistentProjectileEntity implements SpellExecutor {
     /**
      * The name of the compound tag that stores the marker's custom data.
      */
     private static final String DATA_KEY = "data";
     private NbtCompound data = new NbtCompound();
+    
+    private SpellNode spellNode;
 
     public SpellEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -72,6 +82,49 @@ public class SpellEntity extends PersistentProjectileEntity {
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.put(DATA_KEY, this.data.copy());
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void runSpell() {
+        spellNode.executeSpell(this);
+    }
+
+    public void setSpellNode(SpellNode spellNode) {
+        this.spellNode = spellNode;
+    }
+
+    @Override
+    public LivingEntity getCaster() {
+        return (LivingEntity) getOwner();
+    }
+
+    @Override
+    public Vec3d getContextPosition() {
+        NbtList list = (NbtList) data.get("position");
+        if (list != null && list.size() == 3) {
+            return new Vec3d(list.getDouble(0), list.getDouble(1), list.getDouble(2));
+        }
+        return getPos();
+    }
+
+    @Override
+    public Vec2f getContextDirection() {
+        NbtList list = (NbtList) data.get("rotation");
+        if (list != null && list.size() == 2) {
+            return new Vec2f(list.getFloat(0), list.getFloat(1));
+        }
+        return new Vec2f(getYaw(), getPitch());
+    }
+
+    @Override
+    public void setContextPosition(Vec3d position) {
+        NbtList list = new NbtList();
+        list.add(NbtDouble.of(position.x));
+        list.add(NbtDouble.of(position.y));
+        list.add(NbtDouble.of(position.z));
+        data.put("position", list);
     }
     
 }

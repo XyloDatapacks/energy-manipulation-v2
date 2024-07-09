@@ -2,6 +2,8 @@ package com.xylo_datapacks.energy_manipulation.item.custom;
 
 import com.xylo_datapacks.energy_manipulation.EnergyManipulation;
 import com.xylo_datapacks.energy_manipulation.config.SpellBookInfo;
+import com.xylo_datapacks.energy_manipulation.entity.ModEntities;
+import com.xylo_datapacks.energy_manipulation.entity.custom.SpellEntity;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.GenericNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.spell.SpellNode;
 import com.xylo_datapacks.energy_manipulation.screen.spell_book.SpellBookScreenHandler;
@@ -10,6 +12,7 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -20,6 +23,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -68,9 +72,14 @@ public class SpellBookItem extends Item implements FabricItem {
         return null;
     }
     
-    public void runSpell(ItemStack itemStack) {
+    public void runSpell(World world, PlayerEntity user, Hand hand, ItemStack itemStack) {
         SpellNode spellNode = getSpellNode(itemStack);
-        spellNode.runNode();
+        SpellEntity spell = ModEntities.SPELL.spawn((ServerWorld) world, user.getBlockPos(), SpawnReason.TRIGGERED);
+        if (spell != null) {
+            spell.setOwner(user);
+            spell.setSpellNode(spellNode);
+            spell.runSpell();
+        }
     }
 
 
@@ -87,7 +96,9 @@ public class SpellBookItem extends Item implements FabricItem {
         if (SpellBookItem.isCharged(itemStack)) {
             SpellBookItem.setCharged(itemStack, false);
             SpellBookItem.setCharge(itemStack, 0.f);
-            runSpell(itemStack);
+            if (!world.isClient) {
+                runSpell(world, user, hand, itemStack);
+            }
             return TypedActionResult.success(itemStack);
         }
         if (!SpellBookItem.isCharged(itemStack)) {

@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.SpellExecutor;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithList;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.SubNode;
@@ -17,9 +18,9 @@ public class InstructionProviderNode extends AbstractNodeWithList<InstructionNod
                 ));
     }
     
-    public void runInstructions() {
+    public void runInstructions(SpellExecutor spellExecutor) {
         getSubNodes().forEach(instruction -> {
-            instruction.getNode().executeInstruction();
+            instruction.getNode().executeInstruction(spellExecutor);
         });
     }
 }

@@ -1,11 +1,10 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.instruction;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.SpellExecutor;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.SubNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.effect.EffectProviderNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.position.PositionNode;
-import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
@@ -25,8 +24,8 @@ public class ModifyPositionInstructionNode extends AbstractNodeWithMap implement
     /* InstructionNode Interface */
     
     @Override
-    public boolean executeInstruction() {
-        position.getNode().getPosition(new Vec3d(0, 0, 0)); //TODO: use real pos
+    public boolean executeInstruction(SpellExecutor spellExecutor) {
+        spellExecutor.setContextPosition(position.getNode().getPosition(spellExecutor, spellExecutor.getContextPosition())); 
         return true;
     }
 

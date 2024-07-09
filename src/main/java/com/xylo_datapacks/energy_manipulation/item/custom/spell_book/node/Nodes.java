@@ -18,8 +18,8 @@ import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_c
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.ProjectileShapeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.shape.RayShapeNode;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.spell.SpellNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.BooleanValueTypeNode;
-import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.value_type.DoubleValueTypeNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.boolean_value.BooleanValueTypeNode;
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.number.DoubleValueTypeNode;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -88,10 +88,10 @@ public class Nodes {
     public static final NodeData<DoubleNumberNode> NUMBER_DOUBLE = registerNode("number", "double", new NodeData.NodeDataMaker<>("Double", "A Double number", DoubleNumberNode::new, Map.of(
             "value", new SubNodeData("Value","A double number")
     )));
+    public static final NodeData<DoubleValueTypeNode> VALUE_TYPE_DOUBLE = registerNode("number", "double", new NodeData.NodeDataMaker<>("Value Double", "Move the slider to select a number", DoubleValueTypeNode::new, Map.of()));
 
-    /** Value Types */
-    public static final NodeData<DoubleValueTypeNode> VALUE_TYPE_DOUBLE = registerNode("value_type", "double", new NodeData.NodeDataMaker<>("Value Double", "Move the slider to select a number", DoubleValueTypeNode::new, Map.of()));
-    public static final NodeData<BooleanValueTypeNode> VALUE_TYPE_BOOLEAN = registerNode("value_type", "boolean", new NodeData.NodeDataMaker<>("Value Boolean", "Select the value", BooleanValueTypeNode::new, Map.of()));
+    /** Boolean Value */
+    public static final NodeData<BooleanValueTypeNode> VALUE_TYPE_BOOLEAN = registerNode("boolean_value", "boolean", new NodeData.NodeDataMaker<>("Value Boolean", "Select the value", BooleanValueTypeNode::new, Map.of()));
 
 
 

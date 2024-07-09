@@ -1,5 +1,6 @@
 package com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.spell;
 
+import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.SpellExecutor;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.Nodes;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.AbstractNodeWithMap;
 import com.xylo_datapacks.energy_manipulation.item.custom.spell_book.node.base_class.SubNode;
@@ -21,8 +22,9 @@ public class SpellNode extends AbstractNodeWithMap implements RunnableNode {
     /* RunnableNode Interface */
 
     @Override
-    public void runNode() {
-        program.getNode().runInstructions();
+    public void executeSpell(SpellExecutor spellExecutor) {
+        System.out.println("Executing spell node");
+        program.getNode().runInstructions(spellExecutor);
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
