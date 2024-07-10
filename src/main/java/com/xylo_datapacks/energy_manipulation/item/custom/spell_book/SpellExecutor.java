@@ -13,4 +13,6 @@ public interface SpellExecutor {
     public abstract Vec2f getContextDirection();
 
     public abstract void setContextPosition(Vec3d position);
+    
+    public abstract void setContextDirection(Vec2f position);
 }
